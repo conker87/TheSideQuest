@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour {
 	bool wallSliding;
 	int wallDirX;
 
-	public bool hasWallJumped;
+	public bool hasJumped, hasDoubleJumped, hasTripleJumped, hasWallJumped;
 
 	void Start() {
 		
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour {
 
 		if (controller.collisions.below) {
 
-			hasWallJumped = false;
+			hasJumped = hasDoubleJumped = hasTripleJumped = hasWallJumped = false;
 
 		}
 
@@ -90,14 +90,8 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	public void OnJumpInputDown(float jumpHeight = 0) {
-
-		if (jumpHeight == 0) {
-
-			jumpHeight = maxJumpVelocity;
-
-		}
-
+	public void OnJumpInputDown() {
+		
 		if (playerDetails.WallJump && wallSliding) {
 			
 			if (wallDirX == directionalInput.x) {
@@ -107,50 +101,67 @@ public class PlayerController : MonoBehaviour {
 
 				hasWallJumped = true;
 
-			}
-			else if (directionalInput.x == 0) {
+			} else if (directionalInput.x == 0) {
 				
 				velocity.x = -wallDirX * wallJumpOff.x;
 				velocity.y = wallJumpOff.y;
 
 				hasWallJumped = true;
 
-			}
-			else {
+			} else {
 				
 				velocity.x = -wallDirX * wallLeap.x;
 				velocity.y = wallLeap.y;
 
 				hasWallJumped = true;
-
 			}
 
 		}
 
-		if (controller.collisions.below || (!hasWallJumped && playerDetails.DoubleJump)) {
-
+		if ((controller.collisions.below && !hasJumped) ||
+			(playerDetails.DoubleJump && !hasDoubleJumped && hasJumped) ||
+			(playerDetails.TripleJump && !hasTripleJumped && hasDoubleJumped && hasJumped )) {
+			
 			if (controller.collisions.slidingDownMaxSlope) {
 				
 				if (directionalInput.x != -Mathf.Sign (controller.collisions.slopeNormal.x)) { // not jumping against max slope
 					
-					velocity.y = jumpHeight * controller.collisions.slopeNormal.y;
-					velocity.x = jumpHeight * controller.collisions.slopeNormal.x;
+					velocity.y = maxJumpVelocity * controller.collisions.slopeNormal.y;
+					velocity.x = maxJumpVelocity * controller.collisions.slopeNormal.x;
 
 				}
 
 			} else {
 				
-				velocity.y = jumpHeight;
+				velocity.y = maxJumpVelocity;
 
 			}
+
+			if (hasWallJumped) {
+
+				hasJumped = hasDoubleJumped = hasTripleJumped = true;
+
+			}
+
+			if (!hasTripleJumped && hasDoubleJumped && hasJumped) {
+				hasTripleJumped = true;
+			}
+			if (!hasDoubleJumped && hasJumped) { 
+				hasDoubleJumped = true;
+			}
+			if (!hasJumped) {
+				hasJumped = true;
+			}
+
 		}
 
 	}
-
 	public void OnJumpInputUp() {
-		
+
 		if (velocity.y > minJumpVelocity) {
+			
 			velocity.y = minJumpVelocity;
+
 		}
 
 	}
@@ -160,26 +171,36 @@ public class PlayerController : MonoBehaviour {
 		
 		wallDirX = (controller.collisions.left) ? -1 : 1;
 		wallSliding = false;
+
 		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0) {
+			
 			wallSliding = true;
 
 			if (velocity.y < -wallSlideSpeedMax) {
+				
 				velocity.y = -wallSlideSpeedMax;
+
 			}
 
 			if (timeToWallUnstick > 0) {
+				
 				velocityXSmoothing = 0;
 				velocity.x = 0;
 
 				if (directionalInput.x != wallDirX && directionalInput.x != 0) {
+					
 					timeToWallUnstick -= Time.deltaTime;
-				}
-				else {
+
+				} else {
+					
 					timeToWallUnstick = wallStickTime;
+
 				}
-			}
-			else {
+
+			} else {
+				
 				timeToWallUnstick = wallStickTime;
+
 			}
 
 		}
