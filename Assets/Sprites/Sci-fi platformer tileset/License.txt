@@ -1,0 +1,6 @@
+
+Name:			Sci-fi platformer tileset
+Author: 		Buch (https://opengameart.org/users/buch)
+URL:			https://opengameart.org/content/sci-fi-platformer-tileset
+
+License:		Public Domain: http://creativecommons.org/publicdomain/zero/1.0/
