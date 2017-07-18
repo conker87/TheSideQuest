@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class Key : MonoBehaviour {
 
-	public KeyLocation location;
+	[SerializeField]
+	KeyLocation _keyLocation;
+	public KeyLocation KeyLocation {
+
+		get { return _keyLocation; }
+		set { _keyLocation = value; }
+
+	}
+
 	bool _isDisabled = false;
 
 	void Start() {
@@ -25,13 +33,11 @@ public class Key : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 
-		Debug.Log ("I HAS HIT SOMMMUT");
-
-		PlayerDetails playerDetails = other.GetComponent<PlayerDetails>();
+		Player playerDetails = other.GetComponent<Player>();
 
 		if (playerDetails != null) {
 
-			if (playerDetails.IncrementKeyCount (location)) {
+			if (playerDetails.IncrementKeyCount (KeyLocation)) {
 
 				DisableGameObject (true);
 

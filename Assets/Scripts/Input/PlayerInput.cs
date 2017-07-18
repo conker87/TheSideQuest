@@ -5,7 +5,7 @@ using System.Collections;
 public class PlayerInput : MonoBehaviour {
 
 	PlayerController player;
-	public float doubleTapSensativity = .25f;
+	public float doubleTapSensitivity = .25f;
 	float doubleTapTime, doubleTabSign = 0f;
 	bool doubleTapStart = false;
 
@@ -21,22 +21,18 @@ public class PlayerInput : MonoBehaviour {
 		Vector2 directionalInput = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 		player.SetDirectionalInput (directionalInput);
 
+		// Dashing
 		if (doubleTapTime < Time.time) {
 
 			doubleTapStart = false;
 
 		}
 
-		if (doubleTapStart && Input.GetButtonDown("Horizontal") && Input.GetAxisRaw ("Horizontal") == doubleTabSign) {
+		if ((doubleTapStart && Input.GetButtonDown("Horizontal") && Input.GetAxisRaw ("Horizontal") == doubleTabSign && doubleTapTime > Time.time) ||
+			(Input.GetAxisRaw ("Horizontal") != 0f && Input.GetButtonDown("Dash"))) {
 
-			Debug.Log ("PlayerInput::Update - Input.GetAxisRaw (\"Horizontal\") == doubleTabSign ");
-
-			if (doubleTapTime > Time.time) {
-
-				player.OnDashInput ();
-				doubleTapStart = false;
-
-			}
+			player.OnDashInput ();
+			doubleTapStart = false;
 
 		}
 
@@ -44,17 +40,11 @@ public class PlayerInput : MonoBehaviour {
 
 			doubleTapStart = true;
 			doubleTabSign = Mathf.Sign(Input.GetAxisRaw ("Horizontal"));
-			doubleTapTime = Time.time + doubleTapSensativity;
-
-		}
-			
-		if (Input.GetAxisRaw ("Horizontal") != 0f && Input.GetButtonDown("Dash")) {
-
-			player.OnDashInput ();
-			doubleTapStart = false;
+			doubleTapTime = Time.time + doubleTapSensitivity;
 
 		}
 
+		// Jumping
 		if (Input.GetButtonDown ("Jump")) {
 
 			player.OnJumpInputDown ();

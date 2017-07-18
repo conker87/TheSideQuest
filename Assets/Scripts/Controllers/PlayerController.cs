@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour {
 	public Vector2 dash;
 	float dashCooldownTime;
 
+	// Mega Dashing
+	int megaDashItteration = 0, maximumMegaDashItteration = 5;
+
 	public float wallSlideSpeedMax = 3;
 	public float wallStickTime = .25f;
 	float timeToWallUnstick;
@@ -31,7 +34,7 @@ public class PlayerController : MonoBehaviour {
 	float velocityXSmoothing;
 
 	public Controller2D controller;
-	PlayerDetails playerDetails;
+	Player playerDetails;
 
 	SpriteRenderer sr;
 
@@ -39,12 +42,12 @@ public class PlayerController : MonoBehaviour {
 	bool wallSliding;
 	int wallDirX;
 
-	public bool hasJumped, hasDoubleJumped, hasTripleJumped, hasWallJumped;
+	public bool hasJumped, hasDoubleJumped, hasTripleJumped, hasWallJumped, hasDashed;
 
 	void Start() {
 		
 		controller = GetComponent<Controller2D> ();
-		playerDetails = GetComponent<PlayerDetails> ();
+		playerDetails = GetComponent<Player> ();
 		sr = GetComponent<SpriteRenderer> ();
 
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
@@ -54,7 +57,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update() {
-		
+
 		CalculateVelocity ();
 
 		if (playerDetails.WallSlide) {
@@ -69,7 +72,8 @@ public class PlayerController : MonoBehaviour {
 
 		if (controller.collisions.below) {
 
-			hasJumped = hasDoubleJumped = hasTripleJumped = hasWallJumped = false;
+			hasJumped = hasDoubleJumped = hasTripleJumped = hasWallJumped = hasDashed = false;
+			megaDashItteration = 0;
 
 		}
 
@@ -95,28 +99,73 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	public void OnDashInput() {
+	public void OnMegaDashInput() {
 
 		if (directionalInput.x == 0f) {
 
-			Debug.Log ("PlayerController::OnDashInput - (directionalInput.x == 0f");
+			// Debug.Log ("PlayerController::OnDashInput - (directionalInput.x == 0f");
+			// return;
+
+		}
+
+		if ((Time.time < dashCooldownTime && megaDashItteration >= maximumMegaDashItteration) ||
+			(Time.time < dashCooldownTime && megaDashItteration == 0)) {
+			//megaDashItteration >= maximumMegaDashItteration) {
+
+			// Debug.Log ("PlayerController::OnDashInput - Dash is on cooldown");
+
+			return;
+
+		}
+
+		if (playerDetails.CheatDash || playerDetails.MegaDash) {
+
+			float direction = Mathf.Sign (directionalInput.x);
+
+			velocity.x = direction * dash.x;
+			velocity.y = dash.y;
+
+			hasDashed = true;
+
+			megaDashItteration++;
+
+			dashCooldownTime = Time.time + playerDetails.DashCooldown;
+
+		}
+
+	}
+
+	public void OnDashInput() {
+
+		if (playerDetails.MegaDash) {
+
+			OnMegaDashInput ();
+			return;
+
+		}
+
+		if (directionalInput.x == 0f) {
+
+			// Debug.Log ("PlayerController::OnDashInput - (directionalInput.x == 0f");
 			// return;
 
 		}
 
 		if (!playerDetails.CheatDash && Time.time < dashCooldownTime) {
 
-			Debug.Log ("PlayerController::OnDashInput - Dash is on cooldown");
+			// Debug.Log ("PlayerController::OnDashInput - Dash is on cooldown");
 			return;
 
 		}
 
-		if (playerDetails.Dash) {
+		if (playerDetails.CheatDash || (!hasDashed && playerDetails.Dash)) {
 
 			float direction = Mathf.Sign (directionalInput.x);
 
 			velocity.x = direction * dash.x;
 			velocity.y = dash.y;
+
+			hasDashed = true;
 
 			dashCooldownTime = Time.time + playerDetails.DashCooldown;
 
@@ -125,7 +174,13 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void OnJumpInputDown() {
-		
+
+		if (hasDashed) {
+
+			return;
+
+		}
+
 		if (playerDetails.WallJump && wallSliding) {
 			
 			if (wallDirX == directionalInput.x) {
@@ -247,4 +302,5 @@ public class PlayerController : MonoBehaviour {
 		velocity.y += gravity * Time.deltaTime;
 
 	}
+
 }
