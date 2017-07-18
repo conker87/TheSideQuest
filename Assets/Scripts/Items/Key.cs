@@ -29,15 +29,13 @@ public class Key : MonoBehaviour {
 
 		PlayerDetails playerDetails = other.GetComponent<PlayerDetails>();
 
-		if (playerDetails == null) {
+		if (playerDetails != null) {
 
-			Debug.Log (gameObject + "::Key::OnTriggerEnter2D - This object is not hitting the Player");
+			if (playerDetails.IncrementKeyCount (location)) {
 
-		} else {
+				DisableGameObject (true);
 
-			playerDetails.IncrementKeyCount(location);
-
-			DisableGameObject (true);
+			}
 
 		}
 

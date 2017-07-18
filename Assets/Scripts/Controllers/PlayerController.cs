@@ -11,9 +11,14 @@ public class PlayerController : MonoBehaviour {
 	float accelerationTimeGrounded = .1f;
 	float moveSpeed = 6;
 
+	// Wall sliding & jumping
 	public Vector2 wallJumpClimb;
 	public Vector2 wallJumpOff;
 	public Vector2 wallLeap;
+
+	// Dashing
+	public Vector2 dash;
+	float dashCooldownTime;
 
 	public float wallSlideSpeedMax = 3;
 	public float wallStickTime = .25f;
@@ -90,6 +95,35 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+	public void OnDashInput() {
+
+		if (directionalInput.x == 0f) {
+
+			Debug.Log ("PlayerController::OnDashInput - (directionalInput.x == 0f");
+			// return;
+
+		}
+
+		if (!playerDetails.CheatDash && Time.time < dashCooldownTime) {
+
+			Debug.Log ("PlayerController::OnDashInput - Dash is on cooldown");
+			return;
+
+		}
+
+		if (playerDetails.Dash) {
+
+			float direction = Mathf.Sign (directionalInput.x);
+
+			velocity.x = direction * dash.x;
+			velocity.y = dash.y;
+
+			dashCooldownTime = Time.time + playerDetails.DashCooldown;
+
+		}
+
+	}
+
 	public void OnJumpInputDown() {
 		
 		if (playerDetails.WallJump && wallSliding) {
@@ -120,7 +154,7 @@ public class PlayerController : MonoBehaviour {
 
 		if ((controller.collisions.below && !hasJumped) ||
 			(playerDetails.DoubleJump && !hasDoubleJumped && hasJumped) ||
-			(playerDetails.TripleJump && !hasTripleJumped && hasDoubleJumped && hasJumped )) {
+			(playerDetails.TripleJump && !hasTripleJumped && hasDoubleJumped && hasJumped)) {
 			
 			if (controller.collisions.slidingDownMaxSlope) {
 				
@@ -166,7 +200,6 @@ public class PlayerController : MonoBehaviour {
 
 	}
 		
-
 	void HandleWallSliding() {
 		
 		wallDirX = (controller.collisions.left) ? -1 : 1;

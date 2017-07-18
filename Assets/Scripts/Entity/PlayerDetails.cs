@@ -98,7 +98,7 @@ public class PlayerDetails : MonoBehaviour {
 
 	}
 
-	bool _doubleJump = true;
+	bool _doubleJump = false;
 	public bool DoubleJump {
 
 		get { return _doubleJump; }
@@ -106,7 +106,7 @@ public class PlayerDetails : MonoBehaviour {
 
 	}
 
-	bool _tripleJump = true;
+	bool _tripleJump = false;
 	public bool TripleJump {
 
 		get { return _tripleJump; }
@@ -114,7 +114,7 @@ public class PlayerDetails : MonoBehaviour {
 
 	}
 
-	bool _wallSlide = true;
+	bool _wallSlide = false;
 	public bool WallSlide {
 
 		get { return _wallSlide; }
@@ -122,7 +122,7 @@ public class PlayerDetails : MonoBehaviour {
 
 	}
 
-	bool _wallJump = true;
+	bool _wallJump = false;
 	public bool WallJump {
 
 		get { return _wallJump; }
@@ -130,11 +130,26 @@ public class PlayerDetails : MonoBehaviour {
 
 	}
 
-	bool _dash = false;
+	bool _dashCheat = false;
+	bool _dash = true;
 	public bool Dash {
 
 		get { return _dash; }
 		set { _dash = value; }
+
+	}
+	public bool CheatDash {
+
+		get { return _dashCheat; }
+		set { _dashCheat = value; }
+
+	}
+
+	float _dashCooldown = 3f;
+	public float DashCooldown {
+
+		get			{ return _dashCooldown; }
+		private set	{ _dashCooldown = value; }
 
 	}
 
@@ -162,7 +177,7 @@ public class PlayerDetails : MonoBehaviour {
 
 		if (value < 1) {
 
-			Debug.Log ("Do not use PlayerDetails::DecrementKeyCount as a increment.");
+			Debug.Log ("Do not use PlayerDetails::DecrementKeyCount as an increment.");
 			return false;
 
 		}
