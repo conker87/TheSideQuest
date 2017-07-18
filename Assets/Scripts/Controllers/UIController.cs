@@ -7,12 +7,58 @@ public class UIController : MonoBehaviour {
 
 	public Text RoomName;
 
+	public Text Health;
+	public string healthy = "green", unhealthy = "navy", healthBarCharacter = "þ";
+
+	Player player;
+
 	[SerializeField]
 	float roomNameShowTime = 3f;
 
 	Coroutine disableElement;
 
+	void Start() { 
+
+		player = GameObject.FindObjectOfType<Player>();
+
+	}
+
+	void Update() {
+
+		ShowHealthText();
+
+	}
+
+	void ShowHealthText() {
+
+		if (Health == null) {
+
+			return;
+
+		}
+
+		string healthString = "Health: ";
+		string currentColor = "";
+
+		for (int i = 0; i < player.MaximumHealth; i++) {
+
+			currentColor = (i >= player.CurrentHealth) ? unhealthy : healthy;
+
+			healthString += "<color=" + currentColor + ">" + healthBarCharacter + "</color>";
+
+		}
+
+		Health.text = healthString;
+
+	}
+
 	public void ShowRoomNameText(string roomName) {
+
+		if (RoomName == null) {
+
+			return;
+
+		}
 
 		if (disableElement != null) {
 

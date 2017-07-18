@@ -33,6 +33,13 @@ public class Entity : MonoBehaviour {
 
 		}
 
+		if (CurrentHealth + value > MaximumHealth) {
+			
+			Debug.Log ("PlayerDetails::HealCurrentHealth -- CurrentHealth + value > MaximumHealth");
+			return;
+
+		}
+
 		if (value.Equals (1)) {
 
 			CurrentHealth++;
@@ -42,6 +49,8 @@ public class Entity : MonoBehaviour {
 			CurrentHealth += value;
 
 		}
+			
+		CurrentHealth = Mathf.Clamp (CurrentHealth, 0, MaximumHealth);
 
 	}
 
@@ -64,6 +73,8 @@ public class Entity : MonoBehaviour {
 
 		}
 
+		CurrentHealth = Mathf.Clamp (CurrentHealth, 0, MaximumHealth);
+
 	}
 
 	public void IncreaseMaximumHealth(int value = 0) {
@@ -84,6 +95,15 @@ public class Entity : MonoBehaviour {
 			MaximumHealth += value;
 
 		}
+
+		MaximumHealth = Mathf.Clamp (MaximumHealth, BEGINNING_MAXIMUM_HEALTH, TOTAL_MAXIMUM_HEALTH);
+
+	}
+
+	void Update() {
+
+		_currentHealth = Mathf.Clamp (_currentHealth, 0, _maximumHealth);
+		_maximumHealth = Mathf.Clamp (_maximumHealth, BEGINNING_MAXIMUM_HEALTH, TOTAL_MAXIMUM_HEALTH);
 
 	}
 
