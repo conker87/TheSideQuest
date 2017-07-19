@@ -63,6 +63,12 @@ public class Entity : MonoBehaviour {
 
 		}
 
+		if (_isCurrentlyInInvulnerabilityFrames) {
+
+			return;
+
+		}
+
 		if (value.Equals (1)) {
 
 			CurrentHealth--;
@@ -70,6 +76,13 @@ public class Entity : MonoBehaviour {
 		} else {
 
 			CurrentHealth -= value;
+
+		}
+
+		if (HasInvulnerabilityFrames && !_isCurrentlyInInvulnerabilityFrames) {
+
+			_isCurrentlyInInvulnerabilityFrames = true;
+			_invulnerabilityFramesTime = Time.time + InvulnerabilityFramesLength;
 
 		}
 
@@ -100,7 +113,35 @@ public class Entity : MonoBehaviour {
 
 	}
 
+	[SerializeField]
+	bool _hasInvulnerabilityFrames = false;
+	bool _isCurrentlyInInvulnerabilityFrames;
+	public bool HasInvulnerabilityFrames {
+
+		get				{ return _hasInvulnerabilityFrames; }
+		protected set	{ _hasInvulnerabilityFrames = value; }
+
+	}
+
+	[SerializeField]
+	float _invulnerabilityFramesLength = 1.5f;
+	float _invulnerabilityFramesTime;
+	public float InvulnerabilityFramesLength {
+
+		get				{ return _invulnerabilityFramesLength; }
+		protected set	{ _invulnerabilityFramesLength = value; }
+
+	}
+
+
+
 	void Update() {
+
+		if (_isCurrentlyInInvulnerabilityFrames && Time.time > _invulnerabilityFramesTime) {
+
+			_isCurrentlyInInvulnerabilityFrames = false;
+
+		}
 
 		_currentHealth = Mathf.Clamp (_currentHealth, 0, _maximumHealth);
 		_maximumHealth = Mathf.Clamp (_maximumHealth, BEGINNING_MAXIMUM_HEALTH, TOTAL_MAXIMUM_HEALTH);

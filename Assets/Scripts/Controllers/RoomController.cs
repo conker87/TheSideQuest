@@ -52,7 +52,12 @@ public class RoomController : MonoBehaviour {
 	public void EnteredRoom() {
 
 		SpawnEnemies ();
-		ui.ShowRoomNameText (RoomName); // Localisation.GetLocalisedText(RoomName, Localisation.CurrentLocal);
+
+		if (ui != null) {
+
+			ui.ShowRoomNameText (RoomName); // Localisation.GetLocalisedText(RoomName, Localisation.CurrentLocal);
+
+		}
 
 	}
 
