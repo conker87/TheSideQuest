@@ -71,6 +71,8 @@ public class Switch : Interactable {
 
 	}
 
+	Door door;
+
 	protected override void Start() {
 
 		base.Start ();
@@ -81,6 +83,21 @@ public class Switch : Interactable {
 
 		}
 
+		// Find all Doors connected to this Interactable and increment their OperatorCounter
+		foreach (Interactable interactable in ConnectedInteractables) {
+
+			Door current;
+
+			if ((current = interactable.GetComponent<Door>()) != null && current.DoorOperator == DoorOperator.AND) {
+
+				current.IncrementTotalOperatorCount ();
+				print(current.GetTotalOperatorCount());
+
+			}
+
+		}
+
+		// Check if this switch will reset
 		_isResetSwitch = (_resetInSeconds != 0) ? true : false;
 
 		// TODO: This needs to load settings from save file.
@@ -127,11 +144,9 @@ public class Switch : Interactable {
 
 		}
 
-		if (!_canContinue) {
+		if (!_canContinue) return;
 
-			return;
-
-		}
+		if (IsOneUseOnly) HasBeenUsedOnce = true;
 
 		switch (CurrentState) {
 
@@ -155,6 +170,12 @@ public class Switch : Interactable {
 
 			foreach (Interactable interact in ConnectedInteractables) {
 
+				if ((door = interact.GetComponent<Door>()) != null) {
+
+					door.DecrementOperatorCount();
+
+				}
+
 				interact.DoInteraction ();
 
 			}
@@ -176,7 +197,14 @@ public class Switch : Interactable {
 	void SwitchState_TurnOn() {
 
 		foreach (Interactable interact in ConnectedInteractables) {
-			
+
+			if ((door = interact.GetComponent<Door>()) != null) {
+
+				door.IncrementOperatorCount();
+				print (door.GetOperatorCount() + " " + door.GetTotalOperatorCount());
+
+			}
+
 			interact.DoInteraction ();
 
 		}
