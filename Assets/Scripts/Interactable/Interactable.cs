@@ -49,11 +49,10 @@ public class Interactable : MonoBehaviour {
 
 	protected bool _canContinue = true;
 
-
-	public virtual void DoInteraction() {
+	public virtual void DoInteraction(bool sentFromPlayerInput = false) {
 
 		if (!IsCurrentlyInteractable) {
-			
+
 			print ("Interactable::Switch::DoInteraction -- Interactable is disabled.");
 			_canContinue = false;
 

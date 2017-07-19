@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class Switch : Interactable {
 
+	[SerializeField]
 	SwitchState _startingState;
 	public SwitchState StartingState {
 
@@ -13,6 +15,7 @@ public class Switch : Interactable {
 
 	}
 
+	[SerializeField]
 	SwitchState _currentState;
 	public SwitchState CurrentState {
 
@@ -48,14 +51,34 @@ public class Switch : Interactable {
 
 	}
 
-	public override void DoInteraction() {
+	protected override void Start() {
 
-		base.DoInteraction ();
+		if (StartingState == SwitchState.ON) {
+
+			GetComponent<SpriteRenderer> ().flipY = true;
+
+		} else if (StartingState == SwitchState.OFF) {
+
+			GetComponent<SpriteRenderer> ().flipY = false;
+
+		}
+
+	}
+
+	protected override void Update() {
+
+		//GetComponent<SpriteRenderer> ().flipY = (CurrentState == SwitchState.ON) ? true : false;
+
+	}
+
+	public virtual void DoInteraction(bool sentFromPlayerInput = false) {
+
+		base.DoInteraction (sentFromPlayerInput);
 
 		if (!CheckForConnectedInteractables ()) {
 
 			print ("Interactable::Switch::DoInteraction -- No Connected Interactables.");
-			_canContinue = false;
+			// _canContinue = false;
 
 		}
 
@@ -72,61 +95,106 @@ public class Switch : Interactable {
 
 		}
 
-		print ("Interactable::Switch::DoInteraction -- All is well, continuing with method.");
+		print ("Interactable::Switch::DoInteraction -- All is well, continuing with method in: ");
 
 		switch (CurrentState) {
 
-			case SwitchState.OFF:
+		case SwitchState.ON:
 
-				SwitchState_Off ();
-				break;
+			SwitchState_TurnOff ();
+			break;
 
-			case SwitchState.TURNING_ON:
+		case SwitchState.OFF:
 
-				SwitchState_Turning_On ();
-				break;
+			SwitchState_TurnOn ();
+			break;
 
-			case SwitchState.ON:
-				
-				SwitchState_On ();
-				break;
-
-			case SwitchState.TURNING_OFF: 
-				
-				SwitchState_Turning_Off ();
-				break;
+//		case SwitchState.TURNING_ON:
+//
+//			SwitchState_Turning_On ();
+//			break;
+//
+//		case SwitchState.TURNING_OFF: 
+//			
+//			SwitchState_Turning_Off ();
+//			break;
 
 		}
 
 	}
 
-	void SwitchState_Off() {
+	void SwitchState_TurnOff() {
 
+		GetComponent<SpriteRenderer> ().flipY = false;
 
-
-	}
-
-	void SwitchState_Turning_On() {
-
-
+		ChangeSwitchState (SwitchState.OFF);
 
 	}
 
-	void SwitchState_On() {
+	void SwitchState_TurnOn() {
 
-		
+		int i = 0;
+
+		foreach (Interactable interact in ConnectedInteractables) {
+
+			print ("Itterating: " + interact + " _ " + i.ToString());
+			interact.DoInteraction ();
+
+			i++;
+
+		}
+
+		GetComponent<SpriteRenderer> ().flipY = true;
+
+		ChangeSwitchState (SwitchState.ON);
 
 	}
 
-	void SwitchState_Turning_Off() {
-
-
-
-	}
+//	void SwitchState_Off() {
+//
+//		ChangeSwitchState (SwitchState.TURNING_ON);
+//
+//		print ("Turning ON");
+//
+//	}
+//
+//	void SwitchState_Turning_On() {
+//
+//		foreach (Interactable interact in ConnectedInteractables) {
+//
+//			interact.DoInteraction ();
+//
+//		}
+//
+//		GetComponent<SpriteRenderer> ().flipY = false;
+//
+//		ChangeSwitchState (SwitchState.ON);
+//
+//		print ("ON");
+//
+//	}
+//
+//	void SwitchState_On() {
+//		
+//		ChangeSwitchState (SwitchState.TURNING_OFF);
+//
+//		print ("Turning OFF");
+//
+//	}
+//
+//	void SwitchState_Turning_Off() {
+//
+//		GetComponent<SpriteRenderer> ().flipY = true;
+//
+//		ChangeSwitchState (SwitchState.OFF);
+//
+//		print ("OFF");
+//
+//	}
 
 	bool CheckForConnectedInteractables() {
 
-		if (ConnectedInteractables == null || ConnectedInteractables.Count == 0) {
+		if (ConnectedInteractables == null || ConnectedInteractables.Count() == 0) {
 
 			return false;
 
@@ -166,6 +234,25 @@ public class Switch : Interactable {
 	public void ChangeSwitchState(SwitchState state) {
 
 		CurrentState = state;
+
+	}
+
+	void OnDrawGizmos() {
+
+		if (ConnectedInteractables != null && ConnectedInteractables.Count() > 0) {
+
+			foreach (Interactable interactable in ConnectedInteractables) {
+
+				Gizmos.color = Color.blue;
+				Gizmos.DrawWireSphere (transform.position, 0.2f);
+
+				Gizmos.color = Color.green;
+				Gizmos.DrawLine (transform.position, interactable.transform.position);
+
+			}
+
+		}
+
 
 	}
 

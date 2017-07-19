@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour {
 	int megaDashItteration = 0, maximumMegaDashItteration = 5;
 
 	// Interactable
-	float interactableRadius = 1.5f;
+	float interactableRadius = .75f;
 	[SerializeField]
 	LayerMask interableLayerMask;
 
@@ -150,8 +150,9 @@ public class PlayerController : MonoBehaviour {
 			Interactable interactable;
 
 			if ((interactable = col.GetComponent<Interactable> ()) != null) {
-
-				interactable.DoInteraction ();
+				
+				print ("going it shit: " + interactable);
+				interactable.DoInteraction (true);
 
 			}
 
@@ -322,8 +323,17 @@ public class PlayerController : MonoBehaviour {
 	void CalculateVelocity() {
 		
 		float targetVelocityX = directionalInput.x * moveSpeed;
-		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
+		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 		velocity.y += gravity * Time.deltaTime;
+
+  
+
+	}
+
+	void OnDrawGizmos() {
+
+		Gizmos.DrawWireSphere (transform.position, interactableRadius);
+
 
 	}
 
