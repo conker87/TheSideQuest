@@ -7,6 +7,16 @@ using UnityEngine;
 public class Switch : Interactable {
 
 	[SerializeField]
+	bool _fireOnChangeState;
+	public bool FireOnAnyState {
+
+		get { return _fireOnChangeState; } 
+		set { _fireOnChangeState = value; } 
+
+	}
+
+
+	[SerializeField]
 	SwitchState _startingState;
 	public SwitchState StartingState {
 
@@ -53,11 +63,22 @@ public class Switch : Interactable {
 
 	protected override void Start() {
 
-		if (StartingState == SwitchState.ON) {
+		base.Start ();
+
+		if (CheckConnectedInteractablesForSelf ()) {
+
+			Debug.LogError ("Switch: '" + gameObject + "' has itself as a connected interactable, this WILL break the game!");
+
+		}
+
+		// TODO: This needs to load settings from save file.
+		CurrentState = StartingState;
+
+		if (CurrentState == SwitchState.ON) {
 
 			GetComponent<SpriteRenderer> ().flipY = true;
 
-		} else if (StartingState == SwitchState.OFF) {
+		} else if (CurrentState == SwitchState.OFF) {
 
 			GetComponent<SpriteRenderer> ().flipY = false;
 
@@ -65,22 +86,9 @@ public class Switch : Interactable {
 
 	}
 
-	protected override void Update() {
-
-		//GetComponent<SpriteRenderer> ().flipY = (CurrentState == SwitchState.ON) ? true : false;
-
-	}
-
-	public virtual void DoInteraction(bool sentFromPlayerInput = false) {
+	public override void DoInteraction(bool sentFromPlayerInput = false) {
 
 		base.DoInteraction (sentFromPlayerInput);
-
-		if (!CheckForConnectedInteractables ()) {
-
-			print ("Interactable::Switch::DoInteraction -- No Connected Interactables.");
-			// _canContinue = false;
-
-		}
 
 		if (!CheckForRequiredKeys ()) {
 
@@ -109,21 +117,21 @@ public class Switch : Interactable {
 			SwitchState_TurnOn ();
 			break;
 
-//		case SwitchState.TURNING_ON:
-//
-//			SwitchState_Turning_On ();
-//			break;
-//
-//		case SwitchState.TURNING_OFF: 
-//			
-//			SwitchState_Turning_Off ();
-//			break;
-
 		}
 
 	}
 
 	void SwitchState_TurnOff() {
+
+		if (FireOnAnyState) {
+
+			foreach (Interactable interact in ConnectedInteractables) {
+
+				interact.DoInteraction ();
+
+			}
+
+		}
 
 		GetComponent<SpriteRenderer> ().flipY = false;
 
@@ -133,14 +141,9 @@ public class Switch : Interactable {
 
 	void SwitchState_TurnOn() {
 
-		int i = 0;
-
 		foreach (Interactable interact in ConnectedInteractables) {
-
-			print ("Itterating: " + interact + " _ " + i.ToString());
+			
 			interact.DoInteraction ();
-
-			i++;
 
 		}
 
@@ -150,57 +153,23 @@ public class Switch : Interactable {
 
 	}
 
-//	void SwitchState_Off() {
-//
-//		ChangeSwitchState (SwitchState.TURNING_ON);
-//
-//		print ("Turning ON");
-//
-//	}
-//
-//	void SwitchState_Turning_On() {
-//
-//		foreach (Interactable interact in ConnectedInteractables) {
-//
-//			interact.DoInteraction ();
-//
-//		}
-//
-//		GetComponent<SpriteRenderer> ().flipY = false;
-//
-//		ChangeSwitchState (SwitchState.ON);
-//
-//		print ("ON");
-//
-//	}
-//
-//	void SwitchState_On() {
-//		
-//		ChangeSwitchState (SwitchState.TURNING_OFF);
-//
-//		print ("Turning OFF");
-//
-//	}
-//
-//	void SwitchState_Turning_Off() {
-//
-//		GetComponent<SpriteRenderer> ().flipY = true;
-//
-//		ChangeSwitchState (SwitchState.OFF);
-//
-//		print ("OFF");
-//
-//	}
+	bool CheckConnectedInteractablesForSelf() {
 
-	bool CheckForConnectedInteractables() {
+		if (ConnectedInteractables != null && ConnectedInteractables.Count() > 0) {
 
-		if (ConnectedInteractables == null || ConnectedInteractables.Count() == 0) {
+			foreach (Interactable interactable in ConnectedInteractables) {
 
-			return false;
+				if (gameObject.GetInstanceID() == interactable.gameObject.GetInstanceID ()) {
+
+					return true;
+
+				}
+					
+			}
 
 		}
 
-		return true;
+		return false;
 
 	}
 
@@ -258,4 +227,4 @@ public class Switch : Interactable {
 
 }
 
-public enum SwitchState { OFF, TURNING_ON, ON, TURNING_OFF };
+public enum SwitchState { OFF, ON, };

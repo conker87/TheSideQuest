@@ -151,8 +151,8 @@ public class PlayerController : MonoBehaviour {
 
 			if ((interactable = col.GetComponent<Interactable> ()) != null) {
 				
-				print ("going it shit: " + interactable);
 				interactable.DoInteraction (true);
+				print ("going it shit: " + interactable);
 
 			}
 
