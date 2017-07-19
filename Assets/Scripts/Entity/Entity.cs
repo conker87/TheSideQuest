@@ -54,7 +54,7 @@ public class Entity : MonoBehaviour {
 
 	}
 
-	public void DamageCurrentHealth(int value = 1) {
+	public void DamageCurrentHealth(int value = 1, bool _ignoreInvulnerabilityFrames = false) {
 
 		if (value < 0) {
 
@@ -63,7 +63,7 @@ public class Entity : MonoBehaviour {
 
 		}
 
-		if (_isCurrentlyInInvulnerabilityFrames) {
+		if (_isCurrentlyInInvulnerabilityFrames && !_ignoreInvulnerabilityFrames) {
 
 			return;
 
@@ -79,7 +79,7 @@ public class Entity : MonoBehaviour {
 
 		}
 
-		if (HasInvulnerabilityFrames && !_isCurrentlyInInvulnerabilityFrames) {
+		if (HasInvulnerabilityFrames) {
 
 			_isCurrentlyInInvulnerabilityFrames = true;
 			_invulnerabilityFramesTime = Time.time + InvulnerabilityFramesLength;

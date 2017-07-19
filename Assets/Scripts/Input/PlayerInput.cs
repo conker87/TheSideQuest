@@ -9,7 +9,6 @@ public class PlayerInput : MonoBehaviour {
 	float doubleTapTime, doubleTabSign = 0f;
 	bool doubleTapStart = false;
 
-
 	void Start () {
 		
 		player = GetComponent<PlayerController> ();
@@ -54,6 +53,15 @@ public class PlayerInput : MonoBehaviour {
 		if (Input.GetButtonUp ("Jump")) {
 
 			player.OnJumpInputUp ();
+
+		}
+
+		// Interacting
+		// TODO: Button needs to be made for "Interact"
+
+		if (Input.GetKeyDown (KeyCode.E)) {
+
+			player.OnInteractInput ();
 
 		}
 

@@ -23,6 +23,11 @@ public class PlayerController : MonoBehaviour {
 	// Mega Dashing
 	int megaDashItteration = 0, maximumMegaDashItteration = 5;
 
+	// Interactable
+	float interactableRadius = 1.5f;
+	[SerializeField]
+	LayerMask interableLayerMask;
+
 	public float wallSlideSpeedMax = 3;
 	public float wallStickTime = .25f;
 	float timeToWallUnstick;
@@ -130,6 +135,25 @@ public class PlayerController : MonoBehaviour {
 			megaDashItteration++;
 
 			dashCooldownTime = Time.time + playerDetails.DashCooldown;
+
+		}
+
+	}
+
+	public void OnInteractInput() {
+
+		Vector2 currentPosition = transform.position;
+		Collider2D col;
+
+		if ((col = Physics2D.OverlapCircle (currentPosition, interactableRadius, interableLayerMask)) != null) {
+
+			Interactable interactable;
+
+			if ((interactable = col.GetComponent<Interactable> ()) != null) {
+
+				interactable.DoInteraction ();
+
+			}
 
 		}
 
