@@ -7,15 +7,14 @@ using UnityEngine;
 public class Switch : Interactable {
 
 	[SerializeField]
-	bool _fireOnChangeState;
-	public bool FireOnAnyState {
+	bool _interactOnAnyState = true;
+	public bool InteractOnAnyState {
 
-		get { return _fireOnChangeState; } 
-		set { _fireOnChangeState = value; } 
+		get { return _interactOnAnyState; } 
+		set { _interactOnAnyState = value; } 
 
 	}
-
-
+		
 	[SerializeField]
 	SwitchState _startingState;
 	public SwitchState StartingState {
@@ -61,6 +60,17 @@ public class Switch : Interactable {
 
 	}
 
+	[SerializeField]
+	float _resetInSeconds = 0;
+	float _resetTimer;
+	bool _isResetSwitch;
+	public float ResetInSeconds {
+
+		get { return _resetInSeconds; }
+		set { _resetInSeconds = value; }
+
+	}
+
 	protected override void Start() {
 
 		base.Start ();
@@ -70,6 +80,8 @@ public class Switch : Interactable {
 			Debug.LogError ("Switch: '" + gameObject + "' has itself as a connected interactable, this WILL break the game!");
 
 		}
+
+		_isResetSwitch = (_resetInSeconds != 0) ? true : false;
 
 		// TODO: This needs to load settings from save file.
 		CurrentState = StartingState;
@@ -81,6 +93,24 @@ public class Switch : Interactable {
 		} else if (CurrentState == SwitchState.OFF) {
 
 			GetComponent<SpriteRenderer> ().flipY = false;
+
+		}
+
+	}
+
+	protected override void Update() {
+
+		if (_isResetSwitch && CurrentState != StartingState && Time.time > _resetTimer) {
+
+			if (StartingState == SwitchState.OFF) {
+
+				SwitchState_TurnOff ();
+
+			} else {
+
+				SwitchState_TurnOn ();
+
+			}
 
 		}
 
@@ -103,8 +133,6 @@ public class Switch : Interactable {
 
 		}
 
-		print ("Interactable::Switch::DoInteraction -- All is well, continuing with method in: ");
-
 		switch (CurrentState) {
 
 		case SwitchState.ON:
@@ -123,7 +151,7 @@ public class Switch : Interactable {
 
 	void SwitchState_TurnOff() {
 
-		if (FireOnAnyState) {
+		if (InteractOnAnyState) {
 
 			foreach (Interactable interact in ConnectedInteractables) {
 
@@ -134,6 +162,12 @@ public class Switch : Interactable {
 		}
 
 		GetComponent<SpriteRenderer> ().flipY = false;
+
+		if (StartingState == SwitchState.ON) {
+
+			StartResetTimer ();
+
+		}
 
 		ChangeSwitchState (SwitchState.OFF);
 
@@ -149,8 +183,24 @@ public class Switch : Interactable {
 
 		GetComponent<SpriteRenderer> ().flipY = true;
 
+		if (StartingState == SwitchState.OFF) {
+
+			StartResetTimer ();
+
+		}
+
 		ChangeSwitchState (SwitchState.ON);
 
+	}
+
+	void StartResetTimer() {
+
+		if (ResetInSeconds > 0) {
+
+			_resetTimer = Time.time + ResetInSeconds;
+
+		}
+			
 	}
 
 	bool CheckConnectedInteractablesForSelf() {
