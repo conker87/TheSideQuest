@@ -56,7 +56,34 @@ public class Interactable : MonoBehaviour {
 
 	}
 
+	[SerializeField][Range(0, 100)]
+	float _resetInSeconds = 0;
+	protected float _resetTimer;
+	protected bool isResetInteractable;
+	public float ResetInSeconds {
+
+		get { return _resetInSeconds; }
+		set { _resetInSeconds = value; }
+
+	}
+
 	protected bool _canContinue = true;
+
+	protected virtual void Start () {
+
+		if (IsOneUseOnly) {
+
+			SaveStateToFile = true;
+
+		}
+
+		isResetInteractable = (ResetInSeconds > 0);
+
+	}
+	
+	protected virtual void Update () {
+
+	}
 
 	public virtual void DoInteraction(bool sentFromPlayerInput = false) {
 
@@ -78,22 +105,6 @@ public class Interactable : MonoBehaviour {
 
 			print ("Interactable::Switch::DoInteraction -- Interactable has been used already and is now disabled.");
 			_canContinue = false;
-
-		}
-
-	}
-
-	// Use this for initialization
-	protected virtual void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	protected virtual void Update () {
-
-		if (IsOneUseOnly) {
-
-			SaveStateToFile = true;
 
 		}
 

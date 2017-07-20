@@ -60,18 +60,7 @@ public class Switch : Interactable {
 
 	}
 
-	[SerializeField]
-	float _resetInSeconds = 0;
-	float _resetTimer;
-	bool _isResetSwitch;
-	public float ResetInSeconds {
-
-		get { return _resetInSeconds; }
-		set { _resetInSeconds = value; }
-
-	}
-
-	Door door;
+	DoorOperator door;
 
 	protected override void Start() {
 
@@ -86,18 +75,15 @@ public class Switch : Interactable {
 		// Find all Doors connected to this Interactable and increment their OperatorCounter
 		foreach (Interactable interactable in ConnectedInteractables) {
 
-			Door current;
+			DoorOperator current = interactable.GetComponent<DoorOperator>();
 
-			if ((current = interactable.GetComponent<Door>()) != null && current.DoorOperator == DoorOperator.AND) {
+			if (current != null && current.dDoorOpenOperator == DoorOpenOperator.AND) {
 
 				current.IncrementTotalOperatorCount ();
 
 			}
 
 		}
-
-		// Check if this switch will reset
-		_isResetSwitch = (_resetInSeconds != 0) ? true : false;
 
 		// TODO: This needs to load settings from save file.
 		CurrentState = StartingState;
@@ -118,19 +104,7 @@ public class Switch : Interactable {
 
 		base.Update ();
 
-		if (_isResetSwitch && CurrentState != StartingState && Time.time > _resetTimer) {
-
-			if (StartingState == SwitchState.OFF) {
-
-				SwitchState_TurnOff ();
-
-			} else {
-
-				SwitchState_TurnOn ();
-
-			}
-
-		}
+		DoReset ();
 
 	}
 
@@ -171,7 +145,7 @@ public class Switch : Interactable {
 
 			foreach (Interactable interact in ConnectedInteractables) {
 
-				if ((door = interact.GetComponent<Door>()) != null) {
+				if ((door = interact.GetComponent<DoorOperator>()) != null) {
 
 					door.DecrementOperatorCount();
 
@@ -199,7 +173,7 @@ public class Switch : Interactable {
 
 		foreach (Interactable interact in ConnectedInteractables) {
 
-			if ((door = interact.GetComponent<Door>()) != null) {
+			if ((door = interact.GetComponent<DoorOperator>()) != null) {
 
 				door.IncrementOperatorCount();
 				print (door.GetOperatorCount() + " " + door.GetTotalOperatorCount());
@@ -224,13 +198,32 @@ public class Switch : Interactable {
 
 	void StartResetTimer() {
 
-		if (ResetInSeconds > 0) {
+		if (isResetInteractable) {
 
 			_resetTimer = Time.time + ResetInSeconds;
 
 		}
 			
 	}
+
+	void DoReset() {
+
+		if (isResetInteractable && CurrentState != StartingState && Time.time > _resetTimer) {
+
+			if (StartingState == SwitchState.OFF) {
+
+				SwitchState_TurnOff ();
+
+			} else {
+
+				SwitchState_TurnOn ();
+
+			}
+
+		}
+
+	}
+
 
 	bool CheckConnectedInteractablesForSelf() {
 

@@ -63,6 +63,10 @@ public class Controller2D : RaycastController {
 
 			if (hit) {
 
+				if (hit.collider.tag == "Interactable") {
+					continue;
+				}
+
 				if (hit.distance == 0) {
 					continue;
 				}
@@ -111,6 +115,10 @@ public class Controller2D : RaycastController {
 			Debug.DrawRay(rayOrigin, Vector2.up * directionY,Color.red);
 
 			if (hit) {
+				if (hit.collider.tag == "Interactable") {
+					continue;
+				}
+
 				if (hit.collider.tag == "Through") {
 					if (directionY == 1 || hit.distance == 0) {
 						continue;
