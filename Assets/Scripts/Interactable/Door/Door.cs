@@ -32,6 +32,12 @@ public class Door : Interactable {
 	// This is for the DoorState.CHANGING to determine which final state the door should be in at the end of the Anim.
 	protected bool opening = false, canChangeState = true;
 
+	protected override void Start() {
+
+		base.Start ();
+
+	}
+
 	// Update is called once per frame
 	protected override void Update () {
 
@@ -91,27 +97,27 @@ public class Door : Interactable {
 
 		base.DoInteraction (sentFromPlayerInput);
 
-		if (!_canContinue) return;
-
-		if (IsOneUseOnly) HasBeenUsedOnce = true;
-
-		DoorState stateToChange = (StartingState == DoorState.CLOSED) ? DoorState.OPENING : DoorState.CLOSING,
-		previousState = (StartingState == DoorState.CLOSED) ? DoorState.CLOSING : DoorState.OPENING;
-
-		if (CurrentState != StartingState) {
-			
-			ChangeDoorState (previousState);
-
-		} else {
-			
-			StartResetTimer ();
-			ChangeDoorState (stateToChange);
-
-		}
+//		if (!_canContinue) return;
+//
+//		if (IsOneUseOnly) HasBeenUsedOnce = true;
+//
+//		DoorState stateToChange = (StartingState == DoorState.CLOSED) ? DoorState.OPENING : DoorState.CLOSING,
+//		previousState = (StartingState == DoorState.CLOSED) ? DoorState.CLOSING : DoorState.OPENING;
+//
+//		if (CurrentState == StartingState) {
+//
+//			StartResetTimer ();
+//			ChangeDoorState (stateToChange);
+//
+//		} else {
+//
+//			ChangeDoorState (previousState);
+//
+//		}
 
 	}
 
-	void CheckForPlayer() {
+	protected void CheckForPlayer() {
 
 		if (Time.time > playerCheckTimer) {
 
@@ -133,7 +139,6 @@ public class Door : Interactable {
 			}
 
 			canChangeState = true;
-
 
 		}
 

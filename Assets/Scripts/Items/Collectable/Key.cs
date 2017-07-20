@@ -29,4 +29,14 @@ public class Key : Item {
 
 	}
 
+	protected override void RenameGameObject() {
+
+		string name;
+
+		name = "Key_(" + transform.position.x + "," + transform.position.y + ")_" + KeyLocation + "_" + GetInstanceID ();
+
+		gameObject.name = name;
+
+	}
+
 }

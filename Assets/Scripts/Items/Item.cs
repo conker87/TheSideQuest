@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class Item : MonoBehaviour {
 	
 	protected Player player;
 	protected bool _hasBeenCollected = false;
 
-	void Start() {
+	protected virtual void Start() {
 
 		// TODO: Item needs to know if it has already been collected during load.
 
+		RenameGameObject ();
+
 	}
 
-	void Update() {
+	protected virtual void Update() {
 
 		if (_hasBeenCollected) {
 
@@ -32,6 +35,10 @@ public class Item : MonoBehaviour {
 	public void DisableGameObject(bool disable) {
 
 		_hasBeenCollected = disable;
+
+	}
+
+	protected virtual void RenameGameObject() {
 
 	}
 

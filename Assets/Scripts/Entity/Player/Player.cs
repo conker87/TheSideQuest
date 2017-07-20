@@ -163,7 +163,7 @@ public class Player : Entity {
 
 	}
 
-	void ItterateThroughKeys() {
+	public void ItterateThroughKeys() {
 
 		string debugLog = "PlayerDetails::ItterateThroughKeys -- Values: ";
 

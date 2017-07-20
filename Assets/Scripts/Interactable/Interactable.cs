@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//[System.Serializable]
+[ExecuteInEditMode]
 public class Interactable : MonoBehaviour {
 
 	[SerializeField]
@@ -69,7 +69,11 @@ public class Interactable : MonoBehaviour {
 
 	protected bool _canContinue = true;
 
+	protected Player player;
+
 	protected virtual void Start () {
+
+		player = FindObjectOfType<Player> ();
 
 		if (IsOneUseOnly) {
 
@@ -78,6 +82,8 @@ public class Interactable : MonoBehaviour {
 		}
 
 		isResetInteractable = (ResetInSeconds > 0);
+
+		RenameGameObject ();
 
 	}
 	
@@ -94,19 +100,16 @@ public class Interactable : MonoBehaviour {
 
 		}
 
-		if (IsCurrentlyLocked) {
-
-			print ("Interactable::Switch::DoInteraction -- Interactable is currently locked.");
-			_canContinue = false;
-
-		}
-
 		if (IsOneUseOnly && HasBeenUsedOnce) {
 
 			print ("Interactable::Switch::DoInteraction -- Interactable has been used already and is now disabled.");
 			_canContinue = false;
 
 		}
+
+  	}
+
+	protected virtual void RenameGameObject() {
 
 	}
 

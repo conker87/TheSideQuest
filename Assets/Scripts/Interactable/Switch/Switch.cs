@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class Switch : Interactable {
 
 	[SerializeField]
@@ -224,7 +223,6 @@ public class Switch : Interactable {
 
 	}
 
-
 	bool CheckConnectedInteractablesForSelf() {
 
 		if (ConnectedInteractables != null && ConnectedInteractables.Count() > 0) {
@@ -275,6 +273,16 @@ public class Switch : Interactable {
 	public void ChangeSwitchState(SwitchState state) {
 
 		CurrentState = state;
+
+	}
+
+	protected override void RenameGameObject() {
+
+		string name = "Switch_(" + transform.position.x + "," + transform.position.y + ")_";
+
+		name += GetInstanceID ();
+
+		gameObject.name = name;
 
 	}
 
