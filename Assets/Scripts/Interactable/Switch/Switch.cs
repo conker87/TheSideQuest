@@ -43,8 +43,8 @@ public class Switch : Interactable {
 	}
 
 	[SerializeField]
-	KeyLocation _keyLocation;
-	public KeyLocation KeyLocation {
+	LevelDirection _keyLocation;
+	public LevelDirection KeyLocation {
 
 		get { return _keyLocation; }
 		set { _keyLocation = value; }
@@ -91,7 +91,6 @@ public class Switch : Interactable {
 			if ((current = interactable.GetComponent<Door>()) != null && current.DoorOperator == DoorOperator.AND) {
 
 				current.IncrementTotalOperatorCount ();
-				print(current.GetTotalOperatorCount());
 
 			}
 
@@ -116,6 +115,8 @@ public class Switch : Interactable {
 	}
 
 	protected override void Update() {
+
+		base.Update ();
 
 		if (_isResetSwitch && CurrentState != StartingState && Time.time > _resetTimer) {
 

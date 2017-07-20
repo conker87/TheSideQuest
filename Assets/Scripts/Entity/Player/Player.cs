@@ -28,10 +28,16 @@ public class Player : Entity {
 	}
 
 	[SerializeField]
-	bool _tripleJump = false;
+	bool _tripleJump = false, _jumpCheat = false;
 	public bool TripleJump {
 
 		get { return _tripleJump; }
+		set { _tripleJump = value; }
+
+	}
+	public bool CHEAT_Jump {
+
+		get { return _jumpCheat; }
 		set { _tripleJump = value; }
 
 	}
@@ -55,7 +61,7 @@ public class Player : Entity {
 	}
 
 	[SerializeField]
-	bool _dashCheat = false, _dash = true, _megaDash = false;
+	bool _dash = true, _megaDash = false, _dashCheat = false;
 	public bool Dash {
 
 		get { return _dash; }
@@ -68,12 +74,14 @@ public class Player : Entity {
 		set { _megaDash = value; }
 
 	}
-	public bool CheatDash {
+	public bool CHEAT_Dash {
 
 		get { return _dashCheat; }
 		set { _dashCheat = value; }
 
 	}
+
+	// TODO: CHEATS should be "collected" here, they should be enabled via the main menu with another var, _hasCheatEnabled, etc.
 
 	[SerializeField]
 	float _dashCooldown = 3f;
@@ -97,13 +105,13 @@ public class Player : Entity {
 
 	}
 		
-	public int GetKeyCount(KeyLocation location) {
+	public int GetKeyCount(LevelDirection location) {
 
 		return Keys [(int) location];
 
 	}
 
-	public bool DecrementKeyCount(KeyLocation location, int value = 1) {
+	public bool DecrementKeyCount(LevelDirection location, int value = 1) {
 
 		ItterateThroughKeys ();
 
@@ -130,7 +138,7 @@ public class Player : Entity {
 
 	}
 
-	public bool IncrementKeyCount(KeyLocation location, int value = 1) {
+	public bool IncrementKeyCount(LevelDirection location, int value = 1) {
 
 		if (value < 1) {
 
@@ -178,14 +186,14 @@ public class Player : Entity {
 
 	}
 
-	public bool GetArtifact(KeyLocation location) {
+	public bool GetArtifact(LevelDirection location) {
 
 		return Artifacts [(int) location];
 
 	}
 
 	// TODO: Decide whether or not I really care if the player already has the artifact.
-	public bool SetArtifact(KeyLocation location) {
+	public bool SetArtifact(LevelDirection location) {
 
 		if (Artifacts [(int) location].Equals (true)) {
 
@@ -243,4 +251,4 @@ public class Player : Entity {
 
 }
 
-public enum KeyLocation { SOUTHWEST = 0, WEST = 1, NORTHWEST = 2, NORTH = 3, NORTHEAST = 4, EAST = 5, SOUTHEAST = 6 };
+public enum LevelDirection { SOUTHWEST = 0, WEST = 1, NORTHWEST = 2, NORTH = 3, NORTHEAST = 4, EAST = 5, SOUTHEAST = 6 };

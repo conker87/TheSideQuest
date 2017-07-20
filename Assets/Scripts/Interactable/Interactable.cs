@@ -47,6 +47,15 @@ public class Interactable : MonoBehaviour {
 
 	}
 
+	[SerializeField]
+	bool _saveStateToFile;
+	public bool SaveStateToFile {
+
+		get { return _saveStateToFile; } 
+		set { _saveStateToFile = value; } 
+
+	}
+
 	protected bool _canContinue = true;
 
 	public virtual void DoInteraction(bool sentFromPlayerInput = false) {
@@ -81,7 +90,13 @@ public class Interactable : MonoBehaviour {
 	
 	// Update is called once per frame
 	protected virtual void Update () {
-		
+
+		if (IsOneUseOnly) {
+
+			SaveStateToFile = true;
+
+		}
+
 	}
 
 }

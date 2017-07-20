@@ -113,8 +113,9 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-		if ((Time.time < dashCooldownTime && megaDashItteration >= maximumMegaDashItteration) ||
-			(Time.time < dashCooldownTime && megaDashItteration == 0)) {
+		if (!playerDetails.CHEAT_Dash &&
+			((Time.time < dashCooldownTime && megaDashItteration >= maximumMegaDashItteration) ||
+			(Time.time < dashCooldownTime && megaDashItteration == 0))) {
 			//megaDashItteration >= maximumMegaDashItteration) {
 
 			// Debug.Log ("PlayerController::OnDashInput - Dash is on cooldown");
@@ -123,7 +124,7 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-		if (playerDetails.CheatDash || playerDetails.MegaDash) {
+		if (playerDetails.CHEAT_Dash || playerDetails.MegaDash) {
 
 			float direction = Mathf.Sign (directionalInput.x);
 
@@ -175,14 +176,14 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-		if (!playerDetails.CheatDash && Time.time < dashCooldownTime) {
+		if (!playerDetails.CHEAT_Dash && Time.time < dashCooldownTime) {
 
 			// Debug.Log ("PlayerController::OnDashInput - Dash is on cooldown");
 			return;
 
 		}
 
-		if (playerDetails.CheatDash || (!hasDashed && playerDetails.Dash)) {
+		if (playerDetails.CHEAT_Dash || (!hasDashed && playerDetails.Dash)) {
 
 			float direction = Mathf.Sign (directionalInput.x);
 
@@ -231,9 +232,10 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-		if ((controller.collisions.below && !hasJumped) ||
+		if (playerDetails.CHEAT_Jump ||
+			((controller.collisions.below && !hasJumped) ||
 			(playerDetails.DoubleJump && !hasDoubleJumped && hasJumped) ||
-			(playerDetails.TripleJump && !hasTripleJumped && hasDoubleJumped && hasJumped)) {
+			(playerDetails.TripleJump && !hasTripleJumped && hasDoubleJumped && hasJumped))) {
 			
 			if (controller.collisions.slidingDownMaxSlope) {
 				
