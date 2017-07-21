@@ -55,7 +55,8 @@ public class Controller2D : RaycastController {
 		}
 
 		for (int i = 0; i < horizontalRayCount; i ++) {
-			Vector2 rayOrigin = (directionX == -1)?raycastOrigins.bottomLeft:raycastOrigins.bottomRight;
+			
+			Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
 			rayOrigin += Vector2.up * (horizontalRaySpacing * i);
 			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
 
@@ -97,9 +98,13 @@ public class Controller2D : RaycastController {
 
 					collisions.left = directionX == -1;
 					collisions.right = directionX == 1;
+
 				}
+
 			}
+
 		}
+
 	}
 
 	void VerticalCollisions(ref Vector2 moveAmount) {
