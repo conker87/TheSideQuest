@@ -29,6 +29,9 @@ public class Door : Interactable {
 
 	float playerCheckTime = 0.5f, playerCheckTimer;
 
+	Collider2D childCollider;
+	Animator childAnim;
+
 	// This is for the DoorState.CHANGING to determine which final state the door should be in at the end of the Anim.
 	protected bool opening = false, canChangeState = true;
 
@@ -41,6 +44,9 @@ public class Door : Interactable {
 			GameSaveController.DoorsInWorld.Add (this);
 
 		}
+
+		childCollider = GetComponentsInChildren<Collider2D>()[1];
+		// childAnim = GetComponentsInChildren<Animator> ()[1];
 
 	}
 
@@ -84,13 +90,13 @@ public class Door : Interactable {
 			// TODO: These to cases need to be removed once Anims are added
 		case DoorState.OPEN:
 			GetComponent<SpriteRenderer> ().enabled = false;
-			tag = "Interactable";
+			childCollider.enabled = false;
 			//GetComponent<Collider2D> ().enabled = false;
 			break;
 
 		case DoorState.CLOSED:
 			GetComponent<SpriteRenderer> ().enabled = true;
-			tag = "Untagged";
+			childCollider.enabled = true;
 			//GetComponent<Collider2D> ().enabled = true;
 			break;
 
@@ -101,9 +107,7 @@ public class Door : Interactable {
 	public override void DoInteraction (bool sentFromPlayerInput = false)
 	{
 
-		// base.DoInteraction (sentFromPlayerInput);
-
-		print ("does it get to here?");
+		base.DoInteraction (sentFromPlayerInput);
 
 		if (!_canContinue) return;
 
