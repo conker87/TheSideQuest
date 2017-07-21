@@ -133,8 +133,6 @@ public class Entity : MonoBehaviour {
 
 	}
 
-
-
 	void Update() {
 
 		if (_isCurrentlyInInvulnerabilityFrames && Time.time > _invulnerabilityFramesTime) {

@@ -211,7 +211,7 @@ public class Player : Entity {
 
 	}
 
-	void ItterateThroughArtifacts() {
+	public void ItterateThroughArtifacts() {
 
 		string debugLog = "PlayerDetails::ItterateThroughArtifacts -- Values: ";
 

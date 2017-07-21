@@ -89,6 +89,7 @@ public class RoomController : MonoBehaviour {
 
 					hasFoundEnemy = true;
 					e.gameObject.SetActive (true);
+					e.PermanentlyKillable = ers.PermanentlyKillable;
 
 				}
 			
@@ -114,11 +115,13 @@ public class RoomController : MonoBehaviour {
 
 			foreach (EnemyRoomSpawn ers in EnemiesInRoom) {
 
-				if (!e.isActiveAndEnabled) {
+				if (e.GetInstanceID () == ers.EnemyID) {
 
-					if (e.GetInstanceID () == ers.EnemyID) {
+					e.PermanentlyKillable = ers.PermanentlyKillable;
 
-						ers.HasBeenKilled = true;
+					if (!e.isActiveAndEnabled) {
+
+						e.HasBeenKilled = ers.HasBeenKilled = true;
 
 					}
 
