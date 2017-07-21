@@ -10,6 +10,68 @@ public class Player : Entity {
 	// ABILITIES
 
 	[SerializeField]
+	List<Ability> _abilities = new List<Ability> ();
+	public List<Ability> Abilities {
+
+		get { return _abilities; }
+		set { _abilities = value; }
+
+	}
+
+	public bool AbilityContains(string name, out Ability a) { 
+
+		a = null;
+
+		foreach (Ability _a in Abilities) {
+
+			if (_a.AbilityName == name) {
+
+				a = _a;
+				return true;
+
+			}
+
+		}
+
+		return false;
+
+	}
+
+	public bool AbilityCollect(string name, bool collected) {
+
+		foreach (Ability _a in Abilities) {
+
+			if (_a.AbilityName == name) {
+
+				_a.AbilityCollected = collected;
+				return true;
+
+			}
+
+		}
+
+		return false;
+
+	}
+
+	public bool AbilityCollected(string name) {
+
+		foreach (Ability _a in Abilities) {
+
+			if (_a.AbilityName == name) {
+
+				return _a.AbilityCollected;
+
+			}
+
+		}
+
+		return false;
+
+	}
+
+	/* Unused ability vars
+	[SerializeField]
 	bool _jump = true;
 	public bool Jump {
 
@@ -79,7 +141,7 @@ public class Player : Entity {
 		get { return _dashCheat; }
 		set { _dashCheat = value; }
 
-	}
+	}*/
 
 	// TODO: CHEATS should be "collected" here, they should be enabled via the main menu with another var, _hasCheatEnabled, etc.
 
@@ -225,30 +287,22 @@ public class Player : Entity {
 
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// Make sure to load these in on LoadGame!
-
-	public void LoadSettings() {
-
-		// blah
-
-	}
-
 }
 
 public enum LevelDirection { SOUTHWEST = 0, WEST = 1, NORTHWEST = 2, NORTH = 3, NORTHEAST = 4, EAST = 5, SOUTHEAST = 6 };
+
+
+[System.Serializable]
+public class Ability {
+
+	public Ability(string name, bool collected) {
+
+		AbilityName = name;
+		AbilityCollected = collected;
+
+	}
+
+	public string AbilityName;
+	public bool AbilityCollected;
+
+}

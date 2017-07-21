@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour {
 
 		CalculateVelocity ();
 
-		if (playerDetails.WallSlide) {
+		if (playerDetails.AbilityCollected("WALL_SLIDE")) {
 		
 			HandleWallSliding ();
 
@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-		if (!playerDetails.CHEAT_Dash &&
+		if (!playerDetails.AbilityCollected("CHEAT_DASH") &&
 			((Time.time < dashCooldownTime && megaDashItteration >= maximumMegaDashItteration) ||
 			(Time.time < dashCooldownTime && megaDashItteration == 0))) {
 			//megaDashItteration >= maximumMegaDashItteration) {
@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-		if (playerDetails.CHEAT_Dash || playerDetails.MegaDash) {
+		if (playerDetails.AbilityCollected("CHEAT_DASH") || playerDetails.AbilityCollected("DASH_MEGA")) {
 
 			float direction = Mathf.Sign (directionalInput.x);
 
@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void OnDashInput() {
 
-		if (playerDetails.MegaDash) {
+		if (playerDetails.AbilityCollected("DASH_MEGA")) {
 
 			OnMegaDashInput ();
 			return;
@@ -176,14 +176,14 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-		if (!playerDetails.CHEAT_Dash && Time.time < dashCooldownTime) {
+		if (!playerDetails.AbilityCollected("CHEAT_DASH") && Time.time < dashCooldownTime) {
 
 			// Debug.Log ("PlayerController::OnDashInput - Dash is on cooldown");
 			return;
 
 		}
 
-		if (playerDetails.CHEAT_Dash || (!hasDashed && playerDetails.Dash)) {
+		if (playerDetails.AbilityCollected("CHEAT_DASH") || (!hasDashed && playerDetails.AbilityCollected("DASH"))) {
 
 			float direction = Mathf.Sign (directionalInput.x);
 
@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-		if (playerDetails.WallJump && wallSliding) {
+		if (playerDetails.AbilityCollected("WALL_JUMP") && wallSliding) {
 			
 			if (wallDirX == directionalInput.x) {
 				
@@ -232,10 +232,10 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-		if (playerDetails.CHEAT_Jump ||
+		if (playerDetails.AbilityCollected("CHEAT_JUMP") ||
 			((controller.collisions.below && !hasJumped) ||
-			(playerDetails.DoubleJump && !hasDoubleJumped && hasJumped) ||
-			(playerDetails.TripleJump && !hasTripleJumped && hasDoubleJumped && hasJumped))) {
+			(playerDetails.AbilityCollected("JUMP_DOUBLE") && !hasDoubleJumped && hasJumped) ||
+			(playerDetails.AbilityCollected("JUMP_TRIPLE") && !hasTripleJumped && hasDoubleJumped && hasJumped))) {
 			
 			if (controller.collisions.slidingDownMaxSlope) {
 				

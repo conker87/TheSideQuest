@@ -10,6 +10,8 @@ public class UIController : MonoBehaviour {
 	public Text Health;
 	public string healthy = "green", unhealthy = "navy", healthBarCharacter = "þ";
 
+	public Button saveTest;
+
 	Player player;
 
 	[SerializeField]
@@ -20,6 +22,13 @@ public class UIController : MonoBehaviour {
 	void Start() { 
 
 		player = GameObject.FindObjectOfType<Player>();
+
+		if (saveTest != null) {
+
+			saveTest.onClick.AddListener (GameSaveController.SaveGame);
+
+		}
+
 
 	}
 

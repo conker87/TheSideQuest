@@ -22,4 +22,10 @@ public class Enemy : Entity {
 
 	}
 
+	protected override void Start() {
+
+		GameSaveController.EnemiesInWorld.Add (this);
+
+	}
+
 }

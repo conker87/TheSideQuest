@@ -2,108 +2,131 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameSaveController : MonoBehaviour {
+public static class GameSaveController {
 
-	// TODO: Figure out how to check what Interactables have SaveStateToFile as true and only populate the Lists with those.
+	// TODO: Make it so that it actually saves to a file.
+		// Maybe obfuscate the save file to prevent editing? Who cares? Question mark?
 
-	[SerializeField]
-	List<Entity> enemiesInWorld = new List<Entity>();
+	static List<Item> _itemsInWorld = new List<Item>();
+	public static List<Item> ItemsInWorld {
 
-	[SerializeField]
-	List<Switch> switchesInWorld = new List<Switch>();
-
-	[SerializeField]
-	List<Door> doorsInWorld = new List<Door>();
-
-	void Start() {
-
-		RemoveBadSwitches ();
-		RemoveBadDoors ();
-		Invoke("PopulateEntityList", 1f);
+		get { return _itemsInWorld; } 
+		set { _itemsInWorld = value; }
 
 	}
 
-	public void SaveGame() {
+	static List<Entity> _enemiesInWorld = new List<Entity>();
+	public static List<Entity> EnemiesInWorld {
 
+		get { return _enemiesInWorld; } 
+		set { _enemiesInWorld = value; }
+
+	}
+
+	static List<Switch> _switchesInWorld = new List<Switch>();
+	public static List<Switch> SwitchesInWorld {
+
+		get { return _switchesInWorld; } 
+		set { _switchesInWorld = value; }
+
+	}
+
+	static List<Door> _doorsInWorld = new List<Door>();
+	public static List<Door> DoorsInWorld {
+
+		get { return _doorsInWorld; } 
+		set { _doorsInWorld = value; }
+
+	}
+
+	public static void SaveGame() {
+
+		SaveGame ("Test");
+
+	}
+
+	public static void SaveGame(string saveStationID = "test") {
+
+		Debug.Log ("Saving...");
+
+		SaveLocation (saveStationID);
 		SavePlayer ();
 		SaveEntityStates ();
+		SaveItemStates ();
 		SaveSwitchStates ();
 		SaveDoorStates ();
 
 	}
 
-	void SavePlayer() {
+	static void SaveLocation(string stationID) {
 
-
+		Debug.Log ("Save game location ID: " + stationID);
 
 	}
 
-	void SaveEntityStates() {
+	static void SavePlayer() {
 
-		foreach (Enemy e in enemiesInWorld) {
+		foreach (SaveStation s in SceneManager.SaveStationLocations) {
+			
+			Debug.Log ("Name: '" + s.name + "', StationID: " + s.InteractableName + ", Position: " + s.transform.position);
+		}
 
-			print ("Enemy: '" + e.name + "', ID: '" + e.GetInstanceID() + "', HasBeenKilled: '" + e.HasBeenKilled
+		foreach (Ability a in GameObject.FindObjectOfType<Player>().Abilities) {
+
+			Debug.Log ("AbilityName: '" + a.AbilityName + "', AbilityCollected: " + a.AbilityCollected);
+
+		}
+
+	}
+
+	static void SaveEntityStates() {
+
+		foreach (Enemy e in EnemiesInWorld) {
+
+			Debug.Log("Enemy: '" + e.name + "', ID: '" + e.GetInstanceID() + "', HasBeenKilled: '" + e.HasBeenKilled
 				+ "' PermanentlyKillable: "	+ e.PermanentlyKillable + ", Active? " + e.isActiveAndEnabled);
 
 		}
 
 	}
 
-	void SaveSwitchStates() {
+	static void SaveItemStates() {
 
-		foreach (Switch s in switchesInWorld) {
+		foreach (Item i in ItemsInWorld) {
 
-			print ("Switch: '" + s.name + "', ID: '" + s.GetInstanceID() + "', CurrentState: '" + s.CurrentState + "'.");
+			string debug = "";
 
-		}
+			debug += "Item: '" + i.name + "', ID: '" + i.GetInstanceID() + "', HasBeenCollected: " + i.HasBeenCollected;
 
-	}
+			if (i is Key || i is Artifact) {
 
-	void SaveDoorStates() {
+				Key k = (Key) i;
 
-		foreach (Door d in doorsInWorld) {
-
-			print ("Door: '" + d.name + "', ID: '" + d.GetInstanceID() + "', CurrentState: '" + d.CurrentState + "'.");
-
-		}
-
-	}
-
-	void PopulateEntityList() {
-
-		Enemy[] allEnemies = transform.parent.GetComponentsInChildren<Enemy>(true);
-
-		foreach (Enemy e in allEnemies) {
-
-			enemiesInWorld.Add (e);
-
-		}
-
-	}
-
-	void RemoveBadSwitches() {
-
-		for (int i = switchesInWorld.Count - 1; i >= 0; i--) {
-
-			if (!switchesInWorld [i].SaveStateToFile) {
-
-				switchesInWorld.RemoveAt (i);
+				debug += ", Location: " + k.KeyLocation.ToString();
 
 			}
 
+			Debug.Log(debug);
+
 		}
 
 	}
 
-	void RemoveBadDoors() {
+	static void SaveSwitchStates() {
 
-		for (int i = 0; i < doorsInWorld.Count; i++) {
+		foreach (Switch s in SwitchesInWorld) {
 
-			if (!doorsInWorld [i].SaveStateToFile) {
+			Debug.Log ("Switch: '" + s.name + "', ID: '" + s.GetInstanceID() + "', CurrentState: " + s.CurrentState + ".");
 
-				doorsInWorld.RemoveAt (i);
+		}
 
-			}
+	}
+
+	static void SaveDoorStates() {
+
+		foreach (Door d in DoorsInWorld) {
+
+			Debug.Log ("Door: '" + d.name + "', ID: '" + d.GetInstanceID() + "', CurrentState: '" + d.CurrentState + "'.");
 
 		}
 

@@ -133,7 +133,13 @@ public class Entity : MonoBehaviour {
 
 	}
 
-	void Update() {
+	protected virtual void Start() {
+
+
+
+	}
+
+	protected virtual void Update() {
 
 		if (_isCurrentlyInInvulnerabilityFrames && Time.time > _invulnerabilityFramesTime) {
 

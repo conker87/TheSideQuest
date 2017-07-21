@@ -7,12 +7,20 @@ public class Item : MonoBehaviour {
 	
 	protected Player player;
 	protected bool _hasBeenCollected = false;
+	public bool HasBeenCollected {
+
+		get { return _hasBeenCollected; }
+		protected set { _hasBeenCollected = value; }
+
+	}
 
 	protected virtual void Start() {
 
 		// TODO: Item needs to know if it has already been collected during load.
 
 		RenameGameObject ();
+
+		GameSaveController.ItemsInWorld.Add (this);
 
 	}
 
@@ -34,7 +42,7 @@ public class Item : MonoBehaviour {
 
 	public void DisableGameObject(bool disable) {
 
-		_hasBeenCollected = disable;
+		HasBeenCollected = disable;
 
 	}
 

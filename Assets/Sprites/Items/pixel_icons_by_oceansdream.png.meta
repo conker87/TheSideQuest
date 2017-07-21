@@ -1,11 +1,12 @@
 fileFormatVersion: 2
 guid: 3ac6fba998f27d0448f6de13ff20a164
-timeCreated: 1500463545
+timeCreated: 1500635318
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: Key
     21300002: Keycard
+    21300004: Radio
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -99,7 +100,21 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Radio
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 47
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

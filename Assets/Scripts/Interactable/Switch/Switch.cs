@@ -65,6 +65,12 @@ public class Switch : Interactable {
 
 		base.Start ();
 
+		if (SaveStateToFile) {
+
+			GameSaveController.SwitchesInWorld.Add (this);
+
+		}
+
 		if (CheckConnectedInteractablesForSelf ()) {
 
 			Debug.LogError ("Switch: '" + gameObject + "' has itself as a connected interactable, this WILL break the game!");

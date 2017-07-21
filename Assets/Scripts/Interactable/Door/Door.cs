@@ -36,6 +36,12 @@ public class Door : Interactable {
 
 		base.Start ();
 
+		if (SaveStateToFile) {
+
+			GameSaveController.DoorsInWorld.Add (this);
+
+		}
+
 	}
 
 	// Update is called once per frame
