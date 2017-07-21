@@ -15,7 +15,7 @@ public class Interactable : MonoBehaviour {
 	}
 
 	[SerializeField]
-	bool _isCurrentlyInteractable;
+	bool _isCurrentlyInteractable = true;
 	public bool IsCurrentlyInteractable {
 
 		get { return _isCurrentlyInteractable; } 

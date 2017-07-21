@@ -146,12 +146,17 @@ public class PlayerController : MonoBehaviour {
 		Vector2 currentPosition = transform.position;
 		Collider2D col;
 
+		print ("Am I actually fucking pressing E?????");
+
 		if ((col = Physics2D.OverlapCircle (currentPosition, interactableRadius, interableLayerMask)) != null) {
 
 			Interactable interactable;
 
+			print ("Hit interactable: " + col);
+
 			if ((interactable = col.GetComponent<Interactable> ()) != null) {
 				
+				print ("Hit interactable: " + col);
 				interactable.DoInteraction (true);
 
 			}

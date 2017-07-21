@@ -120,6 +120,7 @@ public class Controller2D : RaycastController {
 			Debug.DrawRay(rayOrigin, Vector2.up * directionY,Color.red);
 
 			if (hit) {
+				
 				if (hit.collider.tag == "Interactable") {
 					continue;
 				}

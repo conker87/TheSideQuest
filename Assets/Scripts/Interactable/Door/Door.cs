@@ -101,25 +101,27 @@ public class Door : Interactable {
 	public override void DoInteraction (bool sentFromPlayerInput = false)
 	{
 
-		base.DoInteraction (sentFromPlayerInput);
+		// base.DoInteraction (sentFromPlayerInput);
 
-//		if (!_canContinue) return;
-//
-//		if (IsOneUseOnly) HasBeenUsedOnce = true;
-//
-//		DoorState stateToChange = (StartingState == DoorState.CLOSED) ? DoorState.OPENING : DoorState.CLOSING,
-//		previousState = (StartingState == DoorState.CLOSED) ? DoorState.CLOSING : DoorState.OPENING;
-//
-//		if (CurrentState == StartingState) {
-//
-//			StartResetTimer ();
-//			ChangeDoorState (stateToChange);
-//
-//		} else {
-//
-//			ChangeDoorState (previousState);
-//
-//		}
+		print ("does it get to here?");
+
+		if (!_canContinue) return;
+
+		if (IsOneUseOnly) HasBeenUsedOnce = true;
+
+		DoorState stateToChange = (StartingState == DoorState.CLOSED) ? DoorState.OPENING : DoorState.CLOSING,
+		previousState = (StartingState == DoorState.CLOSED) ? DoorState.CLOSING : DoorState.OPENING;
+
+		if (CurrentState == StartingState) {
+
+			StartResetTimer ();
+			ChangeDoorState (stateToChange);
+
+		} else {
+
+			ChangeDoorState (previousState);
+
+		}
 
 	}
 
