@@ -12,6 +12,10 @@ public class UIController : MonoBehaviour {
 
 	public Button saveTest;
 
+	public GameObject BossBarParent;
+
+	UI_BossHealthBar UI_BossHealthBar;
+
 	Player player;
 
 	[SerializeField]
@@ -29,12 +33,24 @@ public class UIController : MonoBehaviour {
 
 		}
 
+		UI_BossHealthBar = GetComponentInChildren<UI_BossHealthBar> ();
+
 
 	}
 
 	void Update() {
 
 		ShowHealthText();
+
+	}
+
+	public void ShowBossHealth (Enemy e) {
+
+		// TODO: Find the BossHealthBarText too
+
+		BossBarParent.gameObject.SetActive ((e != null));
+
+		UI_BossHealthBar.SetEnemy (e);
 
 	}
 

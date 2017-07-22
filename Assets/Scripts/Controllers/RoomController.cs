@@ -17,11 +17,11 @@ public class RoomController : MonoBehaviour {
 	}
 
 	[SerializeField]
-	bool _bossRoom;
-	public bool BossRoom {
+	bool _isBossRoom;
+	public bool IsBossRoom {
 
-		get { return _bossRoom; }
-		set { _bossRoom = value; }
+		get { return _isBossRoom; }
+		set { _isBossRoom = value; }
 
 	}
 
@@ -45,6 +45,8 @@ public class RoomController : MonoBehaviour {
 
 	Enemy[] currentEnemies;
 
+	Boss b;
+
 	void Start() {
 
 		ui = GameObject.FindObjectOfType<UIController> ();
@@ -53,11 +55,14 @@ public class RoomController : MonoBehaviour {
 
 	public void EnteredRoom() {
 
+		IsCurrentlyInRoom = true;
 		SpawnEnemies ();
 
 		if (ui != null) {
 
 			ui.ShowRoomNameText (RoomName); // Localisation.GetLocalisedText(RoomName, Localisation.CurrentLocal);
+
+			ui.ShowBossHealth (b);
 
 		}
 
@@ -65,7 +70,16 @@ public class RoomController : MonoBehaviour {
 
 	public void LeftRoom() {
 
+		IsCurrentlyInRoom = false;
 		DespawnEnemies ();
+
+		b = null;
+
+		if (ui != null) {
+
+			ui.ShowBossHealth (b);
+
+		}
 
 	}
 
@@ -99,17 +113,17 @@ public class RoomController : MonoBehaviour {
 
 					e.SetHealthToMax ();
 
+					if (ers.Enemy.GetComponent<Boss>() != null) {
+
+						b = e as Boss;
+
+					}
+
 				}
 			
 			}
 
 			if (!hasFoundEnemy) {
-
-				if (ers.Enemy.GetComponent<Boss>() != null) {
-
-					ers.PermanentlyKillable = true;
-
-				}
 
 				Enemy spawnedEnemy;
 				spawnedEnemy = Instantiate (ers.Enemy, trans + ers.SpawnLocation, Quaternion.identity, transform) as Enemy;
@@ -118,6 +132,14 @@ public class RoomController : MonoBehaviour {
 				ers.EnemyID = spawnedEnemy.GetInstanceID ();
 				spawnedEnemy.SetHealthToMax ();
 				spawnedEnemy.PermanentlyKillable = ers.PermanentlyKillable;
+
+				if (ers.Enemy.GetComponent<Boss>() != null) {
+
+					ers.PermanentlyKillable = true;
+					IsBossRoom = true;
+					b = spawnedEnemy as Boss;
+
+				}
 
 			}
 

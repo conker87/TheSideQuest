@@ -89,7 +89,6 @@ public class CameraManager : MonoBehaviour {
 			if (GetAreaRect (listAreaNodes.IndexOf (n)).Contains (followtarget)) {
 				previousArea = listAreaNodes.IndexOf (n);
 
-				room.IsCurrentlyInRoom = true;
 				room.EnteredRoom ();
 
 				if (previousArea == currentArea) {
@@ -97,10 +96,11 @@ public class CameraManager : MonoBehaviour {
 				}
 				currentArea = previousArea;
 
+				break;
+
 				//  	Debug.Log ("new area: " + currentArea.ToString ());
 			} else {
 
-				room.IsCurrentlyInRoom = false;
 				room.LeftRoom ();
 
 			}
