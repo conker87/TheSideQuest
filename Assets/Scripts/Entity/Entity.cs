@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour {
 
-	const int BEGINNING_MAXIMUM_HEALTH = 3, TOTAL_MAXIMUM_HEALTH = 10;
+	const int BEGINNING_MAXIMUM_HEALTH = 3;
+	int _TOTAL_MAXIMUM_HEALTH = 10;
+	public int TOTAL_MAXIMUM_HEALTH {
+
+		get { return _TOTAL_MAXIMUM_HEALTH; }
+		protected set { _TOTAL_MAXIMUM_HEALTH = value; }
+
+	}
 
 	[SerializeField]
 	int _currentHealth = BEGINNING_MAXIMUM_HEALTH;

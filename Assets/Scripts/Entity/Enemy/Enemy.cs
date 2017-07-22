@@ -37,6 +37,8 @@ public class Enemy : Entity {
 
 		GameSaveController.EnemiesInWorld.Add (this);
 
+		TOTAL_MAXIMUM_HEALTH = 10000000;
+
 	}
 
 	protected override void Update() {
@@ -51,7 +53,7 @@ public class Enemy : Entity {
 
 	}
 
-	void EnemyDeath () {
+	protected virtual void EnemyDeath () {
 
 		HasBeenKilled = true;
 		gameObject.SetActive (false);

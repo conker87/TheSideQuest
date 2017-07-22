@@ -7,6 +7,8 @@ public static class GameSaveController {
 	// TODO: Make it so that it actually saves to a file.
 		// Maybe obfuscate the save file to prevent editing? Who cares? Question mark?
 
+	static Player player;
+
 	static List<Item> _itemsInWorld = new List<Item>();
 	public static List<Item> ItemsInWorld {
 
@@ -49,12 +51,20 @@ public static class GameSaveController {
 
 		Debug.Log ("Saving...");
 
-		SaveLocation (saveStationID);
-		SavePlayer ();
-		SaveEntityStates ();
-		SaveItemStates ();
-		SaveSwitchStates ();
-		SaveDoorStates ();
+		if (AttemptToFindPlayer ()) {
+
+			SaveLocation (saveStationID);
+			SavePlayer ();
+			SaveEntityStates ();
+			SaveItemStates ();
+			SaveSwitchStates ();
+			SaveDoorStates ();
+
+		} else {
+
+			Debug.LogError ("GameSaveController::SaveGame -- Holy fuck buckets we couldn't find the player, I couldn't possibly begin the explain why this is pretty bad.");
+
+		}
 
 	}
 
@@ -76,6 +86,8 @@ public static class GameSaveController {
 			Debug.Log ("AbilityName: '" + a.AbilityName + "', AbilityCollected: " + a.AbilityCollected);
 
 		}
+
+		Debug.Log ("WeaponProjectileModifier: " + player.WeaponProjectileModifier);
 
 	}
 
@@ -129,6 +141,19 @@ public static class GameSaveController {
 			Debug.Log ("Door: '" + d.name + "', ID: '" + d.GetInstanceID() + "', CurrentState: '" + d.CurrentState + "'.");
 
 		}
+
+	}
+
+	static bool AttemptToFindPlayer() {
+
+		if ((player != null) || (player = GameObject.FindObjectOfType<Player> ()) != null) {
+			
+			return true;
+
+		}
+
+		return false;
+
 
 	}
 

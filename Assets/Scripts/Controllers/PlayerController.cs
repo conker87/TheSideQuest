@@ -136,6 +136,7 @@ public class PlayerController : MonoBehaviour {
 			currentProjectile = Instantiate (playerDetails.WeaponProjectile, transform.position, Quaternion.identity) as Projectile;
 
 			currentProjectile.ProjectileDirection = projectileDirection;
+			currentProjectile.PlayerModifier = playerDetails.WeaponProjectileModifier;
 
 			weaponCooldownTimer = Time.time + playerDetails.WeaponProjectileCooldown;
 

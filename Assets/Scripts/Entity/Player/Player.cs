@@ -18,6 +18,15 @@ public class Player : Entity {
 	}
 
 	[SerializeField]
+	float _weaponProjectileModifier = 1;
+	public float WeaponProjectileModifier {
+
+		get { return _weaponProjectileModifier; }
+		set { _weaponProjectileModifier = value; }
+
+	}
+
+	[SerializeField]
 	float _weaponProjectileCooldown = .2f;
 	public float WeaponProjectileCooldown {
 

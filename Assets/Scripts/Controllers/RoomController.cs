@@ -90,7 +90,10 @@ public class RoomController : MonoBehaviour {
 				if (e.GetInstanceID () == ers.EnemyID) {
 
 					hasFoundEnemy = true;
+
+					e.transform.position = trans + ers.SpawnLocation;
 					e.gameObject.SetActive (true);
+
 					e.PermanentlyKillable = ers.PermanentlyKillable;
 					e.HasBeenKilled = false;
 
@@ -102,11 +105,18 @@ public class RoomController : MonoBehaviour {
 
 			if (!hasFoundEnemy) {
 
+				if (ers.Enemy.GetComponent<Boss>() != null) {
+
+					ers.PermanentlyKillable = true;
+
+				}
+
 				Enemy spawnedEnemy;
 				spawnedEnemy = Instantiate (ers.Enemy, trans + ers.SpawnLocation, Quaternion.identity, transform) as Enemy;
 				spawnedEnemy.gameObject.name = "Enemy_" + spawnedEnemy.GetInstanceID ();
 
 				ers.EnemyID = spawnedEnemy.GetInstanceID ();
+				spawnedEnemy.SetHealthToMax ();
 				spawnedEnemy.PermanentlyKillable = ers.PermanentlyKillable;
 
 			}
@@ -145,7 +155,7 @@ public class RoomController : MonoBehaviour {
 
 			foreach (EnemyRoomSpawn e in EnemiesInRoom) {
 
-				Gizmos.color = Color.blue;
+				Gizmos.color = (e.Enemy is Boss) ? Color.red : Color.blue;
 
 				Gizmos.DrawLine (trans + e.SpawnLocation, new Vector2 (trans.x + e.SpawnLocation.x, 		trans.y + e.SpawnLocation.y + 1f));
 				Gizmos.DrawLine (trans + e.SpawnLocation, new Vector2 (trans.x + e.SpawnLocation.x + 1f, 	trans.y + e.SpawnLocation.y));

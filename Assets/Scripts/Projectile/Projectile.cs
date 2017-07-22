@@ -22,6 +22,14 @@ public class Projectile : MonoBehaviour {
 
 	}
 
+	float _playerModifier;
+	public float PlayerModifier {
+
+		get { return _playerModifier; }
+		set { _playerModifier = value; }
+
+	}
+
 	[SerializeField]
 	Vector2 _projectileDirection;
 	public Vector2 ProjectileDirection {
@@ -60,8 +68,8 @@ public class Projectile : MonoBehaviour {
 
 		if (enemyHit != null) {
 
-			int currentDamage = ProjectileDamage * enemyHit.WeaknessModifier;
-			enemyHit.DamageCurrentHealth (currentDamage);
+			float currentDamage = ProjectileDamage * PlayerModifier * enemyHit.WeaknessModifier;
+			enemyHit.DamageCurrentHealth (Mathf.RoundToInt(currentDamage));
 
 			DespawnProjectile ();
 
