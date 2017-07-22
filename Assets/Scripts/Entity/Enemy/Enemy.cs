@@ -5,11 +5,20 @@ using UnityEngine;
 public class Enemy : Entity {
 
 	[SerializeField]
+	int _weaknessModifier = 1;
+	public int WeaknessModifier {
+
+		get { return _weaknessModifier; }
+		set { _weaknessModifier = value; }
+
+	}
+
+	[SerializeField]
 	bool _hasBeenKilled;
 	public bool HasBeenKilled {
 
 		get { return _hasBeenKilled; }
-		set { _permanentlyKillable = value; }
+		set { _hasBeenKilled = value; }
 
 	}
 
@@ -24,7 +33,28 @@ public class Enemy : Entity {
 
 	protected override void Start() {
 
+		base.Start ();
+
 		GameSaveController.EnemiesInWorld.Add (this);
+
+	}
+
+	protected override void Update() {
+
+		base.Update ();
+
+		if (CurrentHealth < 1) {
+
+			EnemyDeath ();
+
+		}
+
+	}
+
+	void EnemyDeath () {
+
+		HasBeenKilled = true;
+		gameObject.SetActive (false);
 
 	}
 

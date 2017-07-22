@@ -56,9 +56,19 @@ public class PlayerInput : MonoBehaviour {
 
 		}
 
-		// Interacting
-		// TODO: Button needs to be made for "Interact"
+		// Weapon Firing
 
+		// TODO: Button needs to be made for "Fire"
+
+		if (Input.GetButtonDown ("Fire1")) {
+
+			player.OnFireInput ();
+
+		}
+
+		// Interacting
+
+		// TODO: Button needs to be made for "Interact"
 		if (Input.GetKeyDown (KeyCode.E)) {
 
 			player.OnInteractInput ();

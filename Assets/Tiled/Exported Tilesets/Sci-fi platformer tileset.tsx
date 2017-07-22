@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset name="Sci-fi platformer tileset" tilewidth="16" tileheight="16" tilecount="576" columns="24">
- <image source="../../Sprites/Sci-fi platformer tileset/Sci-fi platformer tileset.png" width="384" height="384"/>
+ <image source="../../Sprites/Geometry/Sci-fi platformer tileset/Sci-fi platformer tileset.png" width="384" height="384"/>
  <tile id="8">
   <objectgroup draworder="index">
    <object id="6" x="0" y="0" width="16" height="16"/>

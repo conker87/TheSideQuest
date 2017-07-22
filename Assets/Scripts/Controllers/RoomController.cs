@@ -43,6 +43,8 @@ public class RoomController : MonoBehaviour {
 
 	}
 
+	Enemy[] currentEnemies;
+
 	void Start() {
 
 		ui = GameObject.FindObjectOfType<UIController> ();
@@ -69,12 +71,12 @@ public class RoomController : MonoBehaviour {
 
 	void SpawnEnemies() {
 
-		Enemy[] currentEnemies = GetComponentsInChildren<Enemy> (true);
+		currentEnemies = GetComponentsInChildren<Enemy> (true);
 		Vector2 trans = transform.position;
 		bool hasFoundEnemy = false;
 
 		foreach (EnemyRoomSpawn ers in EnemiesInRoom) {
-
+			
 			if (ers.HasBeenKilled && ers.PermanentlyKillable) {
 
 				continue;
@@ -90,6 +92,9 @@ public class RoomController : MonoBehaviour {
 					hasFoundEnemy = true;
 					e.gameObject.SetActive (true);
 					e.PermanentlyKillable = ers.PermanentlyKillable;
+					e.HasBeenKilled = false;
+
+					e.SetHealthToMax ();
 
 				}
 			
@@ -99,7 +104,10 @@ public class RoomController : MonoBehaviour {
 
 				Enemy spawnedEnemy;
 				spawnedEnemy = Instantiate (ers.Enemy, trans + ers.SpawnLocation, Quaternion.identity, transform) as Enemy;
+				spawnedEnemy.gameObject.name = "Enemy_" + spawnedEnemy.GetInstanceID ();
+
 				ers.EnemyID = spawnedEnemy.GetInstanceID ();
+				spawnedEnemy.PermanentlyKillable = ers.PermanentlyKillable;
 
 			}
 
@@ -109,7 +117,7 @@ public class RoomController : MonoBehaviour {
 
 	void DespawnEnemies() {
 
-		Enemy[] currentEnemies = GetComponentsInChildren<Enemy> (true);
+		currentEnemies = GetComponentsInChildren<Enemy> (true);
 
 		foreach (Enemy e in currentEnemies) {
 
@@ -117,16 +125,9 @@ public class RoomController : MonoBehaviour {
 
 				if (e.GetInstanceID () == ers.EnemyID) {
 
-					e.PermanentlyKillable = ers.PermanentlyKillable;
-
-					if (!e.isActiveAndEnabled) {
-
-						e.HasBeenKilled = ers.HasBeenKilled = true;
-
-					}
+					ers.HasBeenKilled = e.HasBeenKilled;
 
 				}
-
 
 			}
 

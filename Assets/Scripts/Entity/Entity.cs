@@ -24,6 +24,12 @@ public class Entity : MonoBehaviour {
 
 	}
 
+	public void SetHealthToMax() {
+
+		CurrentHealth = MaximumHealth;
+
+	}
+
 	public void HealCurrentHealth(int value = 1) {
 
 		if (value < 0) {

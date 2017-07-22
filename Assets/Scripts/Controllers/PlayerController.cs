@@ -23,6 +23,9 @@ public class PlayerController : MonoBehaviour {
 	// Mega Dashing
 	int megaDashItteration = 0, maximumMegaDashItteration = 5;
 
+	// Firing
+	float weaponCooldownTimer;
+
 	// Interactable
 	float interactableRadius = .75f;
 	[SerializeField]
@@ -104,43 +107,6 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	public void OnMegaDashInput() {
-
-		if (directionalInput.x == 0f) {
-
-			// Debug.Log ("PlayerController::OnDashInput - (directionalInput.x == 0f");
-			// return;
-
-		}
-
-		if (!playerDetails.AbilityCollected("CHEAT_DASH") &&
-			((Time.time < dashCooldownTime && megaDashItteration >= maximumMegaDashItteration) ||
-			(Time.time < dashCooldownTime && megaDashItteration == 0))) {
-			//megaDashItteration >= maximumMegaDashItteration) {
-
-			// Debug.Log ("PlayerController::OnDashInput - Dash is on cooldown");
-
-			return;
-
-		}
-
-		if (playerDetails.AbilityCollected("CHEAT_DASH") || playerDetails.AbilityCollected("DASH_MEGA")) {
-
-			float direction = Mathf.Sign (directionalInput.x);
-
-			velocity.x = direction * dash.x;
-			velocity.y = dash.y;
-
-			hasDashed = true;
-
-			megaDashItteration++;
-
-			dashCooldownTime = Time.time + playerDetails.DashCooldown;
-
-		}
-
-	}
-
 	public void OnInteractInput() {
 
 		Vector2 currentPosition = transform.position;
@@ -157,6 +123,24 @@ public class PlayerController : MonoBehaviour {
 			}
 
 		}
+
+	}
+
+	public void OnFireInput() {
+
+		Vector2 projectileDirection = (controller.collisions.faceDir > 0) ? new Vector2(1, 0) : new Vector2(-1, 0);
+		Projectile currentProjectile;
+
+		if (playerDetails.WeaponProjectile != null && Time.time > weaponCooldownTimer) {
+
+			currentProjectile = Instantiate (playerDetails.WeaponProjectile, transform.position, Quaternion.identity) as Projectile;
+
+			currentProjectile.ProjectileDirection = projectileDirection;
+
+			weaponCooldownTimer = Time.time + playerDetails.WeaponProjectileCooldown;
+
+		}
+
 
 	}
 
@@ -191,6 +175,42 @@ public class PlayerController : MonoBehaviour {
 			velocity.y = dash.y;
 
 			hasDashed = true;
+
+			dashCooldownTime = Time.time + playerDetails.DashCooldown;
+
+		}
+
+	}
+	public void OnMegaDashInput() {
+
+		if (directionalInput.x == 0f) {
+
+			// Debug.Log ("PlayerController::OnDashInput - (directionalInput.x == 0f");
+			// return;
+
+		}
+
+		if (!playerDetails.AbilityCollected("CHEAT_DASH") &&
+			((Time.time < dashCooldownTime && megaDashItteration >= maximumMegaDashItteration) ||
+				(Time.time < dashCooldownTime && megaDashItteration == 0))) {
+			//megaDashItteration >= maximumMegaDashItteration) {
+
+			// Debug.Log ("PlayerController::OnDashInput - Dash is on cooldown");
+
+			return;
+
+		}
+
+		if (playerDetails.AbilityCollected("CHEAT_DASH") || playerDetails.AbilityCollected("DASH_MEGA")) {
+
+			float direction = Mathf.Sign (directionalInput.x);
+
+			velocity.x = direction * dash.x;
+			velocity.y = dash.y;
+
+			hasDashed = true;
+
+			megaDashItteration++;
 
 			dashCooldownTime = Time.time + playerDetails.DashCooldown;
 

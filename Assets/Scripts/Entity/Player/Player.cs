@@ -7,6 +7,25 @@ public class Player : Entity {
 
 	// VITALS INHERITS
 
+	// WEAPON PROJECTILE
+	[SerializeField]
+	Projectile _weaponProjectile;
+	public Projectile WeaponProjectile {
+
+		get { return _weaponProjectile; }
+		set { _weaponProjectile = value; }
+
+	}
+
+	[SerializeField]
+	float _weaponProjectileCooldown = .2f;
+	public float WeaponProjectileCooldown {
+
+		get { return _weaponProjectileCooldown; }
+		set { _weaponProjectileCooldown = value; }
+
+	}
+
 	// ABILITIES
 
 	[SerializeField]
