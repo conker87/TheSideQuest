@@ -31,6 +31,16 @@ public class Enemy : Entity {
 
 	}
 
+	[SerializeField]
+	EnemyItemSpawn[] _enemyItemSpawn;
+	public EnemyItemSpawn[] EnemyItemSpawn {
+
+		get { return _enemyItemSpawn; }
+		set { _enemyItemSpawn = value; }
+
+	}
+
+
 	protected override void Start() {
 
 		base.Start ();
@@ -55,8 +65,43 @@ public class Enemy : Entity {
 
 	protected virtual void EnemyDeath () {
 
+		IterateThroughItemSpawn ();
+
 		HasBeenKilled = true;
 		gameObject.SetActive (false);
+
+	}
+
+	protected virtual void IterateThroughItemSpawn() {
+
+		if (EnemyItemSpawn == null || EnemyItemSpawn.Length == 0) {
+
+			return;
+
+		}
+
+		foreach (EnemyItemSpawn eis in EnemyItemSpawn) {
+
+			for (int i = 0; i < eis.maximumSpawns; i++) {
+
+				if (Random.value * 100 < eis.spawnChance) {
+
+					Vector2 positionToSpawnAt = (eis.overrideSpawnLocation) ? eis.overrideSpawnLocationPosition :
+						new Vector2(transform.position.x + Random.Range(-1f, 1f), transform.position.y + Random.Range(-1f, 1f));
+
+					positionToSpawnAt = (!eis.spawnLocationRelative) ? positionToSpawnAt : new Vector2 (transform.position.x + positionToSpawnAt.x, transform.position.y + positionToSpawnAt.y);
+
+					Instantiate (eis.itemToSpawn, positionToSpawnAt, Quaternion.identity);
+
+				} else { 
+
+					break;
+
+				}
+
+			}
+
+		}
 
 	}
 

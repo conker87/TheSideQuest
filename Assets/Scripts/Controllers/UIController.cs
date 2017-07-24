@@ -14,7 +14,7 @@ public class UIController : MonoBehaviour {
 
 	public GameObject BossBarParent;
 
-	UI_BossHealthBar UI_BossHealthBar;
+	public UI_BossHealthBar UI_BossHealthBar;
 
 	Player player;
 
@@ -33,9 +33,6 @@ public class UIController : MonoBehaviour {
 
 		}
 
-		UI_BossHealthBar = GetComponentInChildren<UI_BossHealthBar> ();
-
-
 	}
 
 	void Update() {
@@ -46,11 +43,12 @@ public class UIController : MonoBehaviour {
 
 	public void ShowBossHealth (Enemy e) {
 
-		// TODO: Find the BossHealthBarText too
+		if (UI_BossHealthBar != null) {
+			
+			BossBarParent.gameObject.SetActive ((e != null));
+			UI_BossHealthBar.SetEnemy (e);
 
-		BossBarParent.gameObject.SetActive ((e != null));
-
-		UI_BossHealthBar.SetEnemy (e);
+		}
 
 	}
 

@@ -39,6 +39,16 @@ public class Projectile : MonoBehaviour {
 
   	}
 
+	[SerializeField]
+	Projectile _bulletHoleToSpawn;
+	public Projectile BulletHoleToSpawn {
+
+		get { return _bulletHoleToSpawn; }
+		set { _bulletHoleToSpawn = value; }
+
+	}
+
+
 	float _despawnTime = 5f;
 
 	Vector2 newPosition;
@@ -83,7 +93,13 @@ public class Projectile : MonoBehaviour {
 
 	}
 
-	void DespawnProjectile() {
+	protected void DespawnProjectile() {
+
+		if (BulletHoleToSpawn != null) {
+
+			Instantiate (BulletHoleToSpawn, transform.position, Quaternion.identity);
+
+		}
 
 		Destroy (gameObject);
 

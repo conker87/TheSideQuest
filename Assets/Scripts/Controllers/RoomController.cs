@@ -35,8 +35,8 @@ public class RoomController : MonoBehaviour {
 	}
 		
 	[SerializeField]
-	List<EnemyRoomSpawn> _enemiesInRoom;
-	public List<EnemyRoomSpawn> EnemiesInRoom {
+	List<RoomSpawnEnemy> _enemiesInRoom;
+	public List<RoomSpawnEnemy> EnemiesInRoom {
 
 		get { return _enemiesInRoom; }
 		set { _enemiesInRoom = value; }
@@ -45,7 +45,7 @@ public class RoomController : MonoBehaviour {
 
 	Enemy[] currentEnemies;
 
-	Boss b;
+	Boss b = null;
 
 	void Start() {
 
@@ -89,7 +89,7 @@ public class RoomController : MonoBehaviour {
 		Vector2 trans = transform.position;
 		bool hasFoundEnemy = false;
 
-		foreach (EnemyRoomSpawn ers in EnemiesInRoom) {
+		foreach (RoomSpawnEnemy ers in EnemiesInRoom) {
 			
 			if (ers.HasBeenKilled && ers.PermanentlyKillable) {
 
@@ -153,7 +153,7 @@ public class RoomController : MonoBehaviour {
 
 		foreach (Enemy e in currentEnemies) {
 
-			foreach (EnemyRoomSpawn ers in EnemiesInRoom) {
+			foreach (RoomSpawnEnemy ers in EnemiesInRoom) {
 
 				if (e.GetInstanceID () == ers.EnemyID) {
 
@@ -175,7 +175,7 @@ public class RoomController : MonoBehaviour {
 
 			Vector2 trans = transform.position;
 
-			foreach (EnemyRoomSpawn e in EnemiesInRoom) {
+			foreach (RoomSpawnEnemy e in EnemiesInRoom) {
 
 				Gizmos.color = (e.Enemy is Boss) ? Color.red : Color.blue;
 

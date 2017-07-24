@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
-public class EnemyRoomSpawn {
+public class RoomSpawnEnemy {
 
-	public EnemyRoomSpawn(Enemy e, Vector2 spawn, bool killed, bool perm, int id) {
+	public RoomSpawnEnemy(Enemy e, Vector2 spawn, bool killed, bool perm, int id) {
 
 		Enemy = e;
 		SpawnLocation = spawn;

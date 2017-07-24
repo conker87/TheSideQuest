@@ -40,7 +40,14 @@ public class Item : MonoBehaviour {
 
 	}
 
-	public void DisableGameObject(bool disable) {
+	public void DisableGameObject(bool disable, bool destroy = false) {
+
+		if (destroy) {
+
+			Destroy (gameObject);
+			return;
+
+		}
 
 		HasBeenCollected = disable;
 

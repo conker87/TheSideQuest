@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UI_BossHealthBar : MonoBehaviour {
 
 	[SerializeField]
-	Enemy enemy;
+	Enemy enemy = null;
 
 	public RectTransform HealthBar;
 	public Text BossName;

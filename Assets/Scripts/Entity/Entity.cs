@@ -122,6 +122,7 @@ public class Entity : MonoBehaviour {
 
 		}
 
+		SetHealthToMax ();
 		MaximumHealth = Mathf.Clamp (MaximumHealth, BEGINNING_MAXIMUM_HEALTH, TOTAL_MAXIMUM_HEALTH);
 
 	}
