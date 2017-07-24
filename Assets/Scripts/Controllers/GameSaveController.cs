@@ -41,6 +41,20 @@ public static class GameSaveController {
 
 	}
 
+	static Dictionary<string, bool> _logsFoundByPlayer = new Dictionary<string, bool>();
+	public static Dictionary<string, bool> LogsFoundByPlayer {
+
+		get { return _logsFoundByPlayer; } 
+		set { _logsFoundByPlayer = value; }
+
+	}
+
+	public static void LoadGame() {
+
+
+
+	}
+
 	public static void SaveGame() {
 
 		SaveGame ("Test");
@@ -59,6 +73,7 @@ public static class GameSaveController {
 			SaveItemStates ();
 			SaveSwitchStates ();
 			SaveDoorStates ();
+			SaveLogs ();
 
 		} else {
 
@@ -88,6 +103,17 @@ public static class GameSaveController {
 		}
 
 		Debug.Log ("WeaponProjectileModifier: " + player.WeaponProjectileModifier);
+
+	}
+
+	static void SaveLogs() {
+
+		foreach (KeyValuePair<string, bool> log in LogsFoundByPlayer) {
+
+			Debug.Log ("Log of ID: '" + log.Key + "' has been found and added to the dictionary");
+
+
+		}
 
 	}
 

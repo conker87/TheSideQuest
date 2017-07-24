@@ -1,12 +1,14 @@
 fileFormatVersion: 2
 guid: 3ac6fba998f27d0448f6de13ff20a164
-timeCreated: 1500635318
+timeCreated: 1500917904
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: Key
     21300002: Keycard
     21300004: Radio
+    21300006: SaveIcon
+    21300008: Log
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -115,6 +117,34 @@ TextureImporter:
         height: 25
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SaveIcon
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 51
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Log
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 51
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
