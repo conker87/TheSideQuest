@@ -12,7 +12,7 @@ public class SaveStation : Interactable {
 
 		SceneManager.AddSaveLocationToSceneManager (this);
 
-		if (InteractableName == "") {
+		if (InteractableID == "") {
 
 			Debug.LogWarning ("Interactable::SaveStation -- '" + gameObject.name + " (" + transform.position.x + "," + transform.position.y
 				+ ") has now InteractableName and therefore no ID, this will royallu fuck up saving games.");
@@ -29,7 +29,7 @@ public class SaveStation : Interactable {
 
 		if (IsOneUseOnly) HasBeenUsedOnce = true;
 
-		GameSaveController.SaveGame (InteractableName);
+		GameSaveController.SaveGame (InteractableID);
 
 	}
 

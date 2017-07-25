@@ -7,7 +7,7 @@ public class Interactable : MonoBehaviour {
 
 	[SerializeField]
 	string _interactableName;
-	public string InteractableName {
+	public string InteractableID {
 
 		get { return _interactableName; } 
 		set { _interactableName = value; } 
@@ -73,7 +73,13 @@ public class Interactable : MonoBehaviour {
 
 	protected virtual void Start () {
 
-		player = FindObjectOfType<Player> ();
+		if (InteractableID == "") {
+
+			Debug.LogWarning ("Interactable::Start -- '" + gameObject.name + "' at " + transform.position.ToString() +
+				" has blank InteractableID! It really shouldn't. Setting ID to GameObject name.");
+			InteractableID = gameObject.name;
+
+		}
 
 		if (IsOneUseOnly) {
 

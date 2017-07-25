@@ -20,6 +20,7 @@ public class UIController : MonoBehaviour {
 		DontDestroyOnLoad(gameObject);
 
 	}
+
 	#endregion
 
 	public Text Health;
@@ -35,6 +36,9 @@ public class UIController : MonoBehaviour {
 
 	// Room Name
 	public UIRoomController UIRoomController;
+
+	// Pause
+	public UIPauseController UIPauseController;
 
 
 	Coroutine disableElement;
@@ -83,6 +87,12 @@ public class UIController : MonoBehaviour {
 		}
 
 		Health.text = healthString;
+
+	}
+
+	public void ShowPauseMenu() {
+
+		UIPauseController.SetPauseState ("MAIN");
 
 	}
 

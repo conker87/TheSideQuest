@@ -93,7 +93,7 @@ public static class GameSaveController {
 
 		foreach (SaveStation s in SceneManager.SaveStationLocations) {
 			
-			Debug.Log ("Name: '" + s.name + "', StationID: " + s.InteractableName + ", Position: " + s.transform.position);
+			Debug.Log ("Name: '" + s.name + "', StationID: " + s.InteractableID + ", Position: " + s.transform.position);
 		}
 
 		foreach (Ability a in GameObject.FindObjectOfType<Player>().Abilities) {

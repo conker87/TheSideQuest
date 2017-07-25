@@ -29,7 +29,7 @@ public class Log : Interactable {
 
 		base.DoInteraction (sentFromPlayerInput);
 
-		if (InteractableName == "") {
+		if (InteractableID == "") {
 
 			Debug.LogWarning ("Interactable::Switch::DoInteraction -- Interactable::Log does not have an ID and cannot be added to the SaveFile.");
 			_canContinue = false;
@@ -51,8 +51,8 @@ public class Log : Interactable {
 
 		UIController.instance.DoDialogue (LogContents, LogTitle);
 
-		if (!GameSaveController.LogsFoundByPlayer.ContainsKey(InteractableName)) {
-			GameSaveController.LogsFoundByPlayer.Add (InteractableName, true);
+		if (!GameSaveController.LogsFoundByPlayer.ContainsKey(InteractableID)) {
+			GameSaveController.LogsFoundByPlayer.Add (InteractableID, true);
 		}
 
 	}

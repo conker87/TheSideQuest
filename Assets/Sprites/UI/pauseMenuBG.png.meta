@@ -1,12 +1,9 @@
 fileFormatVersion: 2
-guid: 361dc56a6581354439cb4bbf111336d5
-timeCreated: 1501018931
+guid: a1f791461b48ff745b26d8684a9de226
+timeCreated: 1501024306
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: UISquare_Spliced
-    21300002: UIRect_Spliced
-    21300004: UISquare_Greyscale_Spliced
+  fileIDToRecycleName: {}
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -42,7 +39,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -76,49 +73,7 @@ TextureImporter:
     overridden: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: UISquare_Spliced
-      rect:
-        serializedVersion: 2
-        x: 236
-        y: 184
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 2, y: 2, z: 2, w: 2}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: UIRect_Spliced
-      rect:
-        serializedVersion: 2
-        x: 360
-        y: 200
-        width: 48
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 3, y: 4, z: 3, w: 4}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: UISquare_Greyscale_Spliced
-      rect:
-        serializedVersion: 2
-        x: 409
-        y: 184
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 2, y: 2, z: 2, w: 2}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
+    sprites: []
     outline: []
     physicsShape: []
   spritePackingTag: 
