@@ -5,7 +5,22 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
 
-	public Text RoomName;
+	#region Singleton
+
+	public static UIController instance = null;
+
+	void Awake() {
+		
+		if (instance == null) {
+			instance = this;
+		} else if (instance != this) {
+			Destroy (gameObject);    
+		}
+
+		DontDestroyOnLoad(gameObject);
+
+	}
+	#endregion
 
 	public Text Health;
 	public string healthy = "green", unhealthy = "navy", healthBarCharacter = "þ";
@@ -13,23 +28,23 @@ public class UIController : MonoBehaviour {
 	public Button saveTest;
 
 	public GameObject BossBarParent;
-
 	public UI_BossHealthBar UI_BossHealthBar;
 
-	Player player;
+	// Dialogue
+	public UIDialogueController UIDialogueController;
 
-	[SerializeField]
-	float roomNameShowTime = 3f;
+	// Room Name
+	public UIRoomController UIRoomController;
+
 
 	Coroutine disableElement;
 
 	void Start() { 
 
-		player = GameObject.FindObjectOfType<Player>();
-
 		if (saveTest != null) {
 
 			saveTest.onClick.AddListener (GameSaveController.SaveGame);
+
 
 		}
 
@@ -43,12 +58,8 @@ public class UIController : MonoBehaviour {
 
 	public void ShowBossHealth (Enemy e) {
 
-		if (UI_BossHealthBar != null) {
-			
-			BossBarParent.gameObject.SetActive ((e != null));
-			UI_BossHealthBar.SetEnemy (e);
-
-		}
+		BossBarParent.gameObject.SetActive ((e != null));
+		UI_BossHealthBar.SetEnemy (e);
 
 	}
 
@@ -63,9 +74,9 @@ public class UIController : MonoBehaviour {
 		string healthString = "Health: ";
 		string currentColor = "";
 
-		for (int i = 0; i < player.MaximumHealth; i++) {
+		for (int i = 0; i < Player.instance.MaximumHealth; i++) {
 
-			currentColor = (i >= player.CurrentHealth) ? unhealthy : healthy;
+			currentColor = (i >= Player.instance.CurrentHealth) ? unhealthy : healthy;
 
 			healthString += "<color=" + currentColor + ">" + healthBarCharacter + "</color>";
 
@@ -75,28 +86,19 @@ public class UIController : MonoBehaviour {
 
 	}
 
-	public void ShowRoomNameText(string roomName) {
+	public void DoRoomName(string roomName) {
 
-		if (RoomName == null) {
-
-			return;
-
-		}
-
-		if (disableElement != null) {
-
-			StopCoroutine (disableElement);
-
-		}
-
-		RoomName.text = roomName;
-		RoomName.gameObject.SetActive (true);
-
-		disableElement = StartCoroutine(DisableElement (RoomName.gameObject, roomNameShowTime));
+		UIRoomController.ShowRoomNameText (roomName);
 
 	}
 
-	IEnumerator DisableElement(GameObject element, float seconds) {
+	public void DoDialogue(string[] contents, string title) {
+
+		UIDialogueController.ShowDialogueBox (contents, title);
+
+	}
+
+	public IEnumerator DisableElement(GameObject element, float seconds) {
 
 		if (element == null) {
 

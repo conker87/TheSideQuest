@@ -5,7 +5,32 @@ using UnityEngine;
 
 public class Player : Entity {
 
+	#region Singleton
+
+	public static Player instance = null;
+
+	void Awake() {
+
+		if (instance == null) {
+			instance = this;
+		} else if (instance != this) {
+			Destroy (gameObject);    
+		}
+
+		DontDestroyOnLoad(gameObject);
+
+	}
+	#endregion
+
 	// VITALS INHERITS
+	[SerializeField]
+	bool _isCurrentlyBusy;
+	public bool IsCurrentlyBusy {
+
+		get { return _isCurrentlyBusy; }
+		set { _isCurrentlyBusy = value; }
+
+	}
 
 	// WEAPON PROJECTILE
 	[SerializeField]

@@ -7,9 +7,18 @@ public class Log : Interactable {
 	// TODO: The UI for these need adding
 	// TODO: A JSON (?) file with all Logs need to be added along with Localisations.
 
+	[SerializeField]
+	string _logTitle;
+	public string LogTitle {
+
+		get { return _logTitle; } 
+		set { _logTitle = value; }
+
+	}
+
 	[SerializeField][TextArea(3, 10)]
-	string _logContents;
-	public string LogContents {
+	string[] _logContents;
+	public string[] LogContents {
 
 		get { return _logContents; } 
 		set { _logContents = value; }
@@ -27,7 +36,7 @@ public class Log : Interactable {
 
 		}
 
-		if (LogContents == "") {
+		if (LogContents.Length == 0) {
 
 			Debug.LogWarning ("Interactable::Switch::DoInteraction -- Interactable::Log has nothing written in LogContents.");
 			_canContinue = false;
@@ -40,9 +49,11 @@ public class Log : Interactable {
 
 		// TODO: Maybe make a DialogueManager that manages certain dialogues?
 
-		Debug.Log (LogContents);
+		UIController.instance.DoDialogue (LogContents, LogTitle);
 
-		GameSaveController.LogsFoundByPlayer.Add (InteractableName, true);
+		if (!GameSaveController.LogsFoundByPlayer.ContainsKey(InteractableName)) {
+			GameSaveController.LogsFoundByPlayer.Add (InteractableName, true);
+		}
 
 	}
 

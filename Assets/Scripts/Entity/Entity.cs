@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour {
 
+	[SerializeField]
+	string _entityName;
+	public string EntityName {
+
+		get { return _entityName; }
+		set { _entityName = value; }
+
+	}
+
 	const int BEGINNING_MAXIMUM_HEALTH = 3;
 	int _TOTAL_MAXIMUM_HEALTH = 10;
 	public int TOTAL_MAXIMUM_HEALTH {

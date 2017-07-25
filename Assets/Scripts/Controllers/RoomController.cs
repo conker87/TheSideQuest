@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class RoomController : MonoBehaviour {
 
-	UIController ui;
-
 	[SerializeField]
 	string _roomName;
 	public string RoomName {
@@ -47,24 +45,13 @@ public class RoomController : MonoBehaviour {
 
 	Boss b = null;
 
-	void Start() {
-
-		ui = GameObject.FindObjectOfType<UIController> ();
-
-	}
-
 	public void EnteredRoom() {
 
 		IsCurrentlyInRoom = true;
 		SpawnEnemies ();
 
-		if (ui != null) {
-
-			ui.ShowRoomNameText (RoomName); // Localisation.GetLocalisedText(RoomName, Localisation.CurrentLocal);
-
-			ui.ShowBossHealth (b);
-
-		}
+		UIController.instance.DoRoomName (RoomName); // Localisation.GetLocalisedText(RoomName, Localisation.CurrentLocal);
+		UIController.instance.ShowBossHealth (b);
 
 	}
 
@@ -75,11 +62,7 @@ public class RoomController : MonoBehaviour {
 
 		b = null;
 
-		if (ui != null) {
-
-			ui.ShowBossHealth (b);
-
-		}
+		UIController.instance.ShowBossHealth (b);
 
 	}
 

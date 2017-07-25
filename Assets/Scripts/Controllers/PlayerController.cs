@@ -66,6 +66,12 @@ public class PlayerController : MonoBehaviour {
 
 	void Update() {
 
+		if (Player.instance.IsCurrentlyBusy) {
+
+			return;
+
+		}
+
 		CalculateVelocity ();
 
 		if (playerDetails.AbilityCollected("WALL_SLIDE")) {
