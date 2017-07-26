@@ -7,6 +7,7 @@ public class UIPauseController : MonoBehaviour {
 
 	public GameObject UIPauseBorder;
 	public UIPauseMain UIPauseMain;
+	public UIPauseGameplay UIPauseGameplay;
 	public UIPauseVideo UIPauseVideo;
 	public UIPauseSound UIPauseSound;
 	public UIPauseControls UIPauseControls;
@@ -25,12 +26,25 @@ public class UIPauseController : MonoBehaviour {
 		switch (CurrentPauseState) {
 
 		case "NONE":
-			DisableAllMenus (true);
+			DisableAllMenus ();
+
+			UIPauseBorder.SetActive (false);
 
 			break;
 
 		case "MAIN":
-			DisableAllMenus (false);
+			DisableAllMenus ();
+
+			Player.instance.IsCurrentlyBusy = true;
+
+			UIPauseBorder.SetActive (true);
+			UIPauseMain.gameObject.SetActive(true);
+
+			break;
+
+		case "GAMEPLAY":
+			DisableAllMenus ();
+			UIPauseGameplay.gameObject.SetActive (true);
 
 			break;
 
@@ -56,11 +70,10 @@ public class UIPauseController : MonoBehaviour {
 
 	}
 
-	public void DisableAllMenus(bool disableMain = false) {
+	public void DisableAllMenus() {
 
-		UIPauseMain.gameObject.SetActive (!disableMain);
-		UIPauseBorder.SetActive (!disableMain);
-
+		UIPauseMain.gameObject.SetActive (false);
+		UIPauseGameplay.gameObject.SetActive (false);
 		UIPauseVideo.gameObject.SetActive(false);
 		UIPauseSound.gameObject.SetActive(false);
 		UIPauseControls.gameObject.SetActive(false);
@@ -70,6 +83,13 @@ public class UIPauseController : MonoBehaviour {
 	public void SetPauseState(string pauseState) {
 
 		CurrentPauseState = pauseState;
+
+	}
+
+	public void ReturnToGame() {
+
+		SetPauseState ("NONE");
+		Player.instance.IsCurrentlyBusy = false;
 
 	}
 

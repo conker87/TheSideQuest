@@ -19,20 +19,27 @@ public class PlayerInput : MonoBehaviour {
 		
 		Vector2 directionalInput = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 
-		if (Player.instance.IsCurrentlyBusy) {
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+
+			if (Player.instance.IsCurrentlyBusy) {
+
+				UIController.instance.UIPauseController.ReturnToGame ();
+
+			} else {
 			
+				UIController.instance.ShowPauseMenu ();
+
+			}
+
+		}
+
+		if (Player.instance.IsCurrentlyBusy) {
+
 			return;
 
 		}
 			
 		player.SetDirectionalInput (directionalInput);
-
-		if (Input.GetKeyDown (KeyCode.P)) {
-	
-			UIController.instance.ShowPauseMenu ();
-
-		}
-
 
 		// Dashing
 		if (doubleTapTime < Time.time) {
@@ -90,4 +97,5 @@ public class PlayerInput : MonoBehaviour {
 		}
 
 	}
+
 }

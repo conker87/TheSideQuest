@@ -22,7 +22,7 @@ public class UIDialogueController : MonoBehaviour {
 		}
 
 		Player.instance.IsCurrentlyBusy = true;
-		gameObject.SetActive (Player.instance.IsCurrentlyBusy);
+		gameObject.SetActive (true);
 
 		if (UIBC == null) {
 			UIBC = NextButton.GetComponent<UIButtonController> ();
@@ -65,7 +65,7 @@ public class UIDialogueController : MonoBehaviour {
 	public void EndDialogue() {
 
 		Player.instance.IsCurrentlyBusy = false;
-		gameObject.SetActive (Player.instance.IsCurrentlyBusy);
+		gameObject.SetActive (false);
 
 	}
 
