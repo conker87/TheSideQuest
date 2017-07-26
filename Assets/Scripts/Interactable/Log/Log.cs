@@ -47,8 +47,6 @@ public class Log : Interactable {
 
 		if (IsOneUseOnly) HasBeenUsedOnce = true;
 
-		// TODO: Maybe make a DialogueManager that manages certain dialogues?
-
 		UIController.instance.DoDialogue (LogContents, LogTitle);
 
 		if (!GameSaveController.LogsFoundByPlayer.ContainsKey(InteractableID)) {

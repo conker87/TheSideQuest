@@ -13,6 +13,17 @@ public class UIDialogueController : MonoBehaviour {
 
 	Queue<string> dialogue = new Queue<string> ();
 
+	void Update() {
+
+		// TODO: Change this to allow the use of InputManager.GetButton[]
+		if (Input.GetKeyDown (KeyCode.E)) {
+
+			NextButton.onClick.Invoke ();
+
+		}
+
+	}
+
 	public void ShowDialogueBox (string[] contents, string title = "") {
 
 		if (title != "") {
