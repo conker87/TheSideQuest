@@ -85,11 +85,29 @@ public class Projectile : MonoBehaviour {
 
 		}
 
+		if (other.gameObject.tag == "DoorCollider") {
+
+			DespawnProjectile ();
+
+		}
+
+		if (other.gameObject.tag == "Geometry" && other.GetComponent<Door> () != null) {
+
+			return;
+
+		}
+
 		if (other.gameObject.tag == "Geometry" || other.gameObject.tag == "InteractiveGeometry") {
 
 			DespawnProjectile ();
 
 		}
+
+	}
+
+	void OnTriggerStay2D(Collider2D other) {
+
+		OnTriggerEnter2D (other);
 
 	}
 

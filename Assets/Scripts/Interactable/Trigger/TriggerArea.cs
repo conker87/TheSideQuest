@@ -13,16 +13,6 @@ public class TriggerArea : Interactable {
 
 	}
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
 	protected void OnTriggerEnter2D(Collider2D other) {
 
 		player = other.GetComponent<Player>();
@@ -34,6 +24,12 @@ public class TriggerArea : Interactable {
 		}
 
 		foreach (InteractableTriggers trigger in InteractableTriggers) {
+
+			if (!trigger.onTriggerEnter) {
+
+				continue;
+
+			}
 
 			switch (trigger.InteractableTrigger) {
 
@@ -61,6 +57,124 @@ public class TriggerArea : Interactable {
 
 				break;
 
+			case InteractableTrigger.TOGGLE:
+
+				trigger.Interactable.DoInteraction ();
+
+				break;
+
+			}
+
+		}
+
+	}
+
+	protected void OnTriggerStay2D(Collider2D other) {
+		
+		player = other.GetComponent<Player>();
+
+		if (player == null) {
+
+			return;
+
+		}
+
+		foreach (InteractableTriggers trigger in InteractableTriggers) {
+
+			if (!trigger.onTriggerStay) {
+
+				continue;
+
+			}
+
+			switch (trigger.InteractableTrigger) {
+
+			case InteractableTrigger.OPEN:
+
+				if (trigger.Interactable is Door) {
+					trigger.Interactable.SendMessage ("ForceDoorState", DoorState.OPENING, SendMessageOptions.DontRequireReceiver);
+				}
+
+				if (trigger.Interactable is Switch) {
+					trigger.Interactable.SendMessage ("ForceSwitchState", SwitchState.ON, SendMessageOptions.DontRequireReceiver);
+				}
+
+				break;
+
+			case InteractableTrigger.CLOSE:
+
+				if (trigger.Interactable is Door) {
+					trigger.Interactable.SendMessage ("ForceDoorState", DoorState.CLOSING, SendMessageOptions.DontRequireReceiver);
+				}
+
+				if (trigger.Interactable is Switch) {
+					trigger.Interactable.SendMessage ("ForceSwitchState", SwitchState.OFF, SendMessageOptions.DontRequireReceiver);
+				}
+
+				break;
+
+			case InteractableTrigger.TOGGLE:
+
+				trigger.Interactable.DoInteraction ();
+
+				break;
+
+			}
+
+		}
+
+	}
+
+	protected void OnTriggerExit2D(Collider2D other) {
+
+		player = other.GetComponent<Player>();
+
+		if (player == null) {
+
+			return;
+
+		}
+
+		foreach (InteractableTriggers trigger in InteractableTriggers) {
+
+			if (!trigger.onTriggerExit) {
+
+				continue;
+
+			}
+
+			switch (trigger.InteractableTrigger) {
+
+			case InteractableTrigger.OPEN:
+
+				if (trigger.Interactable is Door) {
+					trigger.Interactable.SendMessage ("ForceDoorState", DoorState.OPENING, SendMessageOptions.DontRequireReceiver);
+				}
+
+				if (trigger.Interactable is Switch) {
+					trigger.Interactable.SendMessage ("ForceSwitchState", SwitchState.ON, SendMessageOptions.DontRequireReceiver);
+				}
+
+				break;
+
+			case InteractableTrigger.CLOSE:
+
+				if (trigger.Interactable is Door) {
+					trigger.Interactable.SendMessage ("ForceDoorState", DoorState.CLOSING, SendMessageOptions.DontRequireReceiver);
+				}
+
+				if (trigger.Interactable is Switch) {
+					trigger.Interactable.SendMessage ("ForceSwitchState", SwitchState.OFF, SendMessageOptions.DontRequireReceiver);
+				}
+
+				break;
+
+			case InteractableTrigger.TOGGLE:
+
+				trigger.Interactable.DoInteraction ();
+
+				break;
+
 			}
 
 		}
@@ -73,6 +187,7 @@ public class TriggerArea : Interactable {
 public struct InteractableTriggers {
 
 	public Interactable Interactable;
+	public bool onTriggerEnter, onTriggerStay, onTriggerExit;
 	public InteractableTrigger InteractableTrigger;
 
 }
