@@ -60,7 +60,7 @@ public class Door : Interactable {
 		switch (CurrentState) {
 
 		case DoorState.OPENING:
-			print ("DoorState.OPENING");
+			// print ("DoorState.OPENING");
 
 			if (canChangeState) {
 				// anim.SetBool("Opening", true);
@@ -70,7 +70,7 @@ public class Door : Interactable {
 			break;
 
 		case DoorState.CLOSING:
-			print ("DoorState.CLOSING");
+			// print ("DoorState.CLOSING");
 
 			CheckForPlayer ();
 
@@ -90,13 +90,13 @@ public class Door : Interactable {
 			// TODO: These to cases need to be removed once Anims are added
 		case DoorState.OPEN:
 			GetComponent<SpriteRenderer> ().enabled = false;
-			childCollider.enabled = false;
+			childCollider.gameObject.SetActive (false); // childCollider.enabled = false;
 			//GetComponent<Collider2D> ().enabled = false;
 			break;
 
 		case DoorState.CLOSED:
 			GetComponent<SpriteRenderer> ().enabled = true;
-			childCollider.enabled = true;
+			childCollider.gameObject.SetActive (true); // childCollider.enabled = true;
 			//GetComponent<Collider2D> ().enabled = true;
 			break;
 
@@ -124,6 +124,18 @@ public class Door : Interactable {
 		} else {
 
 			ChangeDoorState (previousState);
+
+		}
+
+	}
+
+	public void ForceDoorState(DoorState force) {
+
+		CurrentState = force;
+
+		if (isResetInteractable) {
+
+			StartResetTimer ();
 
 		}
 

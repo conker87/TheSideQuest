@@ -28,7 +28,15 @@ public class UIRoomController : MonoBehaviour {
 		RoomNameText.text = roomName;
 		RoomNameText.gameObject.SetActive (true);
 
-		disableElement = StartCoroutine(UIController.instance.DisableElement (gameObject, roomNameShowTime));
+		disableElement = StartCoroutine(ClearTextElement(roomNameShowTime));
+
+	}
+
+	public IEnumerator ClearTextElement(float seconds) {
+
+		yield return new WaitForSeconds (seconds);
+
+		RoomNameText.text = "";
 
 	}
 

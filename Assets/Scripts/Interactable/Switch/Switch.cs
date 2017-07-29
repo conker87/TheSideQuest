@@ -144,6 +144,22 @@ public class Switch : Interactable {
 
 	}
 
+	public void ForceSwitchState(SwitchState force) {
+
+		if (force == SwitchState.ON) {
+
+			SwitchState_TurnOn ();
+
+		}
+
+		if (force == SwitchState.OFF) {
+
+			SwitchState_TurnOff ();
+
+		}
+
+	}
+
 	void SwitchState_TurnOff() {
 
 		if (InteractOnAnyState) {
@@ -181,7 +197,6 @@ public class Switch : Interactable {
 			if ((door = interact.GetComponent<DoorOperator>()) != null) {
 
 				door.IncrementOperatorCount();
-				print (door.GetOperatorCount() + " " + door.GetTotalOperatorCount());
 
 			}
 
