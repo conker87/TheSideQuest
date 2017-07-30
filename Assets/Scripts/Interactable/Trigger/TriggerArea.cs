@@ -13,6 +13,11 @@ public class TriggerArea : Interactable {
 
 	}
 
+	[SerializeField]
+	int timesToFireStayPerSecond = 8;
+
+	float stayFireTimer;
+
 	protected void OnTriggerEnter2D(Collider2D other) {
 
 		player = other.GetComponent<Player>();
@@ -79,6 +84,12 @@ public class TriggerArea : Interactable {
 
 		}
 
+		if (stayFireTimer > Time.time) {
+
+			return;
+
+		}
+
 		foreach (InteractableTriggers trigger in InteractableTriggers) {
 
 			if (!trigger.onTriggerStay) {
@@ -122,6 +133,8 @@ public class TriggerArea : Interactable {
 			}
 
 		}
+
+		stayFireTimer = Time.time + (1f / (float)timesToFireStayPerSecond);
 
 	}
 
@@ -178,6 +191,25 @@ public class TriggerArea : Interactable {
 			}
 
 		}
+
+	}
+
+	void OnDrawGizmos() {
+
+		if (InteractableTriggers != null && InteractableTriggers.Length > 0) {
+
+			foreach (InteractableTriggers interactableTrigger in InteractableTriggers) {
+
+				Gizmos.color = Color.blue;
+				Gizmos.DrawWireSphere (transform.position, 0.2f);
+
+				Gizmos.color = Color.green;
+				Gizmos.DrawLine (transform.position, interactableTrigger.Interactable.transform.position);
+
+			}
+
+		}
+
 
 	}
 

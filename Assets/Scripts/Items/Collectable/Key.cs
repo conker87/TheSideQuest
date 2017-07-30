@@ -13,6 +13,14 @@ public class Key : Item {
 
 	}
 
+	protected override void Start () {
+
+		base.Start ();
+
+		GetComponent<SpriteRenderer> ().color = Constants.LevelDirectionColor [(int) KeyLocation];
+
+	}
+
 	protected override void OnTriggerEnter2D(Collider2D other) {
 
 		player = other.GetComponent<Player>();

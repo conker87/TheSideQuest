@@ -9,6 +9,8 @@ public class UIController : MonoBehaviour {
 
 	public static UIController instance = null;
 
+	public LevelDirection CurrentLevelDirection;
+
 	void Awake() {
 		
 		if (instance == null) {

@@ -14,7 +14,7 @@ public class Entity : MonoBehaviour {
 	}
 
 	const int BEGINNING_MAXIMUM_HEALTH = 3;
-	int _TOTAL_MAXIMUM_HEALTH = 10;
+	int _TOTAL_MAXIMUM_HEALTH = 10000;
 	public int TOTAL_MAXIMUM_HEALTH {
 
 		get { return _TOTAL_MAXIMUM_HEALTH; }
@@ -117,7 +117,7 @@ public class Entity : MonoBehaviour {
 		if (MaximumHealth + value > TOTAL_MAXIMUM_HEALTH) {
 
 			Debug.Log ("PlayerDetails::IncreaseMaximumHealth - MaximumHealth + value > TOTAL_MAXIMUM_HEALTH");
-			return;
+			// return;
 
 		}
 
@@ -132,7 +132,9 @@ public class Entity : MonoBehaviour {
 		}
 
 		SetHealthToMax ();
-		MaximumHealth = Mathf.Clamp (MaximumHealth, BEGINNING_MAXIMUM_HEALTH, TOTAL_MAXIMUM_HEALTH);
+		// MaximumHealth = Mathf.Clamp (MaximumHealth, BEGINNING_MAXIMUM_HEALTH, TOTAL_MAXIMUM_HEALTH);
+
+		// TODO: Decide whether to enforce maximum health orbs.
 
 	}
 

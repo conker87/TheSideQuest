@@ -209,7 +209,7 @@ public class Player : Entity {
 
 	// KEYS
 	const int MINIMUM_KEY_COUNT = 0, MAXIMUM_KEY_COUNT = 10; // TODO: Decide whether to reduce this value to use it in a puzzle?
-	const int GAME_DIRECTIONS = 7;
+	const int GAME_DIRECTIONS = 9;
 
 	[SerializeField]
 	int[] _keys = new int[GAME_DIRECTIONS];
@@ -293,7 +293,7 @@ public class Player : Entity {
 	}
 
 	[SerializeField]
-	bool[] _artifacts = new bool[GAME_DIRECTIONS];
+	bool[] _artifacts = new bool[GAME_DIRECTIONS-1];
 	public bool[] Artifacts {
 
 		get { return _artifacts; }
@@ -341,9 +341,6 @@ public class Player : Entity {
 	}
 
 }
-
-public enum LevelDirection { SOUTHWEST = 0, WEST = 1, NORTHWEST = 2, NORTH = 3, NORTHEAST = 4, EAST = 5, SOUTHEAST = 6 };
-
 
 [System.Serializable]
 public class Ability {

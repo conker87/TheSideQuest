@@ -41,9 +41,26 @@ public class RoomController : MonoBehaviour {
 
 	}
 
+	[SerializeField]
+	LevelDirection _roomLevelDirection;
+	public LevelDirection RoomLevelDirection {
+
+		get { return _roomLevelDirection; }
+		set { _roomLevelDirection = value; }
+
+	}
+
+
 	Enemy[] currentEnemies;
 
 	Boss b = null;
+
+	void Start() {
+
+		// Rename
+		gameObject.name = string.Format("{0}_{1}_{2}", RoomName, transform.position, RoomLevelDirection.ToString());
+
+	}
 
 	public void EnteredRoom() {
 
@@ -52,6 +69,9 @@ public class RoomController : MonoBehaviour {
 
 		UIController.instance.DoRoomName (RoomName); // Localisation.GetLocalisedText(RoomName, Localisation.CurrentLocal);
 		UIController.instance.ShowBossHealth (b);
+
+		// TODO: Decide whether to store the current direction into the Player or keep it here.
+		UIController.instance.CurrentLevelDirection = RoomLevelDirection;
 
 	}
 
