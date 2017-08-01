@@ -77,6 +77,7 @@ public class RoomController : MonoBehaviour {
 
 	public void LeftRoom() {
 
+		print ("Leaving: " + RoomName);
 		IsCurrentlyInRoom = false;
 		DespawnEnemies ();
 

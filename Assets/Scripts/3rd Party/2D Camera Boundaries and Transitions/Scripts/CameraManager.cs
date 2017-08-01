@@ -28,7 +28,7 @@ public class CameraManager : MonoBehaviour {
         if (listAreaNodes.Count == 0)
             Debug.LogWarning(gameObject.name.ToString() + " (CameraManager): No Area boundaries are assigned. The camera will move freely to the set targets");
 
-		SetNewArea();
+		// SetNewArea();
     }
 
     void Update() {
@@ -86,22 +86,26 @@ public class CameraManager : MonoBehaviour {
 
 			RoomController room = n.GetComponent<RoomController> ();
 
-			if (GetAreaRect (listAreaNodes.IndexOf (n)).Contains (followtarget)) {
-				previousArea = listAreaNodes.IndexOf (n);
+			// print (room.RoomName);
 
-				room.EnteredRoom ();
+
+			if (!GetAreaRect (listAreaNodes.IndexOf (n)).Contains (followtarget)) {
+
+				room.LeftRoom ();
+
+			} else {
+				previousArea = listAreaNodes.IndexOf (n);
 
 				if (previousArea == currentArea) {
 					return;
 				}
-				currentArea = previousArea;
 
-				break;
+				currentArea = previousArea;
+				room.EnteredRoom ();
+
+				// break;
 
 				//  	Debug.Log ("new area: " + currentArea.ToString ());
-			} else {
-
-				room.LeftRoom ();
 
 			}
         }
