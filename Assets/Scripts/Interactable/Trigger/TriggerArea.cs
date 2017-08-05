@@ -45,7 +45,8 @@ public class TriggerArea : Interactable {
 				}
 
 				if (trigger.Interactable is Switch) {
-					trigger.Interactable.SendMessage ("ForceSwitchState", SwitchState.ON, SendMessageOptions.DontRequireReceiver);
+					// (Switch) trigger.Interactable.
+					trigger.Interactable.SendMessage ("ForceSwitchState", true, SendMessageOptions.DontRequireReceiver);
 				}
 
 				break;
@@ -57,7 +58,7 @@ public class TriggerArea : Interactable {
 				}
 
 				if (trigger.Interactable is Switch) {
-					trigger.Interactable.SendMessage ("ForceSwitchState", SwitchState.OFF, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceSwitchState", false, SendMessageOptions.DontRequireReceiver);
 				}
 
 				break;
@@ -107,7 +108,7 @@ public class TriggerArea : Interactable {
 				}
 
 				if (trigger.Interactable is Switch) {
-					trigger.Interactable.SendMessage ("ForceSwitchState", SwitchState.ON, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceSwitchState", true, SendMessageOptions.DontRequireReceiver);
 				}
 
 				break;
@@ -119,7 +120,7 @@ public class TriggerArea : Interactable {
 				}
 
 				if (trigger.Interactable is Switch) {
-					trigger.Interactable.SendMessage ("ForceSwitchState", SwitchState.OFF, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceSwitchState", false, SendMessageOptions.DontRequireReceiver);
 				}
 
 				break;
@@ -165,7 +166,7 @@ public class TriggerArea : Interactable {
 				}
 
 				if (trigger.Interactable is Switch) {
-					trigger.Interactable.SendMessage ("ForceSwitchState", SwitchState.ON, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceSwitchState", true, SendMessageOptions.DontRequireReceiver);
 				}
 
 				break;
@@ -177,7 +178,7 @@ public class TriggerArea : Interactable {
 				}
 
 				if (trigger.Interactable is Switch) {
-					trigger.Interactable.SendMessage ("ForceSwitchState", SwitchState.OFF, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceSwitchState", false, SendMessageOptions.DontRequireReceiver);
 				}
 
 				break;

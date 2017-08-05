@@ -15,24 +15,6 @@ public class Switch : Interactable {
 	}
 		
 	[SerializeField]
-	SwitchState _startingState;
-	public SwitchState StartingState {
-
-		get { return _startingState; } 
-		set { _startingState = value; } 
-
-	}
-
-	[SerializeField]
-	SwitchState _currentState;
-	public SwitchState CurrentState {
-
-		get { return _currentState; } 
-		set { _currentState = value; } 
-
-	}
-
-	[SerializeField]
 	Interactable[] _connectedInteractables;
 	public Interactable[] ConnectedInteractables {
 
@@ -59,23 +41,37 @@ public class Switch : Interactable {
 
 	}
 
+	[SerializeField]
+	bool _startingOn;
+	public bool StartingIsOn {
+
+		get { return _startingOn; }
+		set { _startingOn = value; }
+
+	}
+
+	[SerializeField]
+	bool _isOn;
+	public bool IsOn {
+
+		get { return _isOn; }
+		set { _isOn = value; }
+
+	}
+
 	DoorOperator door;
+	Animator anim;
 
 	protected override void Start() {
 
 		base.Start ();
 
 		if (SaveStateToFile) {
-
 			GameSaveController.SwitchesInWorld.Add (this);
-
 		}
 
-		if (CheckConnectedInteractablesForSelf ()) {
+		CheckConnectedInteractablesForSelf ();
 
-			Debug.LogError ("Switch: '" + gameObject + "' has itself as a connected interactable, this WILL break the game!");
-
-		}
 
 		// Find all Doors connected to this Interactable and increment their OperatorCounter
 		foreach (Interactable interactable in ConnectedInteractables) {
@@ -91,17 +87,9 @@ public class Switch : Interactable {
 		}
 
 		// TODO: This needs to load settings from save file.
-		CurrentState = StartingState;
+		IsOn = StartingIsOn;
 
-		if (CurrentState == SwitchState.ON) {
-
-			GetComponent<SpriteRenderer> ().flipY = true;
-
-		} else if (CurrentState == SwitchState.OFF) {
-
-			GetComponent<SpriteRenderer> ().flipY = false;
-
-		}
+		anim = GetComponent<Animator> ();
 
 	}
 
@@ -110,6 +98,8 @@ public class Switch : Interactable {
 		base.Update ();
 
 		DoReset ();
+
+		anim.SetBool ("isOn", IsOn);
 
 	}
 
@@ -128,14 +118,14 @@ public class Switch : Interactable {
 
 		if (IsOneUseOnly) HasBeenUsedOnce = true;
 
-		switch (CurrentState) {
+		switch (IsOn) {
 
-		case SwitchState.ON:
+		case true:
 
 			SwitchState_TurnOff ();
 			break;
 
-		case SwitchState.OFF:
+		case false:
 
 			SwitchState_TurnOn ();
 			break;
@@ -144,15 +134,15 @@ public class Switch : Interactable {
 
 	}
 
-	public void ForceSwitchState(SwitchState force) {
+	public void ForceSwitchState( bool force ) {
 
-		if (force == SwitchState.ON) {
+		if (force) {
 
 			SwitchState_TurnOn ();
 
 		}
 
-		if (force == SwitchState.OFF) {
+		if (!force) {
 
 			SwitchState_TurnOff ();
 
@@ -178,15 +168,13 @@ public class Switch : Interactable {
 
 		}
 
-		GetComponent<SpriteRenderer> ().flipY = false;
-
-		if (StartingState == SwitchState.ON) {
+		if ( StartingIsOn ) {
 
 			StartResetTimer ();
 
 		}
 
-		ChangeSwitchState (SwitchState.OFF);
+		IsOn = false;
 
 	}
 
@@ -204,15 +192,13 @@ public class Switch : Interactable {
 
 		}
 
-		GetComponent<SpriteRenderer> ().flipY = true;
-
-		if (StartingState == SwitchState.OFF) {
+		if ( StartingIsOn ) {
 
 			StartResetTimer ();
 
 		}
 
-		ChangeSwitchState (SwitchState.ON);
+		IsOn = true;
 
 	}
 
@@ -228,9 +214,9 @@ public class Switch : Interactable {
 
 	void DoReset() {
 
-		if (isResetInteractable && CurrentState != StartingState && Time.time > _resetTimer) {
+		if (isResetInteractable && IsOn != StartingIsOn && Time.time > _resetTimer) {
 
-			if (StartingState == SwitchState.OFF) {
+			if ( !StartingIsOn ) {
 
 				SwitchState_TurnOff ();
 
@@ -244,7 +230,7 @@ public class Switch : Interactable {
 
 	}
 
-	bool CheckConnectedInteractablesForSelf() {
+	void CheckConnectedInteractablesForSelf() {
 
 		if (ConnectedInteractables != null && ConnectedInteractables.Count() > 0) {
 
@@ -252,15 +238,13 @@ public class Switch : Interactable {
 
 				if (gameObject.GetInstanceID() == interactable.gameObject.GetInstanceID ()) {
 
-					return true;
+					Debug.LogError ("Switch: '" + gameObject + "' has itself as a connected interactable!");
 
 				}
 					
 			}
 
 		}
-
-		return false;
 
 	}
 
@@ -291,9 +275,9 @@ public class Switch : Interactable {
 
 	}
 
-	public void ChangeSwitchState(SwitchState state) {
+	public void ChangeSwitchState(bool state) {
 
-		CurrentState = state;
+		IsOn = state;
 
 	}
 
@@ -313,11 +297,15 @@ public class Switch : Interactable {
 
 			foreach (Interactable interactable in ConnectedInteractables) {
 
-				Gizmos.color = Color.blue;
-				Gizmos.DrawWireSphere (transform.position, 0.2f);
+				if (interactable != null) {
 
-				Gizmos.color = Color.green;
-				Gizmos.DrawLine (transform.position, interactable.transform.position);
+					Gizmos.color = Color.blue;
+					Gizmos.DrawWireSphere (transform.position, 0.2f);
+
+					Gizmos.color = Color.green;
+					Gizmos.DrawLine (transform.position, interactable.transform.position);
+
+				}
 
 			}
 
@@ -327,5 +315,3 @@ public class Switch : Interactable {
 	}
 
 }
-
-public enum SwitchState { OFF, ON, };

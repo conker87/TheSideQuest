@@ -120,9 +120,9 @@ public class PlayerController : MonoBehaviour {
 
 		if ((col = Physics2D.OverlapCircle (currentPosition, interactableRadius, interableLayerMask)) != null) {
 
-			Interactable interactable;
+			Interactable interactable = col.GetComponent<Interactable> ();
 
-			if ((interactable = col.GetComponent<Interactable> ()) != null) {
+			if (interactable != null) {
 				
 				interactable.DoInteraction (true);
 

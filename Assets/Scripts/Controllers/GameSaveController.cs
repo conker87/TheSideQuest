@@ -154,7 +154,7 @@ public static class GameSaveController {
 
 		foreach (Switch s in SwitchesInWorld) {
 
-			Debug.Log ("Switch: '" + s.name + "', ID: '" + s.GetInstanceID() + "', CurrentState: " + s.CurrentState + ".");
+			Debug.Log ("Switch: '" + s.name + "', ID: '" + s.GetInstanceID() + "', CurrentState: " + s.IsOn /* s.CurrentState */ + ".");
 
 		}
 
