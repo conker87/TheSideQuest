@@ -99,23 +99,29 @@ public class Interactable : MonoBehaviour {
 
 	public virtual void DoInteraction(bool sentFromPlayerInput = false) {
 
+		CheckInteraction ();
+
+  	}
+
+	protected void CheckInteraction() {
+
 		_canContinue = true;
 
 		if (!IsCurrentlyInteractable) {
 
-			print ("Interactable::Switch::DoInteraction -- Interactable is disabled.");
+			print ("Interactable::DoInteraction -- Interactable is disabled.");
 			_canContinue = false;
 
 		}
 
 		if (IsOneUseOnly && HasBeenUsedOnce) {
 
-			print ("Interactable::Switch::DoInteraction -- Interactable has been used already and is now disabled.");
+			print ("Interactable::DoInteraction -- Interactable has been used already and is now disabled.");
 			_canContinue = false;
 
 		}
 
-  	}
+	}
 
 	protected virtual void RenameGameObject() {
 

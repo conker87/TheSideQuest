@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour {
 
 			if (interactable != null) {
 				
-				interactable.DoInteraction (true);
+					interactable.DoInteraction (true);
 
 			}
 
@@ -249,6 +249,13 @@ public class PlayerController : MonoBehaviour {
 
 				hasWallJumped = true;
 
+			} else if (playerDetails.AbilityCollected("WALL_HIGH_JUMP") && directionalInput.y == 1 && wallDirX != directionalInput.x) {
+
+				velocity.x = -wallDirX * wallLeap.x;
+				velocity.y = wallLeap.y*2f;
+
+				hasWallJumped = true;
+
 			} else {
 				
 				velocity.x = -wallDirX * wallLeap.x;
@@ -353,8 +360,6 @@ public class PlayerController : MonoBehaviour {
 		float targetVelocityX = directionalInput.x * moveSpeed;
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 		velocity.y += gravity * Time.deltaTime;
-
-  
 
 	}
 

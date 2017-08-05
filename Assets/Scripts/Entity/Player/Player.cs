@@ -288,7 +288,7 @@ public class Player : Entity {
 
 		}
 
-		Debug.Log (debugLog);
+		// Debug.Log (debugLog);
 
 	}
 

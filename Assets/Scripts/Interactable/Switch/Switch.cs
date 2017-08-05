@@ -78,11 +78,11 @@ public class Switch : Interactable {
 
 			DoorOperator current = interactable.GetComponent<DoorOperator>();
 
-			if (current != null && current.dDoorOpenOperator == DoorOpenOperator.AND) {
+			//if (current != null && current.dDoorOpenOperator == DoorOpenOperator.AND) {
 
-				current.IncrementTotalOperatorCount ();
+				//current.IncrementTotalOperatorCount ();
 
-			}
+			//}
 
 		}
 
@@ -105,7 +105,7 @@ public class Switch : Interactable {
 
 	public override void DoInteraction(bool sentFromPlayerInput = false) {
 
-		base.DoInteraction (sentFromPlayerInput);
+		CheckInteraction ();
 
 		if (!CheckForRequiredKeys ()) {
 
@@ -158,7 +158,7 @@ public class Switch : Interactable {
 
 				if ((door = interact.GetComponent<DoorOperator>()) != null) {
 
-					door.DecrementOperatorCount();
+					//door.DecrementOperatorCount();
 
 				}
 
@@ -184,7 +184,7 @@ public class Switch : Interactable {
 
 			if ((door = interact.GetComponent<DoorOperator>()) != null) {
 
-				door.IncrementOperatorCount();
+				//door.IncrementOperatorCount();
 
 			}
 
@@ -256,16 +256,7 @@ public class Switch : Interactable {
 
 		}
 
-		Player player = FindObjectOfType<Player> ();
-
-		if (player == null) {
-
-			print ("Interactable::Switch::CheckForRequiredKeys -- " + gameObject + " -- Player is null!");
-			return false;
-
-		}
-
-		if (player.GetKeyCount(KeyLocation) >= RequiredKeyCount) {
+		if (Player.instance.GetKeyCount(KeyLocation) >= RequiredKeyCount) {
 
 			return true;
 

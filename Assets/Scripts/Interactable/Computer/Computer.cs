@@ -24,7 +24,7 @@ public class Computer : Interactable {
 
 	public override void DoInteraction(bool sentFromPlayerInput = false) {
 
-		base.DoInteraction (sentFromPlayerInput);
+		CheckInteraction ();
 
 		if (InteractableID == "") {
 

@@ -23,11 +23,9 @@ public class SaveStation : Interactable {
 	
 	public override void DoInteraction(bool sentFromPlayerInput = false) {
 
-		base.DoInteraction (sentFromPlayerInput);
+		CheckInteraction ();
 
 		if (!_canContinue) return;
-
-		if (IsOneUseOnly) HasBeenUsedOnce = true;
 
 		GameSaveController.SaveGame (InteractableID);
 

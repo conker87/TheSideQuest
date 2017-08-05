@@ -41,7 +41,7 @@ public class TriggerArea : Interactable {
 			case InteractableTrigger.OPEN:
 
 				if (trigger.Interactable is Door) {
-					trigger.Interactable.SendMessage ("ForceDoorState", DoorState.OPENING, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceDoorState", true, SendMessageOptions.DontRequireReceiver);
 				}
 
 				if (trigger.Interactable is Switch) {
@@ -54,7 +54,7 @@ public class TriggerArea : Interactable {
 			case InteractableTrigger.CLOSE:
 
 				if (trigger.Interactable is Door) {
-					trigger.Interactable.SendMessage ("ForceDoorState", DoorState.CLOSING, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceDoorState", false, SendMessageOptions.DontRequireReceiver);
 				}
 
 				if (trigger.Interactable is Switch) {
@@ -104,7 +104,7 @@ public class TriggerArea : Interactable {
 			case InteractableTrigger.OPEN:
 
 				if (trigger.Interactable is Door) {
-					trigger.Interactable.SendMessage ("ForceDoorState", DoorState.OPENING, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceDoorState", true, SendMessageOptions.DontRequireReceiver);
 				}
 
 				if (trigger.Interactable is Switch) {
@@ -116,7 +116,7 @@ public class TriggerArea : Interactable {
 			case InteractableTrigger.CLOSE:
 
 				if (trigger.Interactable is Door) {
-					trigger.Interactable.SendMessage ("ForceDoorState", DoorState.CLOSING, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceDoorState", false, SendMessageOptions.DontRequireReceiver);
 				}
 
 				if (trigger.Interactable is Switch) {
@@ -162,7 +162,7 @@ public class TriggerArea : Interactable {
 			case InteractableTrigger.OPEN:
 
 				if (trigger.Interactable is Door) {
-					trigger.Interactable.SendMessage ("ForceDoorState", DoorState.OPENING, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceDoorState", true, SendMessageOptions.DontRequireReceiver);
 				}
 
 				if (trigger.Interactable is Switch) {
@@ -174,7 +174,7 @@ public class TriggerArea : Interactable {
 			case InteractableTrigger.CLOSE:
 
 				if (trigger.Interactable is Door) {
-					trigger.Interactable.SendMessage ("ForceDoorState", DoorState.CLOSING, SendMessageOptions.DontRequireReceiver);
+					trigger.Interactable.SendMessage ("ForceDoorState", false, SendMessageOptions.DontRequireReceiver);
 				}
 
 				if (trigger.Interactable is Switch) {

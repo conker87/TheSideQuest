@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Door : Interactable {
 
-	[SerializeField]
+	/*[SerializeField]
 	DoorState _startingState;
 	public DoorState StartingState {
 
@@ -21,19 +21,34 @@ public class Door : Interactable {
 		set { _currentState = value; } 
 
   	}
+	*/
 
 	[SerializeField]
 	LayerMask playerLayerMask;
 	[SerializeField]
 	float playerCheckRadius = 1.5f;
 
+	[SerializeField]
+	bool _startingIsOn;
+	public bool StartingIsOn {
+
+		get { return _startingIsOn; }
+		set { _startingIsOn = value; }
+
+	}
+
+	[SerializeField]
+	bool _isOn;
+	public bool IsOn {
+
+		get { return _isOn; }
+		set { _isOn = value; }
+
+	}
+
 	float playerCheckTime = 0.5f, playerCheckTimer;
 
-	Collider2D childCollider;
-	Animator childAnim;
-
-	// This is for the DoorState.CHANGING to determine which final state the door should be in at the end of the Anim.
-	protected bool opening = false, canChangeState = true;
+	Animator anim;
 
 	protected override void Start() {
 
@@ -45,8 +60,7 @@ public class Door : Interactable {
 
 		}
 
-		childCollider = GetComponentsInChildren<Collider2D>()[1];
-		// childAnim = GetComponentsInChildren<Animator> ()[1];
+		anim = GetComponent<Animator> ();
 
 	}
 
@@ -57,81 +71,50 @@ public class Door : Interactable {
 
 		DoReset ();
 
-		switch (CurrentState) {
+		anim.SetBool ("isOn", IsOn);
 
-		case DoorState.OPENING:
-			// print ("DoorState.OPENING");
+	}
 
-			if (canChangeState) {
-				// anim.SetBool("Opening", true);
-				opening = true;
-				ChangeDoorState (DoorState.OPEN); // TODO: Change these back to DoorState.CHANGING once Anims are added.
+	public override void DoInteraction (bool sentFromPlayerInput = false) {
+
+		CheckInteraction ();
+
+		if (!_canContinue) {
+			return;
+		}
+
+		if (IsOneUseOnly) {
+			HasBeenUsedOnce = true;
+		}
+
+		switch (IsOn) {
+
+		case true:
+
+			if (!CheckForPlayerInRadius ()) {
+				IsOn = false;
 			}
 			break;
 
-		case DoorState.CLOSING:
-			// print ("DoorState.CLOSING");
+		case false:
 
-			CheckForPlayer ();
+			IsOn = true;
 
-			if (canChangeState) {
-				
-				opening = false;
-				// anim.SetBool("Closing", true);
-				ChangeDoorState (DoorState.CLOSED);
+			if (isResetInteractable) {
+
+				StartResetTimer ();
 
 			}
-			break;
 
-		case DoorState.CHANGING:
-			// if (!anim.IsPlaying) { ChangeDoorState((opening) ? DoorState.OPEN : DoorState.CLOSED); } 
-			break;
-
-			// TODO: These to cases need to be removed once Anims are added
-		case DoorState.OPEN:
-			GetComponent<SpriteRenderer> ().enabled = false;
-			childCollider.gameObject.SetActive (false); // childCollider.enabled = false;
-			//GetComponent<Collider2D> ().enabled = false;
-			break;
-
-		case DoorState.CLOSED:
-			GetComponent<SpriteRenderer> ().enabled = true;
-			childCollider.gameObject.SetActive (true); // childCollider.enabled = true;
-			//GetComponent<Collider2D> ().enabled = true;
 			break;
 
 		}
 
 	}
 
-	public override void DoInteraction (bool sentFromPlayerInput = false)
-	{
+	public void ForceDoorState(bool force) {
 
-		base.DoInteraction (sentFromPlayerInput);
-
-		if (!_canContinue) return;
-
-		if (IsOneUseOnly) HasBeenUsedOnce = true;
-
-		DoorState stateToChange = (StartingState == DoorState.CLOSED) ? DoorState.OPENING : DoorState.CLOSING,
-		previousState = (StartingState == DoorState.CLOSED) ? DoorState.CLOSING : DoorState.OPENING;
-
-		if (CurrentState == StartingState) {
-
-			StartResetTimer ();
-			ChangeDoorState (stateToChange);
-
-		} else {
-
-			ChangeDoorState (previousState);
-
-		}
-
-	}
-
-	public void ForceDoorState(DoorState force) {
-
-		CurrentState = force;
+		IsOn = force;
 
 		if (isResetInteractable) {
 
@@ -141,28 +124,41 @@ public class Door : Interactable {
 
 	}
 
-	protected void CheckForPlayer() {
+	protected bool CheckForPlayerInRadius(bool checkAgain = true) {
 
-		if (Time.time > playerCheckTimer) {
+		if (Time.time < playerCheckTimer) {
 
-			playerCheckTimer = Time.time + playerCheckTime;
+			return true;
 
-			Vector2 currentPosition = transform.position;
-			Collider2D col;
+		}
 
-			if ((col = Physics2D.OverlapCircle (currentPosition, playerCheckRadius, playerLayerMask)) != null) {
+		playerCheckTimer = Time.time + playerCheckTime;
 
-				if (col.GetComponent<Player> () != null) {
+		Vector2 currentPosition = transform.position;
+		Collider2D col = Physics2D.OverlapCircle (currentPosition, playerCheckRadius, playerLayerMask);
 
-					print ("Player has been found within range.");
-					canChangeState = false;
-					return;
+		if (col != null && col.GetComponent<Player> () != null) {
+			
+			Debug.Log (string.Format("Interactable::Door::CheckForPlayerInRadius -- Player was found within {0} units of {1}!",
+				playerCheckRadius, InteractableID));
 
-				}
-
+			if (checkAgain) {
+				Invoke ("CheckAgainForPlayer", playerCheckTime + 0.01f);
 			}
 
-			canChangeState = true;
+			return true;
+
+		}
+
+		return false;
+
+}
+
+	protected void CheckAgainForPlayer() {
+
+		if (!CheckForPlayerInRadius ()) {
+
+			IsOn = !IsOn;
 
 		}
 
@@ -180,21 +176,25 @@ public class Door : Interactable {
 
 	protected virtual void DoReset() {
 
-		if (isResetInteractable && CurrentState != StartingState && Time.time > _resetTimer) {
+		if (isResetInteractable && IsOn != StartingIsOn && Time.time > _resetTimer ) {
 
-			DoorState state = (StartingState == DoorState.CLOSED) ? DoorState.CLOSING : DoorState.OPENING;
-			_resetTimer = Mathf.Infinity;
+			bool state = StartingIsOn;
 
-			ChangeDoorState (state);
+			if (!CheckForPlayerInRadius ()) {
 
+				_resetTimer = Mathf.Infinity;
+
+				ChangeDoorState (state);
+
+			}
 
 		}
 
 	}
 
-	public void ChangeDoorState(DoorState state) {
+	public void ChangeDoorState(bool state) {
 
-		CurrentState = state;
+		IsOn = state;
 
   	}
 

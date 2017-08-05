@@ -164,7 +164,8 @@ public static class GameSaveController {
 
 		foreach (Door d in DoorsInWorld) {
 
-			Debug.Log ("Door: '" + d.name + "', ID: '" + d.GetInstanceID() + "', CurrentState: '" + d.CurrentState + "'.");
+			Debug.Log ("Door: '" + d.name + "', ID: '" + d.GetInstanceID() + "', IsOn: '" + d.IsOn + "', CurrentlyLocked: '" + d.IsCurrentlyLocked +
+				"', IsOneUseOnly: '" + d.IsOneUseOnly + "', HasBeenUsedOnce: '" + d.HasBeenUsedOnce + "'.");
 
 		}
 
