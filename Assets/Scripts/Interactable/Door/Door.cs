@@ -184,19 +184,13 @@ public class Door : Interactable {
 
 				_resetTimer = Mathf.Infinity;
 
-				ChangeDoorState (state);
+				IsOn = false;
 
 			}
 
 		}
 
 	}
-
-	public void ChangeDoorState(bool state) {
-
-		IsOn = state;
-
-  	}
 
 	void OnDrawGizmos() {
 

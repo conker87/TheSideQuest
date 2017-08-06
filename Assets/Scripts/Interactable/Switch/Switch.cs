@@ -72,17 +72,17 @@ public class Switch : Interactable {
 
 		CheckConnectedInteractablesForSelf ();
 
-
 		// Find all Doors connected to this Interactable and increment their OperatorCounter
 		foreach (Interactable interactable in ConnectedInteractables) {
 
 			DoorOperator current = interactable.GetComponent<DoorOperator>();
 
-			//if (current != null && current.dDoorOpenOperator == DoorOpenOperator.AND) {
+			if (current != null && current.dDoorOpenOperator == DoorOpenOperator.AND) {
 
-				//current.IncrementTotalOperatorCount ();
+				current.IncrementTotalOperatorCount ();
+				print (current.GetTotalOperatorCount ());
 
-			//}
+			}
 
 		}
 
@@ -158,7 +158,7 @@ public class Switch : Interactable {
 
 				if ((door = interact.GetComponent<DoorOperator>()) != null) {
 
-					//door.DecrementOperatorCount();
+					door.DecrementOperatorCount();
 
 				}
 
@@ -184,7 +184,7 @@ public class Switch : Interactable {
 
 			if ((door = interact.GetComponent<DoorOperator>()) != null) {
 
-				//door.IncrementOperatorCount();
+				door.IncrementOperatorCount();
 
 			}
 
