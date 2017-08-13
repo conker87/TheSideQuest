@@ -50,7 +50,6 @@ public class RoomController : MonoBehaviour {
 
 	}
 
-
 	Enemy[] currentEnemies;
 
 	Boss b = null;
@@ -60,12 +59,15 @@ public class RoomController : MonoBehaviour {
 		// Rename
 		gameObject.name = string.Format("{0}_{1}_{2}", RoomName, transform.position, RoomLevelDirection.ToString());
 
+		SpawnEnemies ();
+
 	}
 
 	public void EnteredRoom() {
 
 		IsCurrentlyInRoom = true;
 		SpawnEnemies ();
+		print ("Entering: " + RoomName);
 
 		UIController.instance.DoRoomName (RoomName); // Localisation.GetLocalisedText(RoomName, Localisation.CurrentLocal);
 		UIController.instance.ShowBossHealth (b);
@@ -77,7 +79,6 @@ public class RoomController : MonoBehaviour {
 
 	public void LeftRoom() {
 
-		print ("Leaving: " + RoomName);
 		IsCurrentlyInRoom = false;
 		DespawnEnemies ();
 
@@ -87,7 +88,7 @@ public class RoomController : MonoBehaviour {
 
 	}
 
-	void SpawnEnemies() {
+	void SpawnEnemies(bool disableOnSpawn = false) {
 
 		currentEnemies = GetComponentsInChildren<Enemy> (true);
 		Vector2 trans = transform.position;
@@ -111,6 +112,10 @@ public class RoomController : MonoBehaviour {
 
 					e.transform.position = trans + ers.SpawnLocation;
 					e.gameObject.SetActive (true);
+
+					if (disableOnSpawn) {
+						e.gameObject.SetActive (false);
+					}
 
 					e.PermanentlyKillable = ers.PermanentlyKillable;
 					e.HasBeenKilled = false;

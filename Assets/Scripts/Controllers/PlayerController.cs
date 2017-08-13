@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour {
 
 		CalculateVelocity ();
 
-		if (playerDetails.AbilityCollected("WALL_SLIDE")) {
+		if (playerDetails.AbilityCollected("WALL_SLIDE") && !Input.GetKey(KeyCode.LeftShift)) {
 		
 			HandleWallSliding ();
 

@@ -16,20 +16,22 @@ public class CameraManager : MonoBehaviour {
 
     // Area boundary elements
     [Header("Area Elements")]
-    [SerializeField] private int currentArea = 0;
+    [SerializeField] private int currentArea = -1;
     [SerializeField] private List<GameObject> listAreaNodes = new List<GameObject>();
 
     void Start() {
-        orthographicsize_base = Camera.main.orthographicSize;
+		
+		orthographicsize_base = Camera.main.orthographicSize;
 
-        if (focusObject != null)
-            FocusObject = focusObject;
+		if (focusObject != null)
+			FocusObject = focusObject;
 
-        if (listAreaNodes.Count == 0)
-            Debug.LogWarning(gameObject.name.ToString() + " (CameraManager): No Area boundaries are assigned. The camera will move freely to the set targets");
+		if (listAreaNodes.Count == 0)
+			Debug.LogWarning (gameObject.name.ToString () + " (CameraManager): No Area boundaries are assigned. The camera will move freely to the set targets");
 
-		// SetNewArea();
-    }
+		SetNewArea (true);
+
+	}
 
     void Update() {
         // Declare Vector3 for the new position
@@ -46,6 +48,9 @@ public class CameraManager : MonoBehaviour {
         newPosition.z = transform.position.z;
 
         if (listAreaNodes.Count > 0) {
+
+			// listAreaNodes [currentArea].GetComponent<RoomController> ().IsCurrentlyInRoom = true;
+
             // If the current room size is smaller than the camera, fix the camera in the center of the room only following the focusobject over the y-axis
             if (GetAreaRect(currentArea).width < (Camera.main.orthographicSize * Camera.main.aspect) * 2) {
                 newPosition.x = listAreaNodes[currentArea].transform.position.x + GetAreaRect(currentArea).width / 2;
@@ -79,33 +84,30 @@ public class CameraManager : MonoBehaviour {
     }
 
     // Method to check what area the player has entered and sets the CurrentArea to this new area
-    private void SetNewArea() {
-        int previousArea = currentArea;
+	private void SetNewArea(bool justLoaded = false) {
+
+        int previousArea = currentArea, i = 0;
 
         foreach (GameObject n in listAreaNodes) {
 
 			RoomController room = n.GetComponent<RoomController> ();
 
-			// print (room.RoomName);
+			if (GetAreaRect (listAreaNodes.IndexOf (n)).Contains (followtarget)) {
 
-
-			if (!GetAreaRect (listAreaNodes.IndexOf (n)).Contains (followtarget)) {
-
-				room.LeftRoom ();
-
-			} else {
 				previousArea = listAreaNodes.IndexOf (n);
 
-				if (previousArea == currentArea) {
+				if (!justLoaded && previousArea == currentArea) {
 					return;
 				}
+
+				print ("Current room: " + room.RoomName);
 
 				currentArea = previousArea;
 				room.EnteredRoom ();
 
-				// break;
-
-				//  	Debug.Log ("new area: " + currentArea.ToString ());
+			} else {
+				
+				room.LeftRoom ();
 
 			}
         }
@@ -177,8 +179,12 @@ public class CameraManager : MonoBehaviour {
     }
 
     private void OnDrawGizmos() {
+		int c;
+
         if (listAreaNodes.Count == 0)
             return;
+
+		c = (currentArea < 0) ? 0 : currentArea;
 
         // Draw the current selected area's bounding box
         foreach (GameObject n in listAreaNodes) {
@@ -186,7 +192,7 @@ public class CameraManager : MonoBehaviour {
             Transform j = n.transform.GetChild(0);
 
             Gizmos.color = Color.red;
-            if (n == listAreaNodes[currentArea])
+			if (n == listAreaNodes[c])
                 Gizmos.color = Color.green;
 
             Gizmos.DrawLine(new Vector2(i.position.x, i.position.y), new Vector2(j.position.x, i.position.y));

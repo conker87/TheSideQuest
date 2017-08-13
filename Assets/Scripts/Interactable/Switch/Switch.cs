@@ -80,7 +80,7 @@ public class Switch : Interactable {
 			if (current != null && current.dDoorOpenOperator == DoorOpenOperator.AND) {
 
 				current.IncrementTotalOperatorCount ();
-				print (current.GetTotalOperatorCount ());
+				// print (current.GetTotalOperatorCount ());
 
 			}
 

@@ -48,7 +48,7 @@ public class Door : Interactable {
 
 	public Animator doorAnimator;
 
-	float playerCheckTime = 0.5f, playerCheckTimer;
+	protected float playerCheckTime = 0.5f, playerCheckTimer;
 
 	protected override void Start() {
 
