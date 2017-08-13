@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour {
 	float weaponCooldownTimer;
 
 	// Interactable
+	[SerializeField]
 	float interactableRadius = .75f;
 	[SerializeField]
 	LayerMask interableLayerMask;

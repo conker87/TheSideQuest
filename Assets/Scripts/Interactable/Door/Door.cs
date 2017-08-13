@@ -46,9 +46,9 @@ public class Door : Interactable {
 
 	}
 
-	float playerCheckTime = 0.5f, playerCheckTimer;
+	public Animator doorAnimator;
 
-	Animator anim;
+	float playerCheckTime = 0.5f, playerCheckTimer;
 
 	protected override void Start() {
 
@@ -60,7 +60,7 @@ public class Door : Interactable {
 
 		}
 
-		anim = GetComponent<Animator> ();
+		// anim = GetComponent<Animator> ();
 
 	}
 
@@ -71,7 +71,7 @@ public class Door : Interactable {
 
 		DoReset ();
 
-		anim.SetBool ("isOn", IsOn);
+		doorAnimator.SetBool ("isOn", IsOn);
 
 	}
 

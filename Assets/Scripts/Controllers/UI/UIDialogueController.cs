@@ -11,6 +11,10 @@ public class UIDialogueController : MonoBehaviour {
 	public Button NextButton;
 	UIButtonController UIBC = null;
 
+	string currentSentence;
+
+	Coroutine typeSentence = null;
+
 	Queue<string> dialogue = new Queue<string> ();
 
 	void Update() {
@@ -59,6 +63,20 @@ public class UIDialogueController : MonoBehaviour {
 
 	}
 
+	IEnumerator TypeSentence (string sentence) {
+
+		listOfTextElements [1].text = "";
+
+		foreach (char letter in sentence) {
+
+			listOfTextElements [1].text += letter;
+			yield return new WaitForSeconds(1f/64f);
+
+		}
+
+
+	}
+
 	public void DisplayNextSentence() {
 
 		if (dialogue.Count == 0) {
@@ -68,7 +86,27 @@ public class UIDialogueController : MonoBehaviour {
 
 		}
 
-		listOfTextElements [1].text = dialogue.Dequeue();
+		if (typeSentence != null && listOfTextElements [0].text != currentSentence) {
+
+			if (typeSentence != null) {
+				StopCoroutine (typeSentence);
+			}
+			typeSentence = null;
+
+			listOfTextElements [1].text = currentSentence;
+			return;
+
+		}
+
+		currentSentence = dialogue.Dequeue ();
+
+		if (typeSentence != null) {
+			StopCoroutine (typeSentence);
+		}
+
+		typeSentence = StartCoroutine (TypeSentence (currentSentence));
+
+		//listOfTextElements [1].text = dialogue.Dequeue();
 		UIBC.ButtonLabel.text = (dialogue.Count > 0) ? "NEXT" : "EXIT";
 
 	}

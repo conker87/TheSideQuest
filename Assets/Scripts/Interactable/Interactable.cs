@@ -121,13 +121,6 @@ public class Interactable : MonoBehaviour {
 
 		}
 
-		if (IsCurrentlyLocked) {
-
-			print ("Interactable::Switch::DoInteraction -- Interactable is currently locked.");
-			_canContinue = false;
-
-		}
-
 	}
 
 	protected virtual void RenameGameObject() {
