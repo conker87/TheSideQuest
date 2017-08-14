@@ -4,18 +4,9 @@ using UnityEngine;
 
 public class DEBUG_ValidateInteractableIDs : MonoBehaviour {
 
-	GameObject worldRoot;
-
 	List<Interactable> interactables = new List<Interactable>();
 	List<Interactable> foundInteractables = new List<Interactable>();
 
-	// Use this for initialization
-	void Start () {
-
-		worldRoot = GameObject.Find ("World");
-
-	}
-	
 	public void ValidateInteractableIDs(GameObject rootWorld) {
 
 		if (interactables.Count == 0) {

@@ -20,7 +20,10 @@ public class AbilityItem : Item {
 		if (player != null) {
 
 			if (player.AbilityCollect(AbilityName, true)) {
+
+				SendCollectedText (AbilityName);
 				DisableGameObject (true);
+
 			}
 
 		}

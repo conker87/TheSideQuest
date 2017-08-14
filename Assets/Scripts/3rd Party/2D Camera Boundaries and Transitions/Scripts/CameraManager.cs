@@ -86,7 +86,7 @@ public class CameraManager : MonoBehaviour {
     // Method to check what area the player has entered and sets the CurrentArea to this new area
 	private void SetNewArea(bool justLoaded = false) {
 
-        int previousArea = currentArea, i = 0;
+		int previousArea = currentArea;
 
         foreach (GameObject n in listAreaNodes) {
 

@@ -42,6 +42,7 @@ public class UIController : MonoBehaviour {
 	// Pause
 	public UIPauseController UIPauseController;
 
+	public UIInformationController UIInformationController;
 
 	Coroutine disableElement;
 
@@ -56,12 +57,6 @@ public class UIController : MonoBehaviour {
 
 	}
 
-	void Update() {
-
-		ShowHealthText();
-
-	}
-
 	public void ShowBossHealth (Enemy e) {
 
 		BossBarParent.gameObject.SetActive ((e != null));
@@ -69,26 +64,10 @@ public class UIController : MonoBehaviour {
 
 	}
 
-	void ShowHealthText() {
-
-		if (Health == null) {
-
-			return;
-
-		}
-
-		string healthString = "Health: ";
-		string currentColor = "";
-
-		for (int i = 0; i < Player.instance.MaximumHealth; i++) {
-
-			currentColor = (i >= Player.instance.CurrentHealth) ? unhealthy : healthy;
-
-			healthString += "<color=" + currentColor + ">" + healthBarCharacter + "</color>";
-
-		}
-
-		Health.text = healthString;
+	public void ShowCollectedText(string collectedItemName) {
+		
+		UIInformationController.gameObject.SetActive (true);
+		UIInformationController.Activate (collectedItemName);
 
 	}
 
@@ -110,7 +89,29 @@ public class UIController : MonoBehaviour {
 
 	}
 
-	public IEnumerator DisableElement(GameObject element, float seconds) {
+	public static IEnumerator FadeTextElement(Text element, float totalTime, Color startColor, Color endColor) {
+
+		if (element == null) {
+
+			yield return null;
+
+		}
+
+		float elapsedTime = 0f;
+
+		while(elapsedTime < totalTime) {
+			
+			elapsedTime += Time.deltaTime;
+			element.color = Color.Lerp(startColor, endColor, elapsedTime/totalTime);
+			yield return null;
+
+		}
+
+		element.gameObject.SetActive (false);
+
+	}
+
+	public static IEnumerator DisableElement(GameObject element, float seconds) {
 
 		if (element == null) {
 

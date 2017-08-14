@@ -40,6 +40,12 @@ public class Item : MonoBehaviour {
 
 	}
 
+	protected void SendCollectedText(string itemName) {
+
+		UIController.instance.ShowCollectedText (itemName);
+
+	}
+
 	public void DisableGameObject(bool disable, bool destroy = false) {
 
 		if (destroy) {
