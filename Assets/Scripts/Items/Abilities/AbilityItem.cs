@@ -21,7 +21,7 @@ public class AbilityItem : Item {
 
 			if (player.AbilityCollect(AbilityName, true)) {
 
-				SendCollectedText (AbilityName);
+				SendInformationText ("You have collected: " + AbilityName);
 				DisableGameObject (true);
 
 			}

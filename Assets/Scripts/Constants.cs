@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public static class Constants {
+public class Constants : MonoBehaviour {
 
 	public static Color[] LevelDirectionColor = {
 		new Color(85f / 255f, 107f / 255f, 247f / 255f),
@@ -15,6 +16,47 @@ public static class Constants {
 		Color.yellow
 	};
 
+	public static IEnumerator FadeTextElement(Text element, float totalTime, Color startColor, Color endColor, bool waitForSeconds = false, float waitForSecondsT = 0f) {
+
+		if (element == null) {
+
+			yield return null;
+
+		}
+
+		if (waitForSeconds) {
+
+			yield return new WaitForSeconds (waitForSecondsT);
+
+		}
+
+		float elapsedTime = 0f;
+
+		while(elapsedTime < totalTime) {
+
+			elapsedTime += Time.deltaTime;
+			element.color = Color.Lerp(startColor, endColor, elapsedTime/totalTime);
+			yield return null;
+
+		}
+
+	}
+
+	public static IEnumerator DisableElement(GameObject element, float seconds) {
+
+		if (element == null) {
+
+			print (element + " is null");
+
+			yield return null;
+
+		}
+
+		yield return new WaitForSeconds (seconds);
+
+		element.SetActive (false);
+
+	}
 
 }
 

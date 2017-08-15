@@ -40,9 +40,9 @@ public class Item : MonoBehaviour {
 
 	}
 
-	protected void SendCollectedText(string itemName) {
+	protected void SendInformationText(string information) {
 
-		UIController.instance.ShowCollectedText (itemName);
+		UIController.instance.ShowInformationText (information);
 
 	}
 

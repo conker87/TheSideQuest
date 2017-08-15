@@ -24,6 +24,15 @@ public class Interactable : MonoBehaviour {
 	}
 
 	[SerializeField]
+	bool _isCurrentlyBusy = false;
+	public bool IsCurrentlyBusy {
+
+		get { return _isCurrentlyBusy; } 
+		set { _isCurrentlyBusy = value; } 
+
+	}
+
+	[SerializeField]
 	bool _isCurrentlyLocked;
 	public bool IsCurrentlyLocked {
 
@@ -109,14 +118,21 @@ public class Interactable : MonoBehaviour {
 
 		if (!IsCurrentlyInteractable) {
 
-			print ("Interactable::DoInteraction -- Interactable is disabled.");
+			UIController.instance.ShowInformationText ("This device is disabled.", new Color(1f, 0f, 0f, 1f), new Color(1f, 0f, 0f, 0f));
+			_canContinue = false;
+
+		}
+
+		if (IsCurrentlyBusy) {
+
+			UIController.instance.ShowInformationText ("This device is busy [PH][DNU].", new Color(1f, 1f, 0f, 1f), new Color(1f, 1f, 0f, 0f));
 			_canContinue = false;
 
 		}
 
 		if (IsOneUseOnly && HasBeenUsedOnce) {
 
-			print ("Interactable::DoInteraction -- Interactable has been used already and is now disabled.");
+			UIController.instance.ShowInformationText ("This device is now disabled.", new Color(1f, 0f, 0f, 1f), new Color(1f, 0f, 0f, 0f));
 			_canContinue = false;
 
 		}

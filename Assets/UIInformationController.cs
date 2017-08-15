@@ -6,23 +6,29 @@ using UnityEngine.UI;
 public class UIInformationController : MonoBehaviour {
 
 	public Text informationText;
-	public float textFadeTime = 3f;
+	public float textShowTime = 3f, textFadeTime = 3f;
+
+	public Color startColor = new Color (1f, 1f, 1f, 1f), endColor = new Color (1f, 1f, 1f, 0f);
 
 	public void Activate(string informationString) {
 
-		Invoke ("Deactivate", 1f);
-		gameObject.SetActive (true);
-		informationText.color = new Color (1f, 1f, 1f, 1f);
-		informationText.text = string.Format("You have collected {0}", informationString);
+		StopAllCoroutines ();
 
+		StartCoroutine(Constants.FadeTextElement (informationText, textFadeTime, startColor, endColor, true, textShowTime));
+
+		informationText.color = startColor;
+		informationText.text = informationString;
 
 	}
 
-	void Deactivate() {
+	public void Activate(string informationString, Color startColorOverride, Color endColorOverride) {
 
-		// Coroutine c = ;
+		StopAllCoroutines ();
 
-		StartCoroutine(UIController.FadeTextElement (informationText, textFadeTime, new Color(1f, 1f, 1f, 1f), new Color(1f, 1f, 1f, 0f)));
+		StartCoroutine(Constants.FadeTextElement (informationText, textFadeTime, startColorOverride, endColorOverride, true, textShowTime));
+
+		informationText.color = startColorOverride;
+		informationText.text = informationString;
 
 	}
 

@@ -8,13 +8,13 @@ public class DoorParentInteractable : MonoBehaviour {
 
 	void DisableInteractability() {
 
-		doorParent.IsCurrentlyInteractable = false;
+		doorParent.IsCurrentlyBusy = true;
 
 	}
 
 	void EnableInteractability() {
 
-		doorParent.IsCurrentlyInteractable = true;
+		doorParent.IsCurrentlyBusy = false;
 
 	}
 

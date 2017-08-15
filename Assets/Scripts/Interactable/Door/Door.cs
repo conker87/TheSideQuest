@@ -60,8 +60,6 @@ public class Door : Interactable {
 
 		}
 
-		// anim = GetComponent<Animator> ();
-
 	}
 
 	// Update is called once per frame
