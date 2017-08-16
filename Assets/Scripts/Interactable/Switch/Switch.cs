@@ -66,9 +66,7 @@ public class Switch : Interactable {
 
 		base.Start ();
 
-		if (SaveStateToFile) {
-			GameSaveController.SwitchesInWorld.Add (this);
-		}
+		GameSaveController.SwitchesInWorld.Add (this);
 
 		CheckConnectedInteractablesForSelf ();
 

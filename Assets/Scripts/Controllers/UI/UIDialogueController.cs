@@ -26,6 +26,12 @@ public class UIDialogueController : MonoBehaviour {
 
 		}
 
+		if (Player.instance.IsCurrentlyBusy && Input.GetKeyDown (KeyCode.Escape)) {
+
+			EndDialogue ();
+
+		}
+
 	}
 
 	public void ShowDialogueBox (string[] contents, string title = "") {
@@ -113,6 +119,9 @@ public class UIDialogueController : MonoBehaviour {
 
 	public void EndDialogue() {
 
+		StopAllCoroutines ();
+		typeSentence = null;
+		dialogue.Clear ();
 		Player.instance.IsCurrentlyBusy = false;
 		gameObject.SetActive (false);
 

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--This is the save location ID of the SaveStation that the player saved at.-->
+<saveLocation>SAVE_STATION_A</saveLocation>
+<!--This must be read into Player.Instance.Abilities-->
+<abilities>
+	<JUMP>true</JUMP>
+	<JUMP_DOUBLE>false</JUMP_DOUBLE>
+	<JUMP_TRIPLE>false</JUMP_TRIPLE>
+	<WALL_SLIDE>false</WALL_SLIDE>
+	<WALL_JUMP>false</WALL_JUMP>
+	<WALL_HIGH_JUMP>false</WALL_HIGH_JUMP>
+	<DASH>false</DASH>
+	<DASH_MEGA>false</DASH_MEGA>
+	<CHEAT_JUMP>false</CHEAT_JUMP>
+	<CHEAT_DASH>false</CHEAT_DASH>
+</abilities>
+<!--This is the modifer to the damage of the weapon the player has.-->
+
+<WeaponProjectileModifier>1</WeaponProjectileModifier>
+<!--This is the list of Logs that the player has collecteds.-->
+<logs>
+</logs>

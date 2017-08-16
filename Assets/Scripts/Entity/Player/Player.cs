@@ -32,6 +32,15 @@ public class Player : Entity {
 
 	}
 
+	[SerializeField]
+	bool _isCurrentlyPaused;
+	public bool IsCurrentlyPaused {
+
+		get { return _isCurrentlyPaused; }
+		set { _isCurrentlyPaused = value; }
+
+	}
+
 	// WEAPON PROJECTILE
 	[SerializeField]
 	Projectile _weaponProjectile;

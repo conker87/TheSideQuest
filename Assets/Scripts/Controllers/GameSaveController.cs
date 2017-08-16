@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
+using System.Xml;
 
 public static class GameSaveController {
 
@@ -49,6 +51,10 @@ public static class GameSaveController {
 
 	}
 
+	static XmlWriter xmlWriter;
+
+	static string SaveStationString, AbilitiesString;
+
 	public static void LoadGame() {
 
 		Debug.LogError ("NYI");
@@ -67,13 +73,23 @@ public static class GameSaveController {
 
 		if (AttemptToFindPlayer ()) {
 
-			SaveLocation (saveStationID);
-			SavePlayer ();
-			SaveEntityStates ();
-			SaveItemStates ();
-			SaveSwitchStates ();
-			SaveDoorStates ();
-			SaveLogs ();
+			xmlWriter = XmlWriter.Create("saveGameTest.xml");
+			xmlWriter.WriteStartDocument();
+			xmlWriter.WriteWhitespace("\n");
+
+			SaveLocation (saveStationID, xmlWriter);
+			SavePlayer (xmlWriter);
+			SaveEntityStates (xmlWriter);
+			SaveItemStates (xmlWriter);
+			SaveSwitchStates (xmlWriter);
+			SaveDoorStates (xmlWriter);
+			SaveLogs (xmlWriter);
+
+			xmlWriter.WriteEndDocument();
+			xmlWriter.Close();
+
+			Debug.Log (SaveStationString);
+			Debug.Log (AbilitiesString);
 
 		} else {
 
@@ -83,41 +99,89 @@ public static class GameSaveController {
 
 	}
 
-	static void SaveLocation(string stationID) {
+	static void SaveLocation(string stationID, XmlWriter writer) {
 
-		Debug.Log ("Save game location ID: " + stationID);
+		Debug.Log ("GameSaveController::SaveLocation -- Current SaveStationID: " + stationID);
+
+		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteComment ("This is the save location ID of the SaveStation that the player saved at.");
+		xmlWriter.WriteWhitespace("\n");
+
+		xmlWriter.WriteStartElement("saveLocation");
+		xmlWriter.WriteString(stationID);
+		xmlWriter.WriteEndElement();
 
 	}
 
-	static void SavePlayer() {
+	static void SavePlayer(XmlWriter writer) {
 
+		// TODO: Do we even need list all save stations as they're all static anyway. Maybe just for the debug menu.
+
+		SaveStationString = "GameSaveController::SavePlayer -- All SaveStations: ";
 		foreach (SaveStation s in SceneManager.SaveStationLocations) {
 			
-			Debug.Log ("Name: '" + s.name + "', StationID: " + s.InteractableID + ", Position: " + s.transform.position);
+			SaveStationString += "StationID: " + s.InteractableID + ", Position: " + s.transform.position + "\n";
 		}
 
+
+		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteComment ("This must be read into Player.Instance.Abilities");
+		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteStartElement("abilities");
+
+		AbilitiesString = "GameSaveController::SavePlayer -- All Abilities: ";
 		foreach (Ability a in GameObject.FindObjectOfType<Player>().Abilities) {
 
-			Debug.Log ("AbilityName: '" + a.AbilityName + "', AbilityCollected: " + a.AbilityCollected);
+			AbilitiesString += "AbilityName: '" + a.AbilityName + "', AbilityCollected: " + a.AbilityCollected + "\n";
+
+			xmlWriter.WriteWhitespace("\n\t");
+			xmlWriter.WriteStartElement(a.AbilityName);
+			xmlWriter.WriteValue(a.AbilityCollected);
+			xmlWriter.WriteEndElement();
 
 		}
+
+		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteEndElement();
+
+		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteComment ("This is the modifer to the damage of the weapon the player has.");
+		xmlWriter.WriteWhitespace("\n");
 
 		Debug.Log ("WeaponProjectileModifier: " + player.WeaponProjectileModifier);
 
+		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteStartElement("WeaponProjectileModifier");
+		xmlWriter.WriteValue(player.WeaponProjectileModifier);
+		xmlWriter.WriteEndElement();
+
 	}
 
-	static void SaveLogs() {
+	static void SaveLogs(XmlWriter writer) {
+		
+		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteComment ("This is the list of Logs that the player has collecteds.");
+		xmlWriter.WriteWhitespace("\n");
+
+		xmlWriter.WriteStartElement("logs");
 
 		foreach (KeyValuePair<string, bool> log in LogsFoundByPlayer) {
 
 			Debug.Log ("Log of ID: '" + log.Key + "' has been found and added to the dictionary");
 
+			xmlWriter.WriteWhitespace("\n\t");
+
+			xmlWriter.WriteStartElement("log_collected");
+			xmlWriter.WriteValue(log.Key);
+			xmlWriter.WriteEndElement();
 
 		}
 
+		xmlWriter.WriteWhitespace("\n");
+
 	}
 
-	static void SaveEntityStates() {
+	static void SaveEntityStates(XmlWriter writer) {
 
 		foreach (Enemy e in EnemiesInWorld) {
 
@@ -128,7 +192,7 @@ public static class GameSaveController {
 
 	}
 
-	static void SaveItemStates() {
+	static void SaveItemStates(XmlWriter writer) {
 
 		foreach (Item i in ItemsInWorld) {
 
@@ -150,7 +214,7 @@ public static class GameSaveController {
 
 	}
 
-	static void SaveSwitchStates() {
+	static void SaveSwitchStates(XmlWriter writer) {
 
 		foreach (Switch s in SwitchesInWorld) {
 
@@ -160,7 +224,7 @@ public static class GameSaveController {
 
 	}
 
-	static void SaveDoorStates() {
+	static void SaveDoorStates(XmlWriter writer) {
 
 		foreach (Door d in DoorsInWorld) {
 

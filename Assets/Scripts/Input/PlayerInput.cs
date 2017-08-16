@@ -19,9 +19,15 @@ public class PlayerInput : MonoBehaviour {
 		
 		Vector2 directionalInput = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 
+		if (Player.instance.IsCurrentlyBusy) {
+
+			return;
+
+		}
+
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 
-			if (Player.instance.IsCurrentlyBusy) {
+			if (Player.instance.IsCurrentlyPaused) {
 
 				UIController.instance.UIPauseController.ReturnToGame ();
 
@@ -33,7 +39,7 @@ public class PlayerInput : MonoBehaviour {
 
 		}
 
-		if (Player.instance.IsCurrentlyBusy) {
+		if (Player.instance.IsCurrentlyPaused) {
 
 			return;
 

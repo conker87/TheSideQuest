@@ -63,11 +63,7 @@ public class Door : Interactable {
 
 		base.Start ();
 
-		if (SaveStateToFile) {
-
-			GameSaveController.DoorsInWorld.Add (this);
-
-		}
+		GameSaveController.DoorsInWorld.Add (this);
 	
 	}
 

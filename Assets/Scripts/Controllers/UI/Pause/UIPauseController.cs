@@ -35,7 +35,7 @@ public class UIPauseController : MonoBehaviour {
 		case "MAIN":
 			DisableAllMenus ();
 
-			Player.instance.IsCurrentlyBusy = true;
+			Player.instance.IsCurrentlyPaused = true;
 
 			UIPauseBorder.SetActive (true);
 			UIPauseMain.gameObject.SetActive(true);
@@ -89,7 +89,7 @@ public class UIPauseController : MonoBehaviour {
 	public void ReturnToGame() {
 
 		SetPauseState ("NONE");
-		Player.instance.IsCurrentlyBusy = false;
+		Player.instance.IsCurrentlyPaused = false;
 
 	}
 
