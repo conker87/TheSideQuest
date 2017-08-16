@@ -28,7 +28,7 @@ public class UIController : MonoBehaviour {
 	public Text Health;
 	public string healthy = "green", unhealthy = "navy", healthBarCharacter = "þ";
 
-	public Button saveTest;
+	public Button loadTest, saveTest;
 
 	public GameObject BossBarParent;
 	public UI_BossHealthBar UI_BossHealthBar;
@@ -46,10 +46,15 @@ public class UIController : MonoBehaviour {
 
 	void Start() { 
 
+		if (loadTest != null) {
+
+			loadTest.onClick.AddListener (GameSaveController.LoadGame);
+
+		}
+
 		if (saveTest != null) {
 
 			saveTest.onClick.AddListener (GameSaveController.SaveGame);
-
 
 		}
 

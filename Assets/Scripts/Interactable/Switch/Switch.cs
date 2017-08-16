@@ -93,9 +93,7 @@ public class Switch : Interactable {
 
 	}
 
-	protected override void Update() {
-
-		base.Update ();
+	protected void Update() {
 
 		DoReset ();
 

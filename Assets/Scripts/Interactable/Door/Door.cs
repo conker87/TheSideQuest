@@ -46,6 +46,15 @@ public class Door : Interactable {
 
 	}
 
+	[SerializeField]
+	RoomController _roomDoorIsIn;
+	public RoomController RoomDoorIsIn {
+
+		get { return _roomDoorIsIn; }
+		set { _roomDoorIsIn = value; }
+
+	}
+
 	public Animator doorAnimator;
 
 	protected float playerCheckTime = 0.5f, playerCheckTimer;
@@ -59,17 +68,35 @@ public class Door : Interactable {
 			GameSaveController.DoorsInWorld.Add (this);
 
 		}
-
+	
 	}
 
 	// Update is called once per frame
-	protected override void Update () {
-
-		base.Update ();
+	protected virtual void Update () {
 
 		DoReset ();
 
-		doorAnimator.SetBool ("isOn", IsOn);
+		// TODO: Figure out better optimisation.
+		doorAnimator.enabled = CheckIfPlayerIsInRoom ();
+
+		if (doorAnimator.enabled) {
+
+			doorAnimator.SetBool ("isOn", IsOn);
+
+		}
+
+	}
+
+	bool CheckIfPlayerIsInRoom() {
+
+		if (RoomDoorIsIn == null) {
+
+			Debug.LogError (string.Format("Interactable::Door -- '{0}' at {1} has no RoomDoorIsIn set, this is very bad!", InteractableID, transform.position));
+			return false;
+
+		}
+
+		return RoomDoorIsIn.IsCurrentlyInRoom;
 
 	}
 

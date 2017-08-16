@@ -51,7 +51,7 @@ public static class GameSaveController {
 
 	public static void LoadGame() {
 
-
+		Debug.LogError ("NYI");
 
 	}
 
@@ -77,7 +77,7 @@ public static class GameSaveController {
 
 		} else {
 
-			Debug.LogError ("GameSaveController::SaveGame -- Holy fuck buckets we couldn't find the player, I couldn't possibly begin the explain why this is pretty bad.");
+			Debug.LogError ("GameSaveController::SaveGame -- Holy fuck buckets Batman! We couldn't find the player, I couldn't possibly begin the explain why this is pretty bad.");
 
 		}
 

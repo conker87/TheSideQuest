@@ -101,10 +101,6 @@ public class Interactable : MonoBehaviour {
 		RenameGameObject ();
 
 	}
-	
-	protected virtual void Update () {
-
-	}
 
 	public virtual void DoInteraction(bool sentFromPlayerInput = false) {
 
