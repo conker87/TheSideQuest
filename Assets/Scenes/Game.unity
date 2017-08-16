@@ -620,7 +620,7 @@ Prefab:
         type: 0}
     - target: {fileID: 482378, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 32
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 482378, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -649,13 +649,13 @@ MonoBehaviour:
   _isCurrentlyInRoom: 0
   _enemiesInRoom:
   - Enemy: {fileID: 114450679191451146, guid: 941688c8a8f0bff498e8f1f406130ac7, type: 2}
-    SpawnLocation: {x: 17.5, y: -30.36}
+    SpawnLocation: {x: 15.89, y: -25.4}
     HasBeenKilled: 0
-    PermanentlyKillable: 0
+    PermanentlyKillable: 1
     RequiredToOpenDoor: 1
     EnemyID: 0
   - Enemy: {fileID: 114450679191451146, guid: 941688c8a8f0bff498e8f1f406130ac7, type: 2}
-    SpawnLocation: {x: 15.56, y: -30.36}
+    SpawnLocation: {x: 13.6, y: -27.2}
     HasBeenKilled: 0
     PermanentlyKillable: 0
     RequiredToOpenDoor: 1
@@ -1020,6 +1020,11 @@ Prefab:
       propertyPath: _roomDoorIsIn
       value: 
       objectReference: {fileID: 164308312}
+    - target: {fileID: 114771045317673122, guid: 8e06234024bd3274a8dcffd571811193,
+        type: 2}
+      propertyPath: _isOneUseOnly
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e06234024bd3274a8dcffd571811193, type: 2}
   m_IsPrefabParent: 0
@@ -1276,6 +1281,101 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 326772981}
+--- !u!1001 &329172053
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1455399285}
+    m_Modifications:
+    - target: {fileID: 491144, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 491144, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -48
+      objectReference: {fileID: 0}
+    - target: {fileID: 491144, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 491144, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 491144, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 491144, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 491144, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 491144, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 166548, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: -982381405332843317, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 482378, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 482378, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -32
+      objectReference: {fileID: 0}
+    - target: {fileID: 166548, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+      propertyPath: m_Name
+      value: AreaNodeStart (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &329172054 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 491144, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+  m_PrefabInternal: {fileID: 329172053}
+--- !u!1 &329172055 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 166548, guid: 61ffac7a1e5108d47b52e0427470b27a, type: 2}
+  m_PrefabInternal: {fileID: 329172053}
+--- !u!114 &329172056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 329172055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bbbd1b42a6ecb04b848db38ae273ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _roomName: Test Room One, with Boss
+  _isBossRoom: 0
+  _isCurrentlyInRoom: 0
+  _enemiesInRoom:
+  - Enemy: {fileID: 114450679191451146, guid: 941688c8a8f0bff498e8f1f406130ac7, type: 2}
+    SpawnLocation: {x: 5, y: -25.4}
+    HasBeenKilled: 0
+    PermanentlyKillable: 0
+    RequiredToOpenDoor: 1
+    EnemyID: 0
+  - Enemy: {fileID: 114450679191451146, guid: 941688c8a8f0bff498e8f1f406130ac7, type: 2}
+    SpawnLocation: {x: 5.05, y: -27.6}
+    HasBeenKilled: 0
+    PermanentlyKillable: 0
+    RequiredToOpenDoor: 1
+    EnemyID: 0
+  _roomLevelDirection: 0
 --- !u!1 &333235919
 GameObject:
   m_ObjectHideFlags: 0
@@ -3631,6 +3731,7 @@ MonoBehaviour:
   currentArea: 0
   listAreaNodes:
   - {fileID: 164308311}
+  - {fileID: 329172055}
 --- !u!114 &703243677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6705,6 +6806,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 164308313}
+  - {fileID: 329172054}
   m_Father: {fileID: 1313058274}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

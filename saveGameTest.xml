@@ -10,7 +10,7 @@
 	<WALL_SLIDE>false</WALL_SLIDE>
 	<WALL_JUMP>false</WALL_JUMP>
 	<WALL_HIGH_JUMP>false</WALL_HIGH_JUMP>
-	<DASH>false</DASH>
+	<DASH>true</DASH>
 	<DASH_MEGA>false</DASH_MEGA>
 	<CHEAT_JUMP>false</CHEAT_JUMP>
 	<CHEAT_DASH>false</CHEAT_DASH>
@@ -18,6 +18,40 @@
 <!--This is the modifer to the damage of the weapon the player has.-->
 
 <WeaponProjectileModifier>1</WeaponProjectileModifier>
-<!--This is the list of Logs that the player has collecteds.-->
+<!--This is the list of Enemies ingame.-->
+<enemies>
+	<enemy EntityName="Enemy_-195022_(75.0, -73.4, 0.0)" gameObjectInstanceID="-195022" HasBeenKilled="False" PermanentlyKillable="False" />
+	<enemy EntityName="Enemy_-195032_(75.1, -75.6, 0.0)" gameObjectInstanceID="-195032" HasBeenKilled="False" PermanentlyKillable="False" />
+	<enemy EntityName="Enemy_-195042_(63.9, -73.4, 0.0)" gameObjectInstanceID="-195042" HasBeenKilled="False" PermanentlyKillable="True" />
+	<enemy EntityName="Enemy_-195052_(61.6, -75.2, 0.0)" gameObjectInstanceID="-195052" HasBeenKilled="False" PermanentlyKillable="False" />
+</enemies>
+
+<!--This is the list of Items the player has collected.-->
+<items>
+	<item ItemName="ItemDashMega" gameObjectInstanceID="-1220" HasBeenCollected="False" />
+	<item ItemName="ItemJumpTriple" gameObjectInstanceID="-1212" HasBeenCollected="False" />
+	<item ItemName="ItemWallSlide" gameObjectInstanceID="-1186" HasBeenCollected="False" />
+	<item ItemName="ItemJump" gameObjectInstanceID="-1178" HasBeenCollected="False" />
+	<item ItemName="ItemJumpDouble" gameObjectInstanceID="-1170" HasBeenCollected="False" />
+	<item ItemName="ItemDash" gameObjectInstanceID="-1162" HasBeenCollected="True" />
+	<item ItemName="ItemWallJump" gameObjectInstanceID="-1092" HasBeenCollected="False" />
+	<item ItemName="ItemJumpWallHighJump" gameObjectInstanceID="-1066" HasBeenCollected="False" />
+</items>
+
+<!--This is the list of Switches.-->
+<switches>
+	<switch InteractableID="sw" gameObjectInstanceID="-1052" IsCurrentlyLocked="False" HasBeenUsedOnce="False" CurrentState="True" />
+</switches>
+
+<!--This is the list of Doors.-->
+<doors>
+	<door InteractableID="ENTITY_DOOR_TEST" gameObjectInstanceID="-1192" IsCurrentlyLocked="True" HasBeenUsedOnce="False" CurrentState="False" />
+	<door InteractableID="NORMAL_DOOR_TEST_1" gameObjectInstanceID="-1072" IsCurrentlyLocked="False" HasBeenUsedOnce="False" CurrentState="False" />
+	<door InteractableID="KEY_DOOR_TEST" gameObjectInstanceID="-1026" IsCurrentlyLocked="True" HasBeenUsedOnce="False" CurrentState="False" />
+	<door InteractableID="OPERATOR_DOOR_TEST" gameObjectInstanceID="18248" IsCurrentlyLocked="False" HasBeenUsedOnce="False" CurrentState="True" DoorOperatorCount="1" DoorOperatorCountTotal="1" />
+</doors>
+
+<!--This is the list of Logs that the player has collected.-->
 <logs>
+	<log_collected>Test Log</log_collected>
 </logs>

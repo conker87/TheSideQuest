@@ -6,6 +6,13 @@ using UnityEngine;
 public class Item : MonoBehaviour {
 	
 	protected Player player;
+	protected string _itemName;
+	public string ItemName {
+
+		get { return _itemName; }
+		protected set { _itemName = value; }
+
+	}
 	protected bool _hasBeenCollected = false;
 	public bool HasBeenCollected {
 
@@ -19,6 +26,10 @@ public class Item : MonoBehaviour {
 		// TODO: Item needs to know if it has already been collected during load.
 
 		RenameGameObject ();
+
+		if (string.IsNullOrEmpty (ItemName)) {
+			ItemName = name;
+		}
 
 		GameSaveController.ItemsInWorld.Add (this);
 

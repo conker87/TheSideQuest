@@ -77,8 +77,7 @@ public class Switch : Interactable {
 
 			if (current != null && current.dDoorOpenOperator == DoorOpenOperator.AND) {
 
-				current.IncrementTotalOperatorCount ();
-				// print (current.GetTotalOperatorCount ());
+				current.DoorOperatorCountTotal++;
 
 			}
 
@@ -154,7 +153,7 @@ public class Switch : Interactable {
 
 				if ((door = interact.GetComponent<DoorOperator>()) != null) {
 
-					door.DecrementOperatorCount();
+					door.DoorOperatorCount--;
 
 				}
 
@@ -180,7 +179,7 @@ public class Switch : Interactable {
 
 			if ((door = interact.GetComponent<DoorOperator>()) != null) {
 
-				door.IncrementOperatorCount();
+				door.DoorOperatorCount++;
 
 			}
 

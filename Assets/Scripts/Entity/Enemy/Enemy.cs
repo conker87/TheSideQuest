@@ -49,6 +49,8 @@ public class Enemy : Entity {
 
 		TOTAL_MAXIMUM_HEALTH = 10000000;
 
+		EntityName = name + "_" + transform.position;
+
 	}
 
 	protected override void Update() {
