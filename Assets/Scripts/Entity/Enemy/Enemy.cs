@@ -40,16 +40,20 @@ public class Enemy : Entity {
 
 	}
 
+	protected void Awake() {
+		
+		EntityName = "Enemy_" + (Vector2) transform.position;
+		GameSaveController.EnemiesInWorld.Add (this);
+
+	}
 
 	protected override void Start() {
 
 		base.Start ();
 
-		GameSaveController.EnemiesInWorld.Add (this);
+		// GameSaveController.EnemiesInWorld.Add (this);
 
 		TOTAL_MAXIMUM_HEALTH = 10000000;
-
-		EntityName = name + "_" + transform.position;
 
 	}
 

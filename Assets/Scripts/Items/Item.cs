@@ -17,7 +17,7 @@ public class Item : MonoBehaviour {
 	public bool HasBeenCollected {
 
 		get { return _hasBeenCollected; }
-		protected set { _hasBeenCollected = value; }
+		set { _hasBeenCollected = value; }
 
 	}
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -55,6 +56,12 @@ public class Constants : MonoBehaviour {
 		yield return new WaitForSeconds (seconds);
 
 		element.SetActive (false);
+
+	}
+
+	public static IEnumerable<T> GetValues<T>() {
+		
+		return System.Enum.GetValues(typeof(T)).Cast<T>();
 
 	}
 

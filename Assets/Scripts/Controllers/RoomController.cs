@@ -59,8 +59,6 @@ public class RoomController : MonoBehaviour {
 		// Rename
 		gameObject.name = string.Format("{0}_{1}_{2}", RoomName, transform.position, RoomLevelDirection.ToString());
 
-		Debug.Log ("RoomController::Start()");
-
 		SpawnEnemies ();
 		if (!IsCurrentlyInRoom) {
 

@@ -73,7 +73,7 @@ public class Door : Interactable {
 		DoReset ();
 
 		// TODO: Figure out better optimisation.
-		doorAnimator.enabled = CheckIfPlayerIsInRoom ();
+		// doorAnimator.enabled = CheckIfPlayerIsInRoom ();
 
 		if (doorAnimator.enabled) {
 

@@ -646,7 +646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _roomName: Test Room One, with Boss
   _isBossRoom: 0
-  _isCurrentlyInRoom: 1
+  _isCurrentlyInRoom: 0
   _enemiesInRoom:
   - Enemy: {fileID: 114450679191451146, guid: 941688c8a8f0bff498e8f1f406130ac7, type: 2}
     SpawnLocation: {x: 15.89, y: -25.4}
@@ -10124,38 +10124,63 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
         type: 2}
+      propertyPath: _artifacts.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
+        type: 2}
+      propertyPath: _artifacts.Array.data[3]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
+        type: 2}
+      propertyPath: _artifacts.Array.data[4]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
+        type: 2}
+      propertyPath: _artifacts.Array.data[5]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
+        type: 2}
       propertyPath: _keys.Array.data[0]
-      value: 1
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
         type: 2}
       propertyPath: _keys.Array.data[1]
-      value: 0
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
         type: 2}
       propertyPath: _keys.Array.data[2]
-      value: 0
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
         type: 2}
       propertyPath: _keys.Array.data[3]
-      value: 0
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
         type: 2}
       propertyPath: _keys.Array.data[4]
-      value: 0
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
         type: 2}
       propertyPath: _keys.Array.data[5]
-      value: 0
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
         type: 2}
       propertyPath: _keys.Array.data[6]
-      value: 0
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 114307824505636646, guid: 4aa236e7167ad8242b909b26ace91348,
+        type: 2}
+      propertyPath: _abilities.Array.data[0].AbilityCollected
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4aa236e7167ad8242b909b26ace91348, type: 2}

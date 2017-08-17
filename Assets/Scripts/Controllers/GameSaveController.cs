@@ -80,22 +80,144 @@ public static class GameSaveController {
 						xmlReader.GetAttribute("SaveFileTimeOnGame"), xmlReader.GetAttribute ("stationID")));
 
 					Player.instance.transform.position = SaveStationLocations.FirstOrDefault (a => a.InteractableID == xmlReader.GetAttribute ("stationID")).transform.position;
-					// TODO: Really none of this is useful to the player, SaveFileTimeOnGame might not even exist if you ask me
 
 				}
 
-				// <saveLocation>SAVE_STATION_A</saveLocation>
-				if (xmlReader.Name == "saveLocation") {
+				// 	<abilities JUMP="True" JUMP_DOUBLE="False" JUMP_TRIPLE="False" WALL_SLIDE="False" WALL_JUMP="False" WALL_HIGH_JUMP="False"
+				//		DASH="False" DASH_MEGA="False" CHEAT_JUMP="False" CHEAT_DASH="False" WeaponProjectileModifier="1" />
+				if (xmlReader.Name == "abilities") {
+
+					while (xmlReader.MoveToNextAttribute ()) {
+						
+						if (xmlReader.Name == "WeaponProjectileModifier") {
+
+							Player.instance.WeaponProjectileModifier = float.Parse(xmlReader.Value);
+							break;
+
+						}
+
+						foreach (Ability a in Player.instance.Abilities) {
+
+							if (xmlReader.Name == a.AbilityName) {
+
+								a.AbilityCollected = bool.Parse(xmlReader.Value);
+								break;
+
+							}
+
+						}
+
+					}
+
+				}
+
+				// 	<keys 0="1" 1="0" 2="0" 3="0" 4="0" 5="0" 6="0" />
+				if (xmlReader.Name == "keys") {
+
+					while (xmlReader.MoveToNextAttribute ()) {
+
+						Player.instance.Keys [int.Parse(xmlReader.Name.Substring(1))] = int.Parse(xmlReader.Value);
+
+					}
+
+				}
+
+				// <artifacts 0="False" 1="False" 2="False" 3="False" 4="False" 5="False" 6="False" />
+				if (xmlReader.Name == "artifacts") {
+
+					while (xmlReader.MoveToNextAttribute ()) {
+
+						Player.instance.Artifacts [int.Parse(xmlReader.Name.Substring(1))] = bool.Parse(xmlReader.Value);
+
+					}
+
+				}
+
+				// <enemy EntityName="Enemy_(63.9, -73.4)" gameObjectInstanceID="-156380" HasBeenKilled="False" PermanentlyKillable="True" />
+				if (xmlReader.Name == "enemy") {
 					
+					foreach (Enemy e in GameObject.Find("World").GetComponentsInChildren<Enemy>(true)) {
 
+						if (e.EntityName == xmlReader.GetAttribute ("EntityName")) {
+
+							e.HasBeenKilled = bool.Parse(xmlReader.GetAttribute ("HasBeenKilled"));
+
+						}
+
+					}
 
 				}
 
+				// <item ItemName="ItemDashMega" gameObjectInstanceID="-1222" HasBeenCollected="False" />
+				if (xmlReader.Name == "item") {
+
+					foreach (Item i in GameObject.Find("World").GetComponentsInChildren<Item>(true)) {
+
+						if (i.ItemName == xmlReader.GetAttribute ("ItemName")) {
+
+							i.HasBeenCollected = bool.Parse(xmlReader.GetAttribute ("HasBeenCollected"));
+
+						}
+
+					}
+
+				}
+
+				// TODO: Since we're literally using the same details for both Switch and Door we should just merge the Switch and Door Lists into Interactable.
+				// <switch InteractableID="sw" gameObjectInstanceID="-1054" IsCurrentlyLocked="False" HasBeenUsedOnce="False" IsOn="False" />
+				if (xmlReader.Name == "switch") {
+
+					foreach (Switch s in GameObject.Find("World").GetComponentsInChildren<Switch>(true)) {
+
+						if (s.InteractableID == xmlReader.GetAttribute ("InteractableID")) {
+
+							s.IsCurrentlyLocked = bool.Parse(xmlReader.GetAttribute ("IsCurrentlyLocked"));
+							s.HasBeenUsedOnce = bool.Parse(xmlReader.GetAttribute ("HasBeenUsedOnce"));
+							s.IsOn = bool.Parse(xmlReader.GetAttribute ("IsOn"));
+
+						}
+
+					}
+
+				}
+
+				// <door InteractableID="ENTITY_DOOR_TEST" gameObjectInstanceID="-1194" IsCurrentlyLocked="True" HasBeenUsedOnce="False" CurrentState="False" />
+				if (xmlReader.Name == "door") {
+
+					foreach (Door d in GameObject.Find("World").GetComponentsInChildren<Door>(true)) {
+
+						if (d.InteractableID == xmlReader.GetAttribute ("InteractableID")) {
+
+							d.IsCurrentlyLocked = bool.Parse(xmlReader.GetAttribute ("IsCurrentlyLocked"));
+							d.HasBeenUsedOnce = bool.Parse(xmlReader.GetAttribute ("HasBeenUsedOnce"));
+							d.IsOn = bool.Parse(xmlReader.GetAttribute ("IsOn"));
+
+							if (d.GetComponent<DoorOperator> () != null) {
+
+								DoorOperator o = (DoorOperator) d;
+
+								o.DoorOperatorCount = int.Parse(xmlReader.GetAttribute ("DoorOperatorCount"));
+								o.DoorOperatorCountTotal = int.Parse(xmlReader.GetAttribute ("DoorOperatorCountTotal"));
+
+							}
+
+						}
+
+					}
+
+				}
+
+				// <log InteractableName="Test Log" HasBeenCollected="True" />
+				if (xmlReader.Name == "log") {
+
+					LogsFoundByPlayer.Add (xmlReader.GetAttribute ("InteractableName"), bool.Parse(xmlReader.GetAttribute ("HasBeenCollected")));
+
+				}
 
 			}
 
 
-//			if((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "saveLocation")) {
+			//			if((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "saveLocation")) { 
 //
 //				Debug.Log ("SaveLocation");
 //
@@ -133,7 +255,7 @@ public static class GameSaveController {
 
 			// SaveLocation (saveStationID);
 			SavePlayer ();
-			SaveEntityStates ();
+			SaveEnemyStates ();
 			SaveItemStates ();
 			SaveSwitchStates ();
 			SaveDoorStates ();
@@ -204,9 +326,23 @@ public static class GameSaveController {
 
 		xmlWriter.WriteEndElement ();
 
-		xmlWriter.WriteWhitespace("\n");
-		xmlWriter.WriteComment ("This is the modifer to the damage of the weapon the player has.");
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
+		xmlWriter.WriteStartElement("keys");
+		for (int i = 0; i < Player.instance.Keys.Count(); i++) {
+
+			xmlWriter.WriteAttributeString ("_" + i.ToString(), Player.instance.Keys[i].ToString());
+
+		}
+		xmlWriter.WriteEndElement ();
+
+		xmlWriter.WriteWhitespace("\n\t");
+		xmlWriter.WriteStartElement("artifacts");
+		for (int i = 0; i < Player.instance.Artifacts.Count(); i++) {
+
+			xmlWriter.WriteAttributeString ("_" + i.ToString(), Player.instance.Artifacts[i].ToString());
+
+		}
+		xmlWriter.WriteEndElement ();
 
 	}
 
@@ -239,7 +375,7 @@ public static class GameSaveController {
 
 	}
 
-	static void SaveEntityStates() {
+	static void SaveEnemyStates() {
 		
 		xmlWriter.WriteWhitespace("\n");
 		xmlWriter.WriteComment ("This is the list of Enemies ingame.");
@@ -259,7 +395,9 @@ public static class GameSaveController {
 			xmlWriter.WriteAttributeString ("EntityName", e.EntityName);
 			xmlWriter.WriteAttributeString ("gameObjectInstanceID", e.GetInstanceID ().ToString ());
 			xmlWriter.WriteAttributeString ("HasBeenKilled", e.HasBeenKilled.ToString ());
-			xmlWriter.WriteAttributeString ("PermanentlyKillable", e.PermanentlyKillable.ToString ());
+
+			// TODO: Do we need this? I think not.
+			// xmlWriter.WriteAttributeString ("PermanentlyKillable", e.PermanentlyKillable.ToString ());
 
 			xmlWriter.WriteEndElement ();
 
@@ -345,7 +483,7 @@ public static class GameSaveController {
 			xmlWriter.WriteAttributeString ("gameObjectInstanceID", s.GetInstanceID().ToString());
 			xmlWriter.WriteAttributeString ("IsCurrentlyLocked", s.IsCurrentlyLocked.ToString());
 			xmlWriter.WriteAttributeString ("HasBeenUsedOnce", s.HasBeenUsedOnce.ToString());
-			xmlWriter.WriteAttributeString ("CurrentState", s.IsOn.ToString());
+			xmlWriter.WriteAttributeString ("IsOn", s.IsOn.ToString());
 
 			xmlWriter.WriteEndElement();
 
@@ -369,7 +507,7 @@ public static class GameSaveController {
 		foreach (Door d in DoorsInWorld) {
 			
 			DoorString += " InteractableID: '" + d.InteractableID + "', ID: '" + d.GetInstanceID() + "', IsCurrentlyLocked: " + d.IsCurrentlyLocked +
-				", HasBeenUsedOnce" + d.HasBeenUsedOnce + ", CurrentState: " + d.IsOn + ".";
+				", HasBeenUsedOnce" + d.HasBeenUsedOnce + ", IsOn: " + d.IsOn + ".";
 
 			xmlWriter.WriteWhitespace("\n\t\t");
 
@@ -378,7 +516,7 @@ public static class GameSaveController {
 			xmlWriter.WriteAttributeString ("gameObjectInstanceID", d.GetInstanceID().ToString());
 			xmlWriter.WriteAttributeString ("IsCurrentlyLocked", d.IsCurrentlyLocked.ToString());
 			xmlWriter.WriteAttributeString ("HasBeenUsedOnce", d.HasBeenUsedOnce.ToString());
-			xmlWriter.WriteAttributeString ("CurrentState", d.IsOn.ToString());
+			xmlWriter.WriteAttributeString ("IsOn", d.IsOn.ToString());
 
 			if (d.GetComponent<DoorOperator> () != null) {
 

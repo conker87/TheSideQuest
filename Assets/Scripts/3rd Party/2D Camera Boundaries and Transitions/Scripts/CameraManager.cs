@@ -31,8 +31,6 @@ public class CameraManager : MonoBehaviour {
 
 		// SpawnAllEnemies ();
 
-		Debug.Log ("CameraManager::Start()");
-//
 //		foreach (GameObject n in listAreaNodes) {
 //
 //			RoomController room = n.GetComponent<RoomController> ();
