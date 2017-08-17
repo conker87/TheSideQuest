@@ -10,7 +10,7 @@ public class SaveStation : Interactable {
 		IsCurrentlyInteractable = true;
 		IsOneUseOnly = HasBeenUsedOnce = false;
 
-		SceneManager.AddSaveLocationToSceneManager (this);
+		GameSaveController.SaveStationLocations.Add (this);
 
 		if (InteractableID == "") {
 

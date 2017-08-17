@@ -59,7 +59,14 @@ public class RoomController : MonoBehaviour {
 		// Rename
 		gameObject.name = string.Format("{0}_{1}_{2}", RoomName, transform.position, RoomLevelDirection.ToString());
 
+		Debug.Log ("RoomController::Start()");
+
 		SpawnEnemies ();
+		if (!IsCurrentlyInRoom) {
+
+			DespawnEnemies ();
+
+		}
 
 	}
 
@@ -136,7 +143,7 @@ public class RoomController : MonoBehaviour {
 
 				Enemy spawnedEnemy;
 				spawnedEnemy = Instantiate (ers.Enemy, trans + ers.SpawnLocation, Quaternion.identity, transform) as Enemy;
-				spawnedEnemy.gameObject.name = "Enemy_" + spawnedEnemy.GetInstanceID ();
+				spawnedEnemy.gameObject.name = "Enemy_" + ers.SpawnLocation;
 
 				ers.EnemyID = spawnedEnemy.GetInstanceID ();
 				spawnedEnemy.SetHealthToMax ();

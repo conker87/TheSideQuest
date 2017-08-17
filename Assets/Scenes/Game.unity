@@ -646,7 +646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _roomName: Test Room One, with Boss
   _isBossRoom: 0
-  _isCurrentlyInRoom: 0
+  _isCurrentlyInRoom: 1
   _enemiesInRoom:
   - Enemy: {fileID: 114450679191451146, guid: 941688c8a8f0bff498e8f1f406130ac7, type: 2}
     SpawnLocation: {x: 15.89, y: -25.4}

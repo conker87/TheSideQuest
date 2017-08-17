@@ -29,7 +29,18 @@ public class CameraManager : MonoBehaviour {
 		if (listAreaNodes.Count == 0)
 			Debug.LogWarning (gameObject.name.ToString () + " (CameraManager): No Area boundaries are assigned. The camera will move freely to the set targets");
 
-		SetNewArea (true);
+		// SpawnAllEnemies ();
+
+		Debug.Log ("CameraManager::Start()");
+//
+//		foreach (GameObject n in listAreaNodes) {
+//
+//			RoomController room = n.GetComponent<RoomController> ();
+//
+//			room.EnteredRoom ();
+//			room.LeftRoom ();
+//
+//		}
 
 	}
 

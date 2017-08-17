@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using System.Text;
 using System.Xml;
@@ -10,6 +11,14 @@ public static class GameSaveController {
 		// Maybe obfuscate the save file to prevent editing? Who cares? Question mark?
 
 	static Player player;
+
+	static List<SaveStation> _saveStationLocations = new List<SaveStation> ();
+	public static List<SaveStation> SaveStationLocations {
+
+		get { return _saveStationLocations; }
+		set { _saveStationLocations = value; }
+
+	}
 
 	static List<Item> _itemsInWorld = new List<Item>();
 	public static List<Item> ItemsInWorld {
@@ -57,17 +66,54 @@ public static class GameSaveController {
 
 	public static void LoadGame() {
 
-		Debug.LogError ("NYI");
+		XmlReader xmlReader = XmlReader.Create("saveGameTest.xml");
+
+		while(xmlReader.Read()) {
+
+			if (xmlReader.NodeType == XmlNodeType.Element) {
+
+				// <SaveData SaveFileName="SaveFileName" SaveFileDate="SaveFileDate" SaveFileTime="SaveFileTime" SaveFileTimeOnGame="SaveFileTimeOnGame" stationID="SAVE_STATION_A">
+				if (xmlReader.Name == "SaveData") {
+					
+					Debug.Log (string.Format("<SaveData SaveFileName=\"{0}\" SaveFileDate=\"{1}\" SaveFileTime=\"{2}\" SaveFileTimeOnGame=\"{3}\" stationID=\"{4}\"",
+						xmlReader.GetAttribute("SaveFileName"), xmlReader.GetAttribute("SaveFileDate"), xmlReader.GetAttribute("SaveFileTime"),
+						xmlReader.GetAttribute("SaveFileTimeOnGame"), xmlReader.GetAttribute ("stationID")));
+
+					Player.instance.transform.position = SaveStationLocations.FirstOrDefault (a => a.InteractableID == xmlReader.GetAttribute ("stationID")).transform.position;
+					// TODO: Really none of this is useful to the player, SaveFileTimeOnGame might not even exist if you ask me
+
+				}
+
+				// <saveLocation>SAVE_STATION_A</saveLocation>
+				if (xmlReader.Name == "saveLocation") {
+					
+
+
+				}
+
+
+			}
+
+
+//			if((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "saveLocation")) {
+//
+//				Debug.Log ("SaveLocation");
+//
+//				if(xmlReader.HasAttributes)
+//					Debug.Log(xmlReader.GetAttribute("currency") + ": " + xmlReader.GetAttribute("rate"));  
+//				
+//			}
+		}
 
 	}
 
 	public static void SaveGame() {
 
-		SaveGame ("Test");
+		SaveGame ("SAVE_STATION_A");
 
 	}
 
-	public static void SaveGame(string saveStationID = "test") {
+	public static void SaveGame(string saveStationID = "SAVE_STATION_A") {
 
 		Debug.Log ("Saving...");
 
@@ -77,7 +123,15 @@ public static class GameSaveController {
 			xmlWriter.WriteStartDocument();
 			xmlWriter.WriteWhitespace("\n");
 
-			SaveLocation (saveStationID);
+			xmlWriter.WriteStartElement("SaveData");
+			xmlWriter.WriteAttributeString ("SaveFileName", "SaveFileName");
+			xmlWriter.WriteAttributeString ("SaveFileDate", "SaveFileDate");
+			xmlWriter.WriteAttributeString ("SaveFileTime", "SaveFileTime");
+			xmlWriter.WriteAttributeString ("SaveFileTimeOnGame", "SaveFileTimeOnGame");
+			xmlWriter.WriteAttributeString ("stationID", saveStationID);
+
+
+			// SaveLocation (saveStationID);
 			SavePlayer ();
 			SaveEntityStates ();
 			SaveItemStates ();
@@ -85,6 +139,7 @@ public static class GameSaveController {
 			SaveDoorStates ();
 			SaveLogs ();
 
+			xmlWriter.WriteEndElement();
 			xmlWriter.WriteEndDocument();
 			xmlWriter.Close();
 
@@ -110,10 +165,11 @@ public static class GameSaveController {
 
 		xmlWriter.WriteWhitespace("\n");
 		xmlWriter.WriteComment ("This is the save location ID of the SaveStation that the player saved at.");
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 
 		xmlWriter.WriteStartElement("saveLocation");
-		xmlWriter.WriteString(stationID);
+		xmlWriter.WriteAttributeString ("stationID", stationID);
+		// xmlWriter.WriteString(stationID);
 		xmlWriter.WriteEndElement();
 
 	}
@@ -123,40 +179,34 @@ public static class GameSaveController {
 		// TODO: Do we even need list all save stations as they're all static anyway. Maybe just for the debug menu.
 
 		SaveStationString = "GameSaveController::SavePlayer -- All SaveStations:";
-		foreach (SaveStation s in SceneManager.SaveStationLocations) {
+		foreach (SaveStation s in SaveStationLocations) {
 			
 			SaveStationString += " StationID: " + s.InteractableID + ", Position: " + s.transform.position + ".";
 		}
 
 		xmlWriter.WriteWhitespace("\n");
 		xmlWriter.WriteComment ("This must be read into Player.Instance.Abilities");
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 		xmlWriter.WriteStartElement("abilities");
 
 		AbilitiesString = "GameSaveController::SavePlayer -- All Abilities: ";
-		foreach (Ability a in GameObject.FindObjectOfType<Player>().Abilities) {
+		foreach (Ability a in Player.instance.Abilities) {
 
 			AbilitiesString += " AbilityName: '" + a.AbilityName + "', AbilityCollected: " + a.AbilityCollected + ".";
 
-			xmlWriter.WriteWhitespace("\n\t");
-			xmlWriter.WriteStartElement(a.AbilityName);
-			xmlWriter.WriteValue(a.AbilityCollected);
-			xmlWriter.WriteEndElement();
+			xmlWriter.WriteAttributeString (a.AbilityName, a.AbilityCollected.ToString());
 
 		}
 
-		xmlWriter.WriteWhitespace("\n");
-		xmlWriter.WriteEndElement();
+		AbilitiesString += "WeaponProjectileModifier: " + player.WeaponProjectileModifier;
+
+		xmlWriter.WriteAttributeString ("WeaponProjectileModifier", Player.instance.WeaponProjectileModifier.ToString());
+
+		xmlWriter.WriteEndElement ();
 
 		xmlWriter.WriteWhitespace("\n");
 		xmlWriter.WriteComment ("This is the modifer to the damage of the weapon the player has.");
 		xmlWriter.WriteWhitespace("\n");
-
-		Debug.Log ("WeaponProjectileModifier: " + player.WeaponProjectileModifier);
-
-		xmlWriter.WriteStartElement("WeaponProjectileModifier");
-		xmlWriter.WriteValue(player.WeaponProjectileModifier);
-		xmlWriter.WriteEndElement();
 
 	}
 
@@ -164,7 +214,7 @@ public static class GameSaveController {
 		
 		xmlWriter.WriteWhitespace("\n");
 		xmlWriter.WriteComment ("This is the list of Logs that the player has collected.");
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 
 		xmlWriter.WriteStartElement("logs");
 
@@ -173,16 +223,17 @@ public static class GameSaveController {
 
 			LogsString += " Name: " + log.Key + ".";
 
-			xmlWriter.WriteWhitespace("\n\t");
+			xmlWriter.WriteWhitespace("\n\t\t");
 
-			xmlWriter.WriteStartElement("log_collected");
-			xmlWriter.WriteValue(log.Key);
+			xmlWriter.WriteStartElement("log");
+			xmlWriter.WriteAttributeString ("InteractableName", log.Key);
+			xmlWriter.WriteAttributeString ("HasBeenCollected", log.Value.ToString());
 
-			xmlWriter.WriteEndElement();
+			xmlWriter.WriteEndElement ();
 
 		}
 
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 		xmlWriter.WriteEndElement();
 		xmlWriter.WriteWhitespace("\n");
 
@@ -192,7 +243,7 @@ public static class GameSaveController {
 		
 		xmlWriter.WriteWhitespace("\n");
 		xmlWriter.WriteComment ("This is the list of Enemies ingame.");
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 
 		xmlWriter.WriteStartElement("enemies");
 
@@ -202,7 +253,7 @@ public static class GameSaveController {
 			EnemiesString += " EntityName: '" + e.EntityName + "', ID: '" + e.GetInstanceID () + "', HasBeenKilled: '" + e.HasBeenKilled
 			+ "' PermanentlyKillable: "	+ e.PermanentlyKillable + ".";
 
-			xmlWriter.WriteWhitespace ("\n\t");
+			xmlWriter.WriteWhitespace ("\n\t\t");
 
 			xmlWriter.WriteStartElement ("enemy");
 			xmlWriter.WriteAttributeString ("EntityName", e.EntityName);
@@ -214,7 +265,7 @@ public static class GameSaveController {
 
 		}
 
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 		xmlWriter.WriteEndElement();
 		xmlWriter.WriteWhitespace("\n");
 
@@ -224,7 +275,7 @@ public static class GameSaveController {
 		
 		xmlWriter.WriteWhitespace("\n");
 		xmlWriter.WriteComment ("This is the list of Items the player has collected.");
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 
 		xmlWriter.WriteStartElement("items");
 
@@ -233,7 +284,7 @@ public static class GameSaveController {
 			
 			ItemsString += " ItemName: '" + i.ItemName + "', ID: '" + i.GetInstanceID() + "', HasBeenCollected: " + i.HasBeenCollected;
 			
-			xmlWriter.WriteWhitespace("\n\t");
+			xmlWriter.WriteWhitespace("\n\t\t");
 
 			xmlWriter.WriteStartElement("item");
 			xmlWriter.WriteAttributeString ("ItemName", i.ItemName);
@@ -267,7 +318,7 @@ public static class GameSaveController {
 
 		}
 
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 		xmlWriter.WriteEndElement();
 		xmlWriter.WriteWhitespace("\n");
 
@@ -277,7 +328,7 @@ public static class GameSaveController {
 		
 		xmlWriter.WriteWhitespace("\n");
 		xmlWriter.WriteComment ("This is the list of Switches.");
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 
 		xmlWriter.WriteStartElement("switches");
 
@@ -287,7 +338,7 @@ public static class GameSaveController {
 			SwitchString += " InteractableID: '" + s.InteractableID + "', ID: '" + s.GetInstanceID() + "', IsCurrentlyLocked: " + s.IsCurrentlyLocked +
 				", HasBeenUsedOnce" + s.HasBeenUsedOnce + ", CurrentState: " + s.IsOn + ".";
 
-			xmlWriter.WriteWhitespace("\n\t");
+			xmlWriter.WriteWhitespace("\n\t\t");
 
 			xmlWriter.WriteStartElement("switch");
 			xmlWriter.WriteAttributeString ("InteractableID", s.InteractableID);
@@ -300,7 +351,7 @@ public static class GameSaveController {
 
 		}
 
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 		xmlWriter.WriteEndElement();
 		xmlWriter.WriteWhitespace("\n");
 
@@ -310,7 +361,7 @@ public static class GameSaveController {
 		
 		xmlWriter.WriteWhitespace("\n");
 		xmlWriter.WriteComment ("This is the list of Doors.");
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 
 		xmlWriter.WriteStartElement("doors");
 
@@ -320,7 +371,7 @@ public static class GameSaveController {
 			DoorString += " InteractableID: '" + d.InteractableID + "', ID: '" + d.GetInstanceID() + "', IsCurrentlyLocked: " + d.IsCurrentlyLocked +
 				", HasBeenUsedOnce" + d.HasBeenUsedOnce + ", CurrentState: " + d.IsOn + ".";
 
-			xmlWriter.WriteWhitespace("\n\t");
+			xmlWriter.WriteWhitespace("\n\t\t");
 
 			xmlWriter.WriteStartElement("door");
 			xmlWriter.WriteAttributeString ("InteractableID", d.InteractableID);
@@ -342,7 +393,7 @@ public static class GameSaveController {
 
 		}
 
-		xmlWriter.WriteWhitespace("\n");
+		xmlWriter.WriteWhitespace("\n\t");
 		xmlWriter.WriteEndElement();
 		xmlWriter.WriteWhitespace("\n");
 
